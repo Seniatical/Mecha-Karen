@@ -36,7 +36,7 @@ import gender
 # Events and Variables
 bot = commands.Bot(command_prefix='-', case_insensitive=True)
 Token = Token.token
-os.chdir('C:\\Users\\isa1b.DESKTOP-GMQ5DPV.000.001\\PycharmProjects\\Discord Bo')
+os.chdir('C:\\Users\\Isa\\PycharmProjects\\Discord Bot')
 
 bot.remove_command('help')
 
