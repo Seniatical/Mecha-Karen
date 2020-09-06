@@ -10,17 +10,9 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageOps, ImageMath
 import os
 import random
 
-import Bio
-import Co
-import IMG
-import Jokes
-import Memes
 import Numbers
 import Quotes
-import Status
-import Token
-import art
-import gender
+
 
 class Motivation(commands.Cog):
 
