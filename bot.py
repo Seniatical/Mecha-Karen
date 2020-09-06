@@ -20,18 +20,6 @@ from os import walk
 
 from aiofiles import open
 
-import Bio
-import Co
-import IMG
-import Jokes
-import Memes
-import Numbers
-import Quotes
-import Status
-import Token
-import art
-import gender
-
 # End of Imports
 # Events and Variables
 bot = commands.Bot(command_prefix='-', case_insensitive=True)
@@ -40,20 +28,10 @@ os.chdir('C:\\Users\\Isa\\PycharmProjects\\Discord Bot')
 
 bot.remove_command('help')
 
-async def status():
-    while True:
-        await bot.wait_until_ready()
-        await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name='-Help | Use -Help Invite to invite Mecha Karen :O'))
-        await sleep(10)
-        await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=f'To {len(bot.commands)} Commands | {len(bot.users)} Users | {len(bot.guilds)} Servers'))
-        await sleep(10)
-        await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"My next updates."))
-        await sleep(10)
-        await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name='Any Errors. Join the support server and report!'))
 @bot.event
 async def on_ready():
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name='-Help'))
     print(f'{bot.user} has Awoken!\n')
-bot.loop.create_task(status())
 
 @bot.event
 async def on_command_error(ctx, error):
