@@ -1,3 +1,4 @@
+# Imports
 import discord
 from discord.ext import commands
 from datetime import timedelta
@@ -10,15 +11,19 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageOps, ImageMath
 import os
 import random
 
+# Class
 class ImageManipulation(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
 
+    # Main Code
     @commands.Cog.listener()
     async def on_ready(self):
         print('ImageManip Cog is ready')
 
+    # Main manipulation code!
+    # The purpose of the random comments is for me to see what i do!
     '''
     Trash!!!
     # YUP YUP YUP
@@ -360,6 +365,6 @@ class ImageManipulation(commands.Cog):
             YE YE YE
         '''
 
-
+# Main setup
 def setup(bot):
     bot.add_cog(ImageManipulation(bot))
