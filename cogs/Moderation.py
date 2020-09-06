@@ -64,24 +64,6 @@ class Moderation(commands.Cog):
                 return
         await ctx.send(member + ' was not found')
 
-    @commands.command()
-    @commands.has_permissions(manage_messages=True)
-    @cooldown(1, 5, BucketType.user)
-    async def sync(self, ctx):
-        await ctx.send('Syncing Mecha Karen')
-        time.sleep(5)
-        await ctx.send(f'Syncing {random.choice(Numbers.N1)}%')
-        time.sleep(2)
-        await ctx.send(f'Syncing {random.choice(Numbers.N2)}%')
-        time.sleep(3)
-        await ctx.send(f'Syncing {random.choice(Numbers.N3)}%')
-        time.sleep(8)
-        await ctx.send(f'Syncing {random.choice(Numbers.N4)}%')
-        time.sleep(9)
-        await ctx.send(f'Syncing {random.choice(Numbers.N5)}%')
-
-        await ctx.send('Syncing Completed. Mecha Karen is back to normal speed')
-
     @commands.command(aliases=['msg'])
     @commands.has_permissions(ban_members=True)
     @cooldown(1, 5, BucketType.user)
@@ -180,32 +162,7 @@ class Moderation(commands.Cog):
                 await ctx.guild.create_text_channel(category=category, position=position, name=name, topic=topic)
                 await ctx.guild.channels.send('Hello')
 
-                time.sleep(5)
-
-    @commands.command()
-    @cooldown(1, 5, BucketType.user)
-    async def spam(self, ctx, member: discord.Member=None, *, reason='Didnt say anything',):
-        if member == None:
-            await ctx.send('Who you sending the message to then?')
-        if ctx.author.id != 475357293949485076:
-            await ctx.send('**You are not the creator of the bot!**')
-        else:
-            if member == member.display_name:
-                e = discord.Embed(title="", description="__**Mecha Karen:**__", color=0x50C878)
-                e.add_field(name='**Msg Sent**', value=(f'Dear {member}:\n\n**{reason}**'))
-                await channel.purge(limit=1)
-                amount = 100000
-                for am in range(amount):
-                    await member.send(embed=e)
-                    time.sleep(0.7)
-            elif member == discord.Member:
-                e = discord.Embed(title="", description="__**Mecha Karen:**__", color=0x50C878)
-                e.add_field(name='**Msg Sent**', value=(f'Dear {member}:\n\n**{reason}**'))
-                await channel.purge(limit=1)
-                amount = 10000
-                for am in range(amount):
-                    await member.send(embed=e)
-                    time.sleep(0.7)
+                time.sleep(5) 
 
 def setup(bot):
     bot.add_cog(Moderation(bot))
