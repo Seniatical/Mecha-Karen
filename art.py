@@ -1,3 +1,0 @@
-art = [
-    'Not ready yet!!!',
-]
