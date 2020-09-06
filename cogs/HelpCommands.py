@@ -1,3 +1,4 @@
+# Imports!
 import discord
 from discord.ext import commands
 from datetime import timedelta
@@ -10,15 +11,18 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageOps, ImageMath
 import os
 import asyncio
 
+# Class
 class Help(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
 
+    # Main Code
     @commands.Cog.listener()
     async def on_ready(self):
         print('Help Cog is ready')
 
+    # Help Codes. Make sure to change it to what ever tf you want.
     @commands.command()
     @cooldown(1, 3, BucketType.user)
     async def Help(self, ctx, option=None):
@@ -131,10 +135,12 @@ class Help(commands.Cog):
                 text='Bot created by _-*™#7139')
             await ctx.send(embed=embed)
 
+    # Little bit of banter
     @commands.command()
     @cooldown(1, 2, BucketType.user)
     async def status(self, ctx):
         await ctx.send('Are you blind. Click my profile for the love of god')
-
+        
+# Bot setup
 def setup(bot):
     bot.add_cog(Help(bot))
