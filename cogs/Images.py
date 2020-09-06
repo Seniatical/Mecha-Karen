@@ -21,11 +21,11 @@ class Images(commands.Cog):
     @commands.command(aliases=['meme'])
     @commands.cooldown(1, 5, BucketType.user)
     async def memes(self, ctx):
-        reddit = praw.Reddit(client_id='z0tV5Vb8-xHnYA',
-                        client_secret='EgmNP1VmT-IpIMj-7auUMM8E0W0',
-                        username='python_praw123',
-                        password='python123',
-                        user_agent='python123')
+        reddit = praw.Reddit(client_id='Put yours here',
+                        client_secret='Put yours here',
+                        username='Put yours here',
+                        password='Put yours here',
+                        user_agent='Put yours here')
         subreddit = reddit.subreddit('Memes')
         all_subs = []
         top = subreddit.hot(limit=100)
