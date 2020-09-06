@@ -26,7 +26,7 @@ class Management(commands.Cog):
             color=discord.Color.blue()
         )
         embed.add_field(name='**Cogs and Disclaimer**',
-                        value='**Current Cogs:**\n*Economy*\n*ImageManipulation*\n*Images*\n*Moderation*\n*Motivation*\n*UserChecks*\n*Help*\n*Fun*\n\n**Although you can disable the help cog. It is not recommended to do so!**\n*These Cogs are case-sensitive! This issue will be resolved in the future.*')
+                        value='**Current Cogs:**\n*ImageManipulation*\n*Images*\n*Moderation*\n*Motivation*\n*UserChecks*\n*Help*\n*Fun*\n\n**Although you can disable the help cog. It is not recommended to do so!**\n*These Cogs are case-sensitive! This issue will be resolved in the future.*')
         await ctx.send(embed=embed)
         embed = discord.Embed(
             title='Manage Mecha Karen',
