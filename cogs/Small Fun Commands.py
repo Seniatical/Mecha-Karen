@@ -508,30 +508,5 @@ class Fun(commands.Cog):
         else:
             await ctx.send(f"{slotmachine} 0 out of 3, He looses 😢")
 
-    @commands.command(aliases=['Latency'])
-    async def ping(self, ctx):
-        msg = await ctx.send("`Bot Latency...`")
-        times = []
-        counter = 0
-        embed = discord.Embed(title="More Information:", description="4 pings have been made and here are the results:", colour=discord.Color.red())
-        for _ in range(3):
-            counter += 1
-            start = time.perf_counter()
-            await msg.edit(content=f"Trying Ping... {counter}/3")
-            end = time.perf_counter()
-            speed = round((end - start) * 1000)
-            times.append(speed)
-            if speed < 160:
-                embed.add_field(name=f"Ping {counter}:", value=f"🟢 | {speed}ms", inline=True)
-            elif speed > 170:
-                embed.add_field(name=f"Ping {counter}:", value=f"🟡 | {speed}ms", inline=True)
-            else:
-                embed.add_field(name=f"Ping {counter}:", value=f"🔴 | {speed}ms", inline=True)
-        embed.set_author(name="🏓    **PONG**    🏓", icon_url="https://img.icons8.com/ultraviolet/40/000000/table-tennis.png")
-        embed.add_field(name="Bot Latency", value=f"{round(self.bot.latency * 1000)}ms", inline=True)
-        embed.add_field(name="Normal Speed", value=f"{round((round(sum(times)) + round(self.bot.latency * 1000))/4)}ms")
-        embed.set_footer(text=f"Total estimated elapsed time: {round(sum(times))}ms")
-        await msg.edit(content=f":ping_pong: **{round((round(sum(times)) + round(self.bot.latency * 1000))/4)}ms**", embed=embed)
-
 def setup(bot):
     bot.add_cog(Fun(bot))
