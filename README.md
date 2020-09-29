@@ -8,5 +8,8 @@ All the code here can be used for your uses.
 I use the the Discord.py library to make this bot. All files i have imported and created by myself will be put here!
 
 Join the Server as this is the best way of contacting me.
+
 https://discord.gg/Q5mFhUM
+
+The next update will be the final version of Mecha Karen!
 
