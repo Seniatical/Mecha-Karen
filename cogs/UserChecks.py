@@ -91,6 +91,29 @@ class UserChecks(commands.Cog):
                 else:
                     pass
         await ctx.send(counter)
+                        
+    @commands.command(aliases=['stat'])
+    @cooldown(1, 3, BucketType.user)
+    async def stats(self, ctx):
+        embed = discord.Embed(
+            title='Mecha Karen Current Stats:',
+            color=discord.Color.red(), timestamp=datetime.datetime.utcnow(),
+        )
+        embed.add_field(name='Servers?', value=f'{len(self.bot.guilds)}')
+        embed.add_field(name='Commands?', value=f'{len(self.bot.commands)}')
+        embed.add_field(name='Users?', value=f'{len(self.bot.users)}')
+        embed.add_field(name='Cogs?', value=f'{len(self.bot.cogs)}')
+        embed.add_field(name='Case Insensitive?', value=f'{self.bot.case_insensitive}')
+        embed.add_field(name="Emoji's?", value=f'{len(self.bot.emojis)}')
+        embed.add_field(name='Cached Messages?', value=f'{len(self.bot.cached_messages)}')
+        embed.add_field(name='Prefix?', value=f'{self.bot.command_prefix}')
+        embed.add_field(name='Extensions?', value=f'{len(self.bot.extensions)}')
+        embed.add_field(name='All Commands?', value=f'{len(self.bot.all_commands)}')
+        embed.add_field(name='Help Command?', value=f'Help')
+        embed.add_field(name='Extra Events?', value=f'{len(self.bot.extra_events)}')
+        embed.add_field(name='Voice Clients?', value=f'{len(self.bot.voice_clients)}')
+        embed.add_field(name='Bot Latency?', value=f'{round(self.bot.latency * 1000, 2)}')
+        await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(UserChecks(bot))
