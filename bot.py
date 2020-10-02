@@ -116,27 +116,4 @@ async def Actions(ctx):
         entries = await guild.audit_logs(limit=None, user=guild.me).flatten()
         await ctx.send('The server has made {} moderation actions.'.format(len(entries)))
 
-@bot.command(aliases=['stat'])
-@cooldown(1, 3, BucketType.user)
-async def stats(ctx):
-    embed = discord.Embed(
-        title='Mecha Karen Current Stats:',
-        color=discord.Color.red(), timestamp=datetime.datetime.utcnow(),
-    )
-    embed.add_field(name='Servers?', value=f'{len(bot.guilds)}')
-    embed.add_field(name='Commands?', value=f'{len(bot.commands)}')
-    embed.add_field(name='Users?', value=f'{len(bot.users)}')
-    embed.add_field(name='Cogs?', value=f'{len(bot.cogs)}')
-    embed.add_field(name='Case Insensitive?', value=f'{bot.case_insensitive}')
-    embed.add_field(name="Emoji's?", value=f'{len(bot.emojis)}')
-    embed.add_field(name='Cached Messages?', value=f'{len(bot.cached_messages)}')
-    embed.add_field(name='Prefix?', value=f'{bot.command_prefix}')
-    embed.add_field(name='Extensions?', value=f'{len(bot.extensions)}')
-    embed.add_field(name='All Commands?', value=f'{len(bot.all_commands)}')
-    embed.add_field(name='Help Command?', value=f'Help')
-    embed.add_field(name='Extra Events?', value=f'{len(bot.extra_events)}')
-    embed.add_field(name='Voice Clients?', value=f'{len(bot.voice_clients)}')
-    embed.add_field(name='Bot Latency?', value=f'{round(bot.latency * 1000, 2)}')
-    await ctx.send(embed=embed)
-
 bot.run(Token)
