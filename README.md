@@ -19,3 +19,7 @@ I used the the Discord.py library to make this bot. All files i have imported an
 1. **`pip install discord.py`**
 
 2. **`https://discordpy.readthedocs.io/en/latest/index.html`**
+
+# Next Update
+
+Will be the last
