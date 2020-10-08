@@ -15,6 +15,7 @@ I used the the Discord.py library to make this bot. All files i have imported an
 **[Click me to invite `Mecha Karen`](https://discord.com/api/oauth2/authorize?client_id=740514706858442792&permissions=8&scope=bot)**
 
 **Notice any errors that i havent?**
+
 Click the button below to report an issue
 
 <!-- Place this tag where you want the button to render. -->
