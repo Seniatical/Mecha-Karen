@@ -2,13 +2,19 @@
 In this repository you will find the code in mecha karen!
 
 This is repository of Mecha Karen.
+
 A mostly fun bot but can offer some useful moderation tools. 
 Has many categories including `NSFW`, `Fun`, `Games`, `Motivation` and more!
 A robustly programmed bot which means there wont be as much errors in the long run.
+
 Facts :
+
   100+ Commands,
+  
   Unique Features,
+  
   Wacky Commands,
+  
   Fast Responce Times (Most times)
 
 **Join the Server as this is the best way of contacting me.**
