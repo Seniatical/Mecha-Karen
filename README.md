@@ -7,7 +7,7 @@ All the code here can be used for your uses.
 I used the the Discord.py library to make this bot. All files i have imported and created by myself will be put here!
 
 **Join the Server as this is the best way of contacting me.**
-[![Invitation link](https://discord.com/api/guilds/713785142597910549/widget.png?style=banner4)](https://discord.gg/Q5mFhUM)
+[![Invitation link](https://discord.com/api/guilds/740523643980873789/widget.png?style=banner4)](https://discord.gg/Q5mFhUM)
 
 
 **Invite the bot.**
