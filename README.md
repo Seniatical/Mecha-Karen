@@ -1,10 +1,15 @@
 # __Mecha-Karen-Source-Code__
 In this repository you will find the code in mecha karen!
 
-If you have any problems with the code i will not be able to help you since im busy.
-If it isnt updated then dont constantly tell me. I have a life.
-All the code here can be used for your uses.
-I used the the Discord.py library to make this bot. All files i have imported and created by myself will be put here!
+This is repository of Mecha Karen.
+A mostly fun bot but can offer some useful moderation tools. 
+Has many categories including `NSFW`, `Fun`, `Games`, `Motivation` and more!
+A robustly programmed bot which means there wont be as much errors in the long run.
+Facts :
+  100+ Commands,
+  Unique Features,
+  Wacky Commands,
+  Fast Responce Times (Most times)
 
 **Join the Server as this is the best way of contacting me.**
 
