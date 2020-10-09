@@ -30,7 +30,7 @@ Facts :
 Click the button below to report an issue
 
 <!-- Place this tag where you want the button to render. -->
-<a class="github-button" href="https://github.com/Seniatical/Mecha-Karen-Source-Code/issues" data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-issue-opened" data-size="large" data-show-count="true" aria-label="Issue Seniatical/Mecha-Karen-Source-Code on GitHub">Issue</a>
+<a class="github-button" href="https://github.com/Seniatical/Mecha-Karen-Source-Code/issues" data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-issue-opened" data-size="large" data-show-count="true" aria-label="Issue Seniatical/Mecha-Karen-Source-Code on GitHub">Issues</a>
 
 **_Useful things that you may or may not need:_**
 
