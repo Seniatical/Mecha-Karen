@@ -46,6 +46,7 @@ from Utils.main import *
 # End of Imports
 
 # Events and Variables
+
 bot = BOT_PREF
 bot.launch_time = datetime.datetime.utcnow()
 Token = TOKEN
@@ -54,10 +55,17 @@ os.chdir('C:\\Users\\Isa\\PycharmProjects\\Discord Bot')
 
 bot.remove_command('help')
 
-@bot.event
-async def on_ready():
-    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name='-Help'))
-    print(f'{bot.user} has Awoken!\n')
+@tasks.loop(minutes=60, count=INF)
+async def Time(minutes=60):
+    global index
+    print('Uptime is currently at {} hour.'.format(index + 1))
+    index += 1
+
+@Time.before_loop
+async def is_ready_bot():
+    await bot.wait_until_ready()
+
+Time.start()
 
 @bot.event
 async def on_command_error(ctx, error):
