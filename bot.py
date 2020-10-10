@@ -26,8 +26,6 @@ Limitations:
 """
 
 # Imports
-import PIL
-from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageOps, ImageMath
 import json
 import random
 import datetime
@@ -36,18 +34,17 @@ import time
 import discord
 from discord import File
 from discord.ext import commands
-from discord.ext.commands import BucketType, cooldown, MissingRequiredArgument
+from discord.ext.commands import BucketType, cooldown
+from discord.ext import tasks
 import os
 from asyncio import sleep
-import praw
-from discord.utils import get
 import asyncio
-from collections import defaultdict
-from os import walk
+import requests
 
-from aiofiles import open
+from Utils.main import *
 
 # End of Imports
+
 # Events and Variables
 bot = commands.Bot(command_prefix='-', case_insensitive=True)
 Token = Token.token
