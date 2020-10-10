@@ -1,1 +1,1 @@
-token = 'NzQwNTE0NzA2ODU4NDQyNzky.XyqIEA.OE04D-1vjJ2KI5gC12PXSpiAm24'
+token = 'U FAILED'
