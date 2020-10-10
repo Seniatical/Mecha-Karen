@@ -137,5 +137,16 @@ async def load(ctx, extention):
 async def disable(ctx, extention):
     bot.unload_extension(f'cogs.{extention}')
     await ctx.send(f'{extention} cog has been disabled')
+    
+@bot.command()
+@commands.is_owner()
+@cooldown(1, 300, BucketType.user)
+async def sync(ctx):
+    msg = await ctx.send('Syncing Mecha Karen now!')
+    async with ctx.channel.typing():
+        for file in os.listdir('./cogs'):
+            if file.endswith('.py'):
+                bot.reload_extension(f"cogs.{file[:-3]}")
+    await msg.edit(content='Mecha Karen has been synced!')
 
 bot.run(Token)
