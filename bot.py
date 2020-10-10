@@ -67,6 +67,57 @@ async def is_ready_bot():
 
 Time.start()
 
+# Events
+
+@bot.event
+async def on_connect():
+    print('Bot connected')
+
+@bot.event
+async def on_message_delete(message):
+    if message.author.bot == True:
+        pass
+    else:
+        with open('JSON/snipe.json', 'r') as f:
+            snipe = json.load(f)
+        snipe[str(message.channel.id)] = {}
+        snipe[str(message.channel.id)]['author'] = message.author.name + '#' + message.author.discriminator
+        snipe[str(message.channel.id)]['avatar'] = str(message.author.id)
+        snipe[str(message.channel.id)]['message'] = message.content
+        snipe[str(message.channel.id)]['created_at'] = message.created_at.strftime('%I:%M %p')
+        with open('JSON/snipe.json', 'w') as f:
+            json.dump(snipe, f, indent=4)
+
+    @bot.event
+    async def on_message(msg):
+        try:
+            if '👀' in msg.content:
+                channel = discord.utils.get(msg.guild.channels, name=channels['tracking'])
+                amount = 0
+                if msg.channel.name == '👀tracking':
+                    pass
+                else:
+                    x = list(msg.content)
+                    for letter in x:
+                        if '👀' in letter:
+                            amount += 1
+                    if amount > 1:
+                        await channel.send('**{}** ({}) has sent \👀 {} times in `{}`.'.format(msg.author.name, msg.author.id, amount, msg.channel.name))
+                    else:
+                        await channel.send('**{}** ({}) has sent \👀 {} time in `{}`.'.format(msg.author.name, msg.author.id, amount, msg.channel.name))
+            try:
+                if msg.mentions[0] == bot.user:
+                    await msg.channel.send('> Hello {}!\n> \n> I am Mecha Karen and thank you for inviting me. My prefix for the server is **`{}`** .'.format(msg.author.mention, get_prefix(bot, msg)))
+                else:
+                    pass
+            except Exception:
+                pass
+        except Exception:
+            pass
+        await bot.process_commands(message=msg)
+
+# End of Events PT1
+        
 # Cog Loads
 
 for filename in os.listdir('./cogs'):
