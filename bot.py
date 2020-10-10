@@ -1,6 +1,6 @@
 """
 Discord bot made by Seniatical / _-*™#7139
-Created in 5/8/2020
+Created at 5/8/2020
 Available under the Apache License 2.0
 
 "
@@ -46,8 +46,10 @@ from Utils.main import *
 # End of Imports
 
 # Events and Variables
-bot = commands.Bot(command_prefix='-', case_insensitive=True)
-Token = Token.token
+bot = BOT_PREF
+bot.launch_time = datetime.datetime.utcnow()
+Token = TOKEN
+index = -1
 os.chdir('C:\\Users\\Isa\\PycharmProjects\\Discord Bot')
 
 bot.remove_command('help')
