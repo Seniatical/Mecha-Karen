@@ -139,6 +139,13 @@ async def disable(ctx, extention):
     await ctx.send(f'{extention} cog has been disabled')
     
 @bot.command()
+@commands.cooldown(1, 60, BucketType.user)
+@commands.has_guild_permissions(administrator=True)
+async def reload(ctx, extention):
+    bot.reload_extension(f'cogs.{extention}')
+    await ctx.send('Reloaded {}'.format(extention))
+    
+@bot.command()
 @commands.is_owner()
 @cooldown(1, 300, BucketType.user)
 async def sync(ctx):
