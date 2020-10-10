@@ -118,7 +118,7 @@ async def on_message_delete(message):
 
 # End of Events PT1
         
-# Cog Loads
+# Start of Cog Load, Unload and Reload Functions
 
 for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
@@ -155,5 +155,7 @@ async def sync(ctx):
             if file.endswith('.py'):
                 bot.reload_extension(f"cogs.{file[:-3]}")
     await msg.edit(content='Mecha Karen has been synced!')
+    
+# End of Cog Load, Unload and Reload Functions
 
 bot.run(Token)
