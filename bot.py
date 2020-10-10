@@ -158,4 +158,106 @@ async def sync(ctx):
     
 # End of Cog Load, Unload and Reload Functions
 
+# Owner commands for loading and reload certain JSON files!
+
+@bot.command()
+@cooldown(1, 1000, BucketType.guild)
+async def add(ctx, file=None, *, message=None):
+    if ctx.author.id == 475357293949485076:
+        with open(f'JSON/{file}.json', 'r') as f:
+            guilds = json.load(f)
+
+        for guild in bot.guilds:
+            guilds[str(guild.id)] = f'{message}'
+
+            with open(f'JSON/{file}.json', 'w') as f:
+                json.dump(guilds, f, indent=4)
+        await ctx.send("Added all guild ID's to the json file!")
+    else:
+        await ctx.send('You do not own the bot!')
+
+@bot.command()
+@cooldown(1, 1000, BucketType.guild)
+async def add1(ctx, file=None, *, message=None):
+    if ctx.author.id == 475357293949485076:
+        with open(f'JSON/{file}.json', 'r') as f:
+            guilds = json.load(f)
+
+        for user in bot.users:
+            guilds[str(user.id)] = {}
+            guilds[str(user.id)]['Level'] = '1'
+
+            with open(f'JSON/{file}.json', 'w') as f:
+                json.dump(guilds, f, indent=4)
+        await ctx.send("Added all guild ID's to the json file!")
+    else:
+        await ctx.send('You do not own the bot!')
+
+@bot.command()
+async def update(ctx, channelid : int=0, *args):
+    if ctx.author.id != 475357293949485076:
+        await ctx.send('You do not own the bot!')
+    else:
+        message = ' '.join(map(str, args))
+        if channelid == 0:
+            channels = []
+        channel = bot.get_channel(channelid)
+        await channel.send(message)
+        await ctx.send('Successfully sent the message!')
+
+# End of owner commands
+
+# Uptime Command / Others Which I cba moving.
+
+@bot.command()
+@commands.cooldown(1, 10, BucketType.user)
+async def uptime(ctx):
+    delta_uptime = datetime.datetime.utcnow() - bot.launch_time
+    hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
+    minutes, seconds = divmod(remainder, 60)
+    days, hours = divmod(hours, 24)
+    await ctx.send(f"{days}d, {hours}h, {minutes}m")
+
+@bot.command()
+@commands.cooldown(1, 10, BucketType.member)
+async def emote(ctx, choice=None):
+    if choice == None:
+        await ctx.send(bot.emojis[0])
+    else:
+        for emoji in bot.emojis:
+            if choice == emoji.name:
+                await ctx.send(emoji)
+
+@bot.command()
+@commands.cooldown(1, 60, BucketType.member)
+async def covid(ctx, Country=None):
+    global x
+    if Country == None:
+        COVID()
+        embed = discord.Embed(
+            title='Cases!',
+            colour=discord.Color.red()
+        )
+        embed.description=f'Cases : {COVID.cases:,}\nDeaths : {COVID.deaths:,}\nRecovered : {COVID.recovered:,}'
+        await ctx.send(embed=embed)
+    else:
+        COVID_SPECIFIC(Country)
+        if COVID_SPECIFIC.error == 'nil':
+            embed = discord.Embed(
+                title='Global Cases!',
+                colour=discord.Color.red()
+            )
+            embed.description=f'Cases : {COVID_SPECIFIC.cases:,}\nDeaths : {COVID_SPECIFIC.deaths:,}\nRecovered : {COVID_SPECIFIC.recovered:,}'
+            await ctx.send(embed=embed)
+        elif COVID_SPECIFIC.error == 'no':
+            j = COVID_SPECIFIC.country_code1
+            i = COVID_SPECIFIC.country_code2
+            await ctx.author.send(j)
+            await ctx.author.send(i)
+
+        else:
+            await ctx.send(COVID_SPECIFIC.error)
+
+bot.run(Token)
+
 bot.run(Token)
