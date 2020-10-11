@@ -14,7 +14,7 @@ def get_prefix(bot, message):
     return prefixes[str(message.guild.id)]
 
 def COVID():
-    r = requests.get('https://covid19-api.org/api/status')
+    r = requests.get('Use your API')
     x = r.json()
 
     COUNTRY = len(x)
@@ -37,7 +37,7 @@ def COVID():
 
 def COVID_SPECIFIC(country):
     country = country.upper()
-    r = requests.get('https://covid19-api.org/api/status/{}'.format(country))
+    r = requests.get('Use your API'.format(country))
     x = r.json()
     try:
         COVID_SPECIFIC.country = x['country']
