@@ -353,24 +353,6 @@ class games(commands.Cog):
             await ctx.send('You never responded with `yes`. In the given time!')
 
     @commands.command()
-    @commands.cooldown(1, 180, BucketType.member)
-    async def number_guess(self, ctx):
-        number1 = []
-        for i in range(0, 101):
-            number.append(str(i))
-        number = random.randint(0, 101)
-        chances = 10
-        await ctx.send('I an thinking of a number in between 1 - 100\n**What is my number**')
-        def check(m):
-            global chances
-            if m.author.id == ctx.author.id and m.content in number1:
-                return True
-            else:
-                chances -= 1
-                return False
-        await self.bot.wait_for('message', check=check)
-
-    @commands.command()
     async def snipe(self, ctx):
         with open('JSON/snipe.json', 'r') as k:
             word = json.load(k)
