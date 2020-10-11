@@ -23,6 +23,9 @@ Limitations:
     Liability
     Warranty
     
+ MAIN FILE :
+    BOT.PY
+    
 """
 
 # Imports
