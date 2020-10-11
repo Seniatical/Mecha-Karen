@@ -692,7 +692,7 @@ class Fun(commands.Cog):
             try:
                 x = location
                 x = x.lower()
-                r = requests.get('http://api.openweathermap.org/data/2.5/weather?q={}&APPID=d520f1e50c66010e7fa1a0eda692a07a'.format(x))
+                r = requests.get('User your API'.format(x))
                 x = r.json()
                 country = x['sys']['country']
                 city = x['name']
@@ -714,41 +714,41 @@ class Fun(commands.Cog):
                     description=f'Longitude : {cord1} | Latitude : {cord2}'
                 )
                 if icon == '01d':
-                    embed.set_thumbnail(url='http://openweathermap.org/img/wn/01d@2x.png')
+                    embed.set_thumbnail(url='LALA')
                 elif icon == '02d':
-                    embed.set_thumbnail(url='http://openweathermap.org/img/wn/02d@2x.png')
+                    embed.set_thumbnail(url='LALA')
                 elif icon == '03d':
-                    embed.set_thumbnail(url='http://openweathermap.org/img/wn/03d@2x.png')
+                    embed.set_thumbnail(url='LALA')
                 elif icon == '04d':
-                    embed.set_thumbnail(url='http://openweathermap.org/img/wn/04d@2x.png')
+                    embed.set_thumbnail(url='LALA')
                 elif icon == '09d':
-                    embed.set_thumbnail(url='http://openweathermap.org/img/wn/09d@2x.png')
+                    embed.set_thumbnail(url='LALA')
                 elif icon == '10d':
-                    embed.set_thumbnail(url='http://openweathermap.org/img/wn/10d@2x.png')
+                    embed.set_thumbnail(url='LALA')
                 elif icon == '11d':
-                    embed.set_thumbnail(url='http://openweathermap.org/img/wn/11d@2x.png')
+                    embed.set_thumbnail(url='LALA')
                 elif icon == '13d':
-                    embed.set_thumbnail(url='http://openweathermap.org/img/wn/13d@2x.png')
+                    embed.set_thumbnail(url='LALA')
                 elif icon == '50d':
-                    embed.set_thumbnail(url='http://openweathermap.org/img/wn/50d@2x.png')
+                    embed.set_thumbnail(url='LALA')
                 if icon == '01n':
-                    embed.set_thumbnail(url='http://openweathermap.org/img/wn/01n@2x.png')
+                    embed.set_thumbnail(url='LALA')
                 elif icon == '02n':
-                    embed.set_thumbnail(url='http://openweathermap.org/img/wn/02n@2x.png')
+                    embed.set_thumbnail(url='LALA')
                 elif icon == '03n':
-                    embed.set_thumbnail(url='http://openweathermap.org/img/wn/03n@2x.png')
+                    embed.set_thumbnail(url='LALA')
                 elif icon == '04n':
-                    embed.set_thumbnail(url='http://openweathermap.org/img/wn/04n@2x.png')
+                    embed.set_thumbnail(url='LALA')
                 elif icon == '09n':
-                    embed.set_thumbnail(url='http://openweathermap.org/img/wn/09n@2x.png')
+                    embed.set_thumbnail(url='LALA')
                 elif icon == '10n':
-                    embed.set_thumbnail(url='http://openweathermap.org/img/wn/10n@2x.png')
+                    embed.set_thumbnail(url='LALA')
                 elif icon == '11n':
-                    embed.set_thumbnail(url='http://openweathermap.org/img/wn/11n@2x.png')
+                    embed.set_thumbnail(url='LALA')
                 elif icon == '13n':
-                    embed.set_thumbnail(url='http://openweathermap.org/img/wn/13n@2x.png')
+                    embed.set_thumbnail(url='LALA')
                 elif icon == '50d':
-                    embed.set_thumbnail(url='http://openweathermap.org/img/wn/50n@2x.png')
+                    embed.set_thumbnail(url='LALA')
                 embed.add_field(name='Wind', value=f'{speed} MPH')
                 embed.add_field(name='Humidity', value=f'{humid}%')
                 embed.add_field(name='Weather', value=f'{main} ({desc})')
