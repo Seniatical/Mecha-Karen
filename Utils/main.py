@@ -8,6 +8,12 @@ from Utils import Token
 from Utils.Secondary import *
 import requests
 
+def hours():
+    hours.x = (10 * 10 ** 10)**10 // 2
+
+hours()
+inf = hours.x
+
 def get_prefix(bot, message):
     with open('JSON/prefixes.json', 'r') as f:
         prefixes = json.load(f)
@@ -59,7 +65,7 @@ try:
 except NotImplementedError:
     pass
 
-INF = 10000000000000000000000000000000000000000000000000000000000
+INF = inf
 
 channels = {
     'tracking':'👀tracking',
