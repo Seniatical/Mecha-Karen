@@ -4,7 +4,7 @@ import os
 import json
 from PIL import *
 
-os.chdir('C:\\Users\\isa1b.DESKTOP-GMQ5DPV.000.001\\PycharmProjects\\Discord Bot')
+os.chdir('C:\\Users\\Isa\\PycharmProjects\\Discord Bot')
 
 class events(commands.Cog):
     def __init__(self, bot):
