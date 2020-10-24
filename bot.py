@@ -262,3 +262,5 @@ async def covid(ctx, Country=None):
             await ctx.send(COVID_SPECIFIC.error)
 
 bot.run(Token)
+
+NzY5NjA3OTAxMzExNzk1MjMw.X5RfNg.8VTjTqB5SjjZp90dUTO2rc_BmpE
