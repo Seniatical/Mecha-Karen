@@ -1,4 +1,5 @@
 """
+
 Discord bot made by Seniatical / _-*™#7139
 Created at 5/8/2020
 Available under the Apache License 2.0
@@ -8,6 +9,10 @@ A permissive license whose main conditions require preservation of copyright and
 Contributors provide an express grant of patent rights.
 Licensed works, modifications, and larger works may be distributed under different terms and without source code.
 "
+
+Any of my works are free for use. As mentioned above. Any small snippets or a few lines. Nothing too large. I dont mind if its not mentioned.
+How ever using larger works. Such as a good chunk (10 - 20+) lines. A mention that the code has been originally made by me and edited by you is required.
+{The source code mention is needed for ^.}
 
 When using this code you must remember what you can and cannot do.
 
@@ -22,10 +27,7 @@ Limitations:
     Trademark use
     Liability
     Warranty
-    
- MAIN FILE :
-    BOT.PY
-    
+
 """
 
 # Imports
