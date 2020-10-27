@@ -1,7 +1,7 @@
 from os.path import isfile
 from sqlite3 import connect
 import os
-#from apscheduler.triggers.cron import CronTrigger
+from apscheduler.triggers.cron import CronTrigger
 
 os.chdir('C:\\Users\\Isa\\PycharmProjects\\Discord Bot\\Utils\\SQL\\Data')
 
