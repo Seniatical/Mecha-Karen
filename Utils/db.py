@@ -3,8 +3,7 @@ from sqlite3 import connect
 import os
 #from apscheduler.triggers.cron import CronTrigger
 
-'''
-os.chdir('C:\\Users\\isa1b.DESKTOP-GMQ5DPV.000.001\\PycharmProjects\\Discord Bot\\Utils\\SQL\\Data')
+os.chdir('C:\\Users\\Isa\\PycharmProjects\\Discord Bot\\Utils\\SQL\\Data')
 
 DB_PATH = 'DB\\database.db'
 BUILD_PATH = "build.sql"
@@ -58,6 +57,4 @@ def multiexec(command, valueset):
 def scriptexec(path):
 	with open(path, "r", encoding="utf-8") as script:
 		cur.executescript(script.read())
-
-'''
 
