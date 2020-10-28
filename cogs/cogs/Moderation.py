@@ -11,21 +11,7 @@ import aiofiles
 import os
 
 from Others import *
-'''
-START COG "./BRACK.LOAD-HYPER>FUNC["file"]" ;
-    IF NOT NIL :
-        {
-        LOAD-UP => TRUE ;
-            EXCEPT ERROR AS FAILURE ;
-                DASHPANEL.ERROR => TRUE ;
-                    PASS CONTEXT :
-                        {
-                        ERROR
-                        LINE
-                        ERROR-TYPE
-                    }
-    }
-'''
+
 class Moderation(commands.Cog):
 
     def __init__(self, bot):
