@@ -13,7 +13,7 @@ import io
 
 # is_avatar_animated()
 
-os.chdir('C:\\Users\\isa1b.DESKTOP-GMQ5DPV.000.001\\PycharmProjects\\Discord Bot\\Images')
+os.chdir('C:\\Users\\Isa\\PycharmProjects\\Discord Bot\\Images')
 
 class ImageManipulation(commands.Cog):
 
