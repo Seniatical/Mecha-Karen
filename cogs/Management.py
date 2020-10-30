@@ -1,22 +1,65 @@
 import discord
 from discord.ext import commands
-from discord.ext.commands import BucketType
+from discord.ext.commands import BucketType, cooldown
 import json
 import os
 
-os.chdir('C:\\Users\\isa1b.DESKTOP-GMQ5DPV.000.001\\PycharmProjects\\Discord Bot')
+cogsx = ['checks', 'fun', 'games', 'image', 'moderation', 'motivation', 'nsfw', 'reddit']
+cogsy = ['Checks', 'Fun', 'Games', 'Image', 'Moderation', 'Motivation', 'NSFW', 'Reddit']
+description = {
+    'Checks' : 'Holds the commands such as Whois, Server, Avatar.',
+    'Fun' : 'Holds all the commands found in the Fun Category.',
+    'Games' : 'Holds all the commads found in the Games Category',
+    'Image' : 'Holds all the Image Manipulation commands.',
+    'Moderation' : 'Holds most commands in the Moderation Category.',
+    'Motivation' : 'Holds all the commands in the Motivation Category.',
+    'NSFW' : 'Holds all the commands in the NSFW category.',
+    'Reddit' : 'Holds the Breaking Bad, Memes and Reddit commands.'
+}
+
+disabled_cogs = []
 
 class Management(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.disabled = ['remove', 'allow', 'help', 'prefix', 'change_prefix', 'cp', 'suggest', 'report', 'stats', 'uptime', 'refresh', 'sync', 'enable', 'disable']
 
     @commands.command(aliases=['cp'])
     @commands.is_owner()
     async def change_prefix(self, ctx, *, prefix=None):
+        global x
+        try:
+            x = list(prefix)
+        except TypeError:
+            pass
         if prefix == None:
             await ctx.send('You cannot set the prefix as nothing!')
         elif len(list(prefix)) > 20:
-            await ctx.send("The server's prefix cannot be bigger than `5` Letters!")
+            await ctx.send("The server's prefix cannot be bigger than `20` Letters!")
+        elif '[' in x[0] and ']' in x[-1]:
+            x = list(prefix)
+            x.pop(0)
+            x.pop(-1)
+            with open('JSON/prefixes.json', 'r') as f:
+                prefixes = json.load(f)
+
+            try:
+                if ' ' not in x:
+                    pass
+                else:
+                    x = x.split(" ")
+                x = ''.join(map(str, x))
+                x = x.split(',')
+                x = ''.join(map(str, x))
+                x = x.split("'")
+                x = ''.join(map(str, x))
+                prefixes[str(ctx.guild.id)] = x
+
+                with open('JSON/prefixes.json', 'w') as f:
+                    json.dump(prefixes, f, indent=4)
+                await ctx.send('The new prefix for Mecha Karen is **`{}`**'.format(prefix))
+            except Exception:
+                await ctx.send('You gave an invalid list!')
         else:
             with open('JSON/prefixes.json', 'r') as f:
                 prefixes = json.load(f)
@@ -55,49 +98,13 @@ class Management(commands.Cog):
             json.dump(welcome_id, f, indent=4)
         await ctx.send(f'You have removed the welcome messages!')
 
-    @commands.command(aliases=['cog'])
-    async def cogs(self, ctx):
-        cog = []
-        index = 0
-        for filename1 in os.listdir('./cogs'):
-            if filename1.endswith('.py'):
-                cog.append(filename1[:-3])
-        if 'loadup' in cog:
-            x = cog.index('loadup', 0, -1)
-            cog.pop(x)
-        if 'Error Handling' in cog:
-            x = cog.index('Error Handling', 0, -1)
-            cog.pop(x)
-        if 'HelpCommands' in cog:
-             x = cog.index('HelpCommands', 0, -1)
-             cog.pop(x)
-        if 'HelpCommands' in cog:
-            x = cog.index('HelpCommands', 0, -1)
-            cog.pop(x)
-        if 'Management' in cog:
-            x = cog.index('Management', 0, -1)
-            cog.pop(x)
-        if 'Reports and Suggestions' in cog:
-            x = cog.index('Reports and Suggestions', 0, -1)
-            cog.pop(x)
-        if 'Events' in cog:
-            x = cog.index('Events', 0, -1)
-            cog.pop(x)
-        for element in cog:
-            cog.insert(index, f'{index + 1}.\t' + cog[index] + '\n')
-            cog.pop(index + 1)
-            index += 1
-        x = ''.join(map(str, cog))
-        embed = discord.Embed(
-            title=f'Mecha Karen currently has {index} cogs!',
-            color=discord.Color.red(),
-            description=x
-        )
-        await ctx.send(embed=embed)
 
     @commands.command()
     @commands.cooldown(1, 50000, BucketType.user)
     async def suggest(self, ctx, *args):
+        if args == []:
+            await ctx.send('Please give me a suggestion. This has been flagged.')
+            return
         if ctx.author.id == 300074149878038539:
             await ctx.send('You have been banned from sending requests!')
         elif ctx.author.id == 708548079196045363:
@@ -120,6 +127,9 @@ class Management(commands.Cog):
     @commands.command()
     @commands.cooldown(1, 50000, BucketType.user)
     async def report(self, ctx, *args):
+        if args == []:
+            await ctx.send('Please give me a report to send. This has been flagged.')
+            return
         counter = random.randint(1, 1000)
         channel = self.bot.get_channel(754048733481795596)
         x = ' '.join(map(str, args))
@@ -136,5 +146,89 @@ class Management(commands.Cog):
             await channel.send(embed=embed)
             await ctx.send(f'Your report has successfully been sent!')
 
+    
+
+    @commands.command()
+    async def cogs(self, ctx):
+        embed = discord.Embed(
+            title='Current Cogs ({})'.format(len(cogsx)),
+            colour=discord.Colour.red()
+        )
+        for x in cogsy:
+            embed.add_field(name=x, value=description[x], inline=False)
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    @commands.cooldown(1, 60, BucketType.user)
+    @commands.has_guild_permissions(administrator=True)
+    async def enable(self, ctx, extention=None):
+        if extention == None:
+            await ctx.send('Give a cog!')
+            return
+        x = extention.lower()
+        if x not in cogsx:
+            await ctx.send('Please use a valid cog. They are listed in the command `cogs`.')
+            return
+        try:
+            self.bot.load_extention('cogs.{}'.format(extention))
+            await ctx.send('Sucessfully enabled the **`{}`** cog!'.format(x))
+        except Exception as e:
+            print(e)
+            await ctx.send('This cog has already been enabled.')
+
+    @commands.command()
+    @commands.cooldown(1, 60, BucketType.user)
+    @commands.has_guild_permissions(administrator=True)
+    async def refresh(self, ctx, extention=None):
+        if extension == None:
+            await ctx.send('Give a cog!')
+            return
+        x = extention.lower()
+        if x not in cogsx:
+            await ctx.send('Please use a valid cog. They are listed in the command `cogs`.')
+            return
+        try:
+            bot.reload_extension(f'cogs.{x}')
+            await ctx.send('Reloaded {}'.format(extention))
+        except Exception:
+            await ctx.send('The cog has been disabled. Please load it before refreshing it.')
+
+    @commands.command()
+    @commands.is_owner()
+    @cooldown(1, 300, BucketType.user)
+    async def sync(self, ctx):
+        msg = await ctx.send('Syncing Mecha Karen now!')
+        for file in os.listdir('./cogs'):
+            if file.endswith('.py'):
+                try:
+                    bot.reload_extension(f"cogs.{file[:-3]}")
+                except Exception:
+                    pass
+        await msg.edit(content='Mecha Karen has been synced!')
+
+    @commands.command()
+    async def shutdown(self, ctx):
+        if ctx.author.id == 475357293949485076:
+            await ctx.send('Mecha Karen is now offline!')
+            await bot.change_presence(status=discord.Status.invisible)
+            exit()
+        else:
+            await ctx.send('You do not own me.')
+
+    @commands.command()
+    @commands.cooldown(1, 60, BucketType.user)
+    @commands.has_guild_permissions(administrator=True)
+    async def disable(self, ctx, extention):
+        x = extention.lower()
+        if x not in cogsx:
+            await ctx.send('Please use a valid cog. They are listed in the command `cogs`.')
+            return
+        try:
+            self.bot.unload_extention('cogs.{}'.format(extention))
+            await ctx.send('Sucessfully disabled the **`{}`** cog!'.format(x))
+        except Exception as e:
+            print(e)
+            await ctx.send('This cog has already been disabled.')
+            
 def setup(bot):
     bot.add_cog(Management(bot))
