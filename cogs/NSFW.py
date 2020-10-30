@@ -1,9 +1,11 @@
 import discord
 from discord.ext import commands
-from Others import *
+from Others import Stuff
 import random
+import asyncio
+import time
 
-class NSFW(commands.Cog):
+class nsfw(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -130,4 +132,4 @@ class NSFW(commands.Cog):
         await ctx.send(embed=embed)
 
 def setup(bot):
-    bot.add_cog(NSFW(bot))
+    bot.add_cog(nsfw(bot))
