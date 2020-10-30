@@ -49,7 +49,7 @@ class Mecha_Karen(commands.AutoShardedBot):
             case_insensitive=True,
             allowed_mentions=allowed_mentions,
             intents=intents,
-            description='I am Mecha Karen. A open sourced bot inspiring other!',
+            description='I am Mecha Karen. A open sourced bot inspiring others!',
             help_command=None,
             owner_id=475357293949485076,
         )
