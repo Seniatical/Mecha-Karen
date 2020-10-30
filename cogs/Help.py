@@ -1,117 +1,118 @@
 import discord
 from discord.ext import commands
 from datetime import timedelta
-from discord import ChannelType, Guild, Member, Message, Role, Status, utils, Embed
-from discord.abc import GuildChannel
-from discord.ext.commands import BucketType, Cog, Context, Paginator, command, group, cooldown
-from discord.utils import escape_markdown
+from discord.ext.commands import BucketType, cooldown
+
 import time
-from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageOps, ImageMath
-import os
 import asyncio
+
+from Utils.main import GET_OWNER
+from Utils.main import get_prefix
+
+index = 0
 
 class Help(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.index = index
 
     @commands.command()
     async def Help(self, ctx, option=None):
+        prefix = get_prefix(self.bot, ctx.message)
         if option == None:
             pass
         else:
             x = option.lower()
         if option == None:
             e = discord.Embed(title="", description="__**Mecha Karen Support**__", color=0x50C878)
-            e.add_field(name=':scales: **Moderation**‎‏‏‎‎', value='`-Help Mod`')
-            e.add_field(name=':jigsaw: **Fun**', value='`-Help Fun`')
-            e.add_field(name=':v: **Motivation**', value='`-Help Motivation`')
-            e.add_field(name=':camera: **Images**', value='`-Help Images`')
-            e.add_field(name=':wrench: **Management**', value='`-Help Manage`')
-            e.add_field(name=':bowling: **Games**', value='`-Help Games`')
-            e.add_field(name='<a:finger_hole:744627487027494984> NSFW‏‏‎‎', value='`-Help NSFW`')
-            e.add_field(name='<a:dancing:752241906917834883>**Others**', value='`-Help Others`')
-            e.add_field(name='‏‏‎ ', value='‏‏‎ ')
-            e.add_field(name=f'‏‏‎ ‎‎', value=f'‏!‏‎Join our [support server](https://discord.gg/Q5mFhUM)‎', inline=False)
+            e.add_field(name=':scales: **Moderation**‎‏‏‎‎', value='`{}Help Mod`'.format(prefix))
+            e.add_field(name=':jigsaw: **Fun**', value='`{}Help Fun`'.format(prefix))
+            e.add_field(name=':v: **Motivation**', value='`{}Help Motivation`'.format(prefix))
+            e.add_field(name=':camera: **Images**', value='`{}Help Images`'.format(prefix))
+            e.add_field(name=':bowling: **Games**', value='`{}Help Games`'.format(prefix))
+            e.add_field(name=':wrench: **Management**', value='`{}Help Manage`'.format(prefix))
+            e.add_field(name='<a:finger_hole:744627487027494984> NSFW‏‏‎‎', value='`{}Help NSFW`'.format(prefix))
+            e.add_field(name='‏', value=f'‏Join our [support server](https://discord.gg/Q5mFhUM) | Invite [Mecha Karen](https://discord.com/oauth2/authorize?client_id=740514706858442792&permissions=8&scope=bot)', inline=False)
             e.set_thumbnail(
                 url='https://cdn.discordapp.com/avatars/740514706858442792/3d4c161d2bfa97ec86cc82102df5cad5.webp?size=256')
-            e.set_footer(text='Use command -Invite to invite the Bot or -Source to view the source code!',
-                         icon_url='https://cdn.discordapp.com/avatars/740514706858442792/3d4c161d2bfa97ec86cc82102df5cad5.webp?size=256')
+            e.set_footer(text='Use command {}Invite to invite the Bot or {}Source to view the source code!'.format(prefix, prefix),
+                icon_url='https://cdn.discordapp.com/avatars/740514706858442792/3d4c161d2bfa97ec86cc82102df5cad5.webp?size=256')
             await ctx.send(embed=e)
+
         elif x == 'mod' or x == 'moderation':
             e = discord.Embed(title="", description="__**Mecha Karen Support**__", color=0x50C878)
-            e.add_field(name="**Mod Help:**\n**Remember to use - before every commands**",
-                        value='`Ban`‏‏‎ ‎`Kick`‏‏‎ ‎`Clear`‏‏‎ ‎`Unban`‏‏‎ ‎`Sync`‏‏‎ ‎`Message`‏‏‎ ‎`Send`‏‏‎ ‎`Nuke` `WhoIs` `Server` `Stats` `Avatar` `Mute` `Actions` `History` `Change` `Revert` `Members`')
+            e.add_field(name="**Mod Help:**",
+                        value='`Ban` `Kick` `Clear` `Unban` `Nuke` `WhoIs` `Server` `Avatar` `Mute` `Actions` `History` `Nickname` `Members` `Slowmode` `Lock`')
             e.set_thumbnail(
                 url='https://cdn.discordapp.com/avatars/740514706858442792/3d4c161d2bfa97ec86cc82102df5cad5.webp?size=256')
             e.set_footer(
                 icon_url='https://cdn.discordapp.com/avatars/475357293949485076/a0c190d9ffeea49f85d5468f9501b507.webp?size=256',
                 text='Bot created by _-*™#7139')
-            await ctx.send(embed=e)
+            await ctx.send(embed=e)   
+
         elif x == 'fun':
             e = discord.Embed(title="", description="__**Mecha Karen Support**__", color=0x50C878)
             e.set_thumbnail(
                 url='https://cdn.discordapp.com/avatars/740514706858442792/3d4c161d2bfa97ec86cc82102df5cad5.webp?size=256')
-            e.add_field(name="**Fun Help:**\n**Remember to use - before all commands**",
-                        value='`Ping`‏‏‎ ‎`MagicKaren`‏‏‎ ‎`Gay`‏‏‎ ‎`IQ`‏‏‎ ‎`Penis`‏‏‎ ‎`Roast`‏‏‎ ‎`Status`‏‏‎ ‎`Dad` `Compliment`‏‏‎ ‎`Kill`‏‏‎ ‎`Kiss`‏‏‎ ‎`Friend`‏‏‎‏‏‎ ‎`Retard` ‎`Human` ‎`Simp` ‎`Waifu` ‎`PunchMachine` ‎`Joke` ‎`Fight` `Fly` `Parent` `Wobbler` `Stabrate` `Begrate` `Facts` `Slots` `Beer` `Useless` `LifeExpectancy` `BWeight` `WeighIn` `Reverse`')
+            e.add_field(name="**Fun Help:**",
+                        value='`Ping`‏‏‎ ‎`MagicKaren`‏‏‎ ‎`Gay`‏‏‎ ‎`IQ`‏‏‎ ‎`Penis`‏‏‎ ‎`Roast`‏‏‎ ‎`Status`‏‏‎ ‎`Dad` ‎`Kill`‏‏‎ ‎`Retard` ‎`Human` ‎`Simp` ‎`Waifu` ‎`PunchMachine` ‎`Joke` `Fly` `Parent` `Wobbler` `Stabrate` `Begrate` `Facts` `Slots` `Beer` `Useless` `LifeExpectancy` `BWeight` `WeighIn` `Reverse` `Time` `Date` `F` `Weather` `Say` `Annoy`')
             e.set_footer(
                 icon_url='https://cdn.discordapp.com/avatars/475357293949485076/a0c190d9ffeea49f85d5468f9501b507.webp?size=256',
                 text='Bot created by _-*™#7139')
             await ctx.send(embed=e)
+
         elif x == 'image' or x == 'images' or x == 'img':
             embed = discord.Embed(title="", description="__**Mecha Karen Support**__", color=0x50C878)
             embed.set_thumbnail(
                 url='https://cdn.discordapp.com/avatars/740514706858442792/3d4c161d2bfa97ec86cc82102df5cad5.webp?size=256')
-            embed.add_field(name="**Image Help:**\n**Remember to use - before all commands**", value='`Memes` `Trash` `Slap` `Spank` `Obese` `BreakingBad` `Reddit` `Bird` `Frog`')
+            embed.add_field(name="**Image Help:**", value='`Memes` `Trash` `Slap` `Spank` `Obese` `BreakingBad` `Reddit` `Bird` `HighFive` `Delete`')
             embed.set_footer(
                 icon_url='https://cdn.discordapp.com/avatars/475357293949485076/a0c190d9ffeea49f85d5468f9501b507.webp?size=256',
                 text='Bot created by _-*™#7139')
             await ctx.send(embed=embed)
+
         elif x == 'motivation' or x == 'motiv':
             embed = discord.Embed(
                 title='**Motivation Help**',
                 Color=discord.Color.teal()
             )
-            embed.add_field(name='**Commands:**\n**Remember to use - before all commands**',
-                            value='`Quote`‏‏‎ ‎`ImgQuote`‏‏‎ ‎`Speech`‏‏‎ ‎`GreatSpeech`')
+            embed.add_field(name='**Commands:**',
+                                value='`Quote`‏‏‎ ‎`ImgQuote`‏‏‎ ‎`Speech`‏‏‎ ‎`GreatSpeech`')
             embed.set_thumbnail(
                 url='https://cdn.discordapp.com/avatars/740514706858442792/3d4c161d2bfa97ec86cc82102df5cad5.webp?size=256')
             embed.set_footer(
                 icon_url='https://cdn.discordapp.com/avatars/475357293949485076/a0c190d9ffeea49f85d5468f9501b507.webp?size=256',
                 text='Bot created by _-*™#7139')
             await ctx.send(embed=embed)
+
         elif x == 'games' or x == 'game':
             embed = discord.Embed(
                 title='**Games**',
                 color=discord.Color.red()
             )
-            embed.add_field(name='**Current Games:**', value='`RPS` `Decipher` `Roll` `Maths`')
+            embed.add_field(name='**Current Games:**', value='`RPS` `Decipher` `Roll` `Maths` `Flip`')
             embed.set_footer(
                 icon_url='https://cdn.discordapp.com/avatars/475357293949485076/a0c190d9ffeea49f85d5468f9501b507.webp?size=256',
                 text='Bot created by _-*™#7139')
             await ctx.send(embed=embed)
+
         elif x == 'manage' or x == 'mng' or x == 'manage':
             embed = discord.Embed(
                 title='**Management**',
                 color=discord.Color.red()
             )
             embed.add_field(name='**Management:**',
-                            value='`Enable` `Disable` `Reload` `Cogs`')
+                            value='`Enable` **Makes a disabled cog enabled again.**\n`Disable` **Makes a running cog disabled. (Unusable) **\n`Refresh` **Reloads a running cog.**\n`Remove` **Disables a command. Which stops it from being used.**\n`Allow` **Makes a disabled command usable again.**\n`Sync` **Reloads the entire bot. Can only be used by {}**.\n`Cogs` **Allows you to see all the current cogs.**\n`Uptime` **How long has karen been up for.**'.format(ctx.guild.owner))
             embed.set_footer(
                 icon_url='https://cdn.discordapp.com/avatars/475357293949485076/a0c190d9ffeea49f85d5468f9501b507.webp?size=256',
                 text='Bot created by _-*™#7139')
             await ctx.send(embed=embed)
-        elif x == 'others' or x == 'other':
-            embed =discord.Embed(
-                title='Additional Commands.',
-                color=discord.Color.greyple()
-            )
-            embed.add_field(name='Unclassified Commands', value='`Time` `Date` `Uptime` `F` `Weather`')
-            embed.set_footer(
-                icon_url='https://cdn.discordapp.com/avatars/475357293949485076/a0c190d9ffeea49f85d5468f9501b507.webp?size=256',
-                text='Bot created by _-*™#7139')
-            await ctx.send(embed=embed)
+
         elif x == 'nsfw':
+            if ctx.channel.is_nsfw() == False:
+                await ctx.send('Please use this command in a channel marked with **NSFW**. This due to the naming of commands being graphic.')
+                return
             embed = discord.Embed(
                 title='NSFW Commands',
                 color=discord.Color.purple()
@@ -122,6 +123,7 @@ class Help(commands.Cog):
                 icon_url='https://cdn.discordapp.com/avatars/475357293949485076/a0c190d9ffeea49f85d5468f9501b507.webp?size=256',
                 text='Bot created by _-*™#7139')
             await ctx.send(embed=embed)
+
         else:
             e = discord.Embed(title="", description="__**Mecha Karen Support**__", color=0x50C878)
             e.add_field(name=':scales: **Moderation**‎‏‏‎‎', value='`-Help Mod`')
@@ -131,15 +133,14 @@ class Help(commands.Cog):
             e.add_field(name=':wrench: **Management**', value='`-Help Manage`')
             e.add_field(name=':bowling: **Games**', value='`-Help Games`')
             e.add_field(name='<a:finger_hole:744627487027494984> NSFW‏‏‎‎', value='`-Help NSFW`')
-            e.add_field(name='<a:dancing:752241906917834883>**Others**', value='`-Help Others`')
-            e.add_field(name='‏‏‎ ', value='‏‏‎ ')
-            e.add_field(name=f'‏‏‎ ‎‎', value=f'‏!‏‎Join our [support server](https://discord.gg/Q5mFhUM)‎', inline=False)
+            e.add_field(name=f'‏‏‎ ‎‎', 
+            value=f'‏Join our [support server](https://discord.gg/Q5mFhUM) | Invite [Mecha Karen](https://discord.com/oauth2/authorize?client_id=740514706858442792&permissions=8&scope=bot)‎', inline=False)
             e.set_thumbnail(
                 url='https://cdn.discordapp.com/avatars/740514706858442792/3d4c161d2bfa97ec86cc82102df5cad5.webp?size=256')
             e.set_footer(text='Use command -Invite to invite the Bot or -Source to view the source code!',
-                         icon_url='https://cdn.discordapp.com/avatars/740514706858442792/3d4c161d2bfa97ec86cc82102df5cad5.webp?size=256')
+                        icon_url='https://cdn.discordapp.com/avatars/740514706858442792/3d4c161d2bfa97ec86cc82102df5cad5.webp?size=256')
             await ctx.send(embed=e)
-
+        
     @commands.command()
     @cooldown(1, 10, BucketType.user)
     async def status(self, ctx):
