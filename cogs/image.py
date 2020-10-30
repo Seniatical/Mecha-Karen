@@ -1,15 +1,9 @@
 import discord
 from discord.ext import commands
 from datetime import timedelta
-from discord import ChannelType, Guild, Member, Message, Role, Status, utils, Embed, File
-from discord.abc import GuildChannel
-from discord.ext.commands import BucketType, Cog, Context, Paginator, command, group, cooldown
-import discord
-from discord.ext import commands
-from datetime import timedelta
 from discord.ext.commands import BucketType, cooldown
 import time
-from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageOps, ImageMath
+from PIL import Image
 import os
 import random
 from io import BytesIO
