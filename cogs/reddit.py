@@ -3,69 +3,61 @@ import datetime
 import time
 
 import discord
-from discord import File
 from discord.ext import commands
-from discord.ext.commands import BucketType, cooldown, MissingRequiredArgument
+from discord.ext.commands import BucketType, cooldown
 import os
 import praw
+import asyncio
 
-class Images(commands.Cog):
+
+class reddit(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.all_subs = []
+
+    @commands.Cog.listener()
+    async def on_ready(self):
+        await self.bot.loop.create_task(speed())
 
     @commands.command(aliases=['meme'])
-    @commands.cooldown(1, 5, BucketType.user)
+    @commands.cooldown(1, 10, BucketType.user)
     async def memes(self, ctx):
-        async with ctx.channel.typing():
-            reddit = praw.Reddit(client_id='z0tV5Vb8-xHnYA',
-                                 client_secret='EgmNP1VmT-IpIMj-7auUMM8E0W0',
-                                 username='python_praw123',
-                                 password='python123',
-                                 user_agent='python123')
-            subreddit = reddit.subreddit('Memes')
-            all_subs = []
-            top = subreddit.hot(limit=100)
 
-            for submission in top:
-                all_subs.append(submission)
+        random_sub = random.choice(self.all_subs)
 
-            random_sub = random.choice(all_subs)
+        name = random_sub.title
+        url = random_sub.url
+        comments = random_sub.comments
+        upvote = random_sub.upvote_ratio
+        up = random_sub.score
+        author = random_sub.author
+        sub = random_sub.subreddit
 
-            name = random_sub.title
-            url = random_sub.url
-            comments = random_sub.comments
-            upvote = random_sub.upvote_ratio
-            up = random_sub.score
-            author = random_sub.author
-            sub = random_sub.subreddit
-
-            embed = discord.Embed(
-                title= name,
-                color=discord.colour.Color.from_rgb(random.randint(1, 255), random.randint(1, 255), random.randint(1, 255))
-            )
-            embed.set_author(name=f'Posted by {author} from r/{sub}')
-            embed.set_image(url=url)
-            embed.set_footer(text=f'\t💬 {len(comments)}    ⇅ {upvote}    ↑ {up}')
-            await ctx.send(embed=embed)
+        embed = discord.Embed(
+            title= name,
+            color=discord.colour.Color.from_rgb(random.randint(1, 255), random.randint(1, 255), random.randint(1, 255))
+        )
+        embed.description='Submission [URL]({}).'.format(random_sub.url)
+        embed.set_author(name=f'Posted by {author} from r/{sub}')
+        embed.set_image(url=url)
+        embed.set_footer(text=f'\t💬 {len(comments)}    ⇅ {upvote}    ↑ {up}')
+        await ctx.send(embed=embed)
 
     @commands.command(aliases=['BreakingBad'])
     @commands.cooldown(1, 5, BucketType.user)
     async def BB(self, ctx):
-        reddit = praw.Reddit(client_id='z0tV5Vb8-xHnYA',
-                        client_secret='EgmNP1VmT-IpIMj-7auUMM8E0W0',
-                        username='python_praw123',
-                        password='python123',
-                        user_agent='python123')
         subreddit = reddit.subreddit('okbuddychicanery')
-        all_subs = []
         top = subreddit.hot(limit=100)
-
-        for submission in top:
-            all_subs.append(submission)
-
-        random_sub = random.choice(all_subs)
-
+        allsubs = []
+        for sub in top:
+            allsubs.append(sub)
+        random_sub = random.choice(allsubs)
+        
+        if random_sub.subreddit.over18 == True:
+            await ctx.send('Please navigate to a NSFW channel to use this. Most likey due to a meme containing 18+ content.')
+            return
+        
         name = random_sub.title
         url = random_sub.url
         comments = random_sub.comments
@@ -82,16 +74,14 @@ class Images(commands.Cog):
         embed.set_image(url=url)
         embed.set_footer(text=f'\t💬 {len(comments)}    ⇅ {upvote}    ↑ {up}')
         await ctx.send(embed=embed)
-
+        
     @commands.command()
-    @commands.cooldown(1, 30, BucketType.user)
-    async def reddit(self, ctx, subname):
+    @commands.cooldown(1, 60, BucketType.user)
+    async def reddit(self, ctx, subname=None):
+        if subname == None:
+            await ctx.send('Give a subreddit name!')
+            return
         global msg
-        reddit = praw.Reddit(client_id='z0tV5Vb8-xHnYA',
-                        client_secret='EgmNP1VmT-IpIMj-7auUMM8E0W0',
-                        username='python_praw123',
-                        password='python123',
-                        user_agent='python123')
         subreddit = reddit.subreddit('{}'.format(subname))
         if subreddit.over18 == True:
             msg = await ctx.send('Over 18 Content Detected!')
@@ -154,13 +144,5 @@ class Images(commands.Cog):
             embed.set_footer(text=f'\t💬 {len(comments)}    ⇅ {upvote}    ↑ {up}')
             await ctx.send(embed=embed)
 
-    @commands.command()
-    async def exits(self, ctx):
-        a = ctx.channel.is_nsfw()
-        if a == True:
-            await ctx.send('pass')
-        else:
-            await ctx.send('fail')
-
 def setup(bot):
-    bot.add_cog(Images(bot))
+    bot.add_cog(reddit(bot))
