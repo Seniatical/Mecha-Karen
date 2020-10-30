@@ -1,14 +1,12 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands import cooldown, BucketType
-from discord.ext import tasks
 import datetime
 import random
 import asyncio
 import math
-import json
 
-from Others import *
+from Others import words
 
 class games(commands.Cog):
     def __init__(self, bot):
@@ -59,36 +57,37 @@ class games(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 10, BucketType.user)
-    async def decipher(self, ctx):
-        await ctx.send(f'**Welcome to decipher {ctx.author.name}!**')
-        await ctx.send(f'In decipher you will be given a scrambled word. You must get the original word in less than 30 seconds!\n*You will have as many tries as you need!*')
-        msg = await ctx.send('**Do you have what it takes to complete this challenge?\nIf so respond with `yes`**')
+    async def decipher(self, ctx, opt='Easy'):
+        options = ['easy', 'medium', 'hard', 'impossible']
+        if opt.lower() in options:
+            pass
+        else:
+            await ctx.send('Give a valid difficulty.\n**Current Difficulties:**\n> `Easy` `Medium` `Hard` `Impossible`')
+            return
+        choice = opt.lower()
+        if choice == 'easy':
+            choice = random.choice(words.easy)
+        elif choice == 'medium':
+            choice = random.choice(words.medium)
+        elif choice == 'hard':
+            choice = random.choice(words.hard)
+        elif choice == 'impossible':
+            choice = random.choice(words.impossible)
+        x = list(choice)
+        random.shuffle(x)
+        await ctx.send('**⬇ The word you must decipher is ⬇**')
+        await ctx.send(' '.join(map(str, x)))
         def check(m):
             user = ctx.author
-            if m.author.id == user.id and m.content.lower() == 'yes':
+            if m.author.id == user.id and m.content.lower() == choice.lower():
                 return True
             return False
         try:
-            msg = await self.bot.wait_for('message',timeout=5.0 ,check=check)
-            choice = random.choice(words.easy)
-            x = list(choice)
-            random.shuffle(x)
-            await ctx.send('**⬇ The word you must decipher is ⬇**')
-            await ctx.send(' '.join(map(str, x)))
-            def check(m):
-                user = ctx.author
-                if m.author.id == user.id and m.content.lower() == choice.lower():
-                    return True
-                return False
-            try:
-                msg = await self.bot.wait_for('message',timeout=30.0,check=check)
-                await ctx.send(f'**Congratulations {ctx.author}! You got the correct word.**')
-            except asyncio.TimeoutError:
-                await ctx.send('Your answer is **INCORRECT!**')
-                await ctx.send(f'**The correct word was {choice}**')
+            await self.bot.wait_for('message',timeout=30.0,check=check)
+            await ctx.send(f'**Congratulations {ctx.author}! You got the correct word.**')
         except asyncio.TimeoutError:
-            msg.delete()
-            await ctx.send('You never responded with **`yes`** in time!')
+            await ctx.send('Your answer is **INCORRECT!**')
+            await ctx.send(f'**The correct word was {choice}**')
 
     @commands.command(aliases=['dice'])
     @commands.cooldown(1, 10, BucketType.member)
@@ -113,245 +112,6 @@ class games(commands.Cog):
         embed.set_author(name=ctx.author)
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=['math'])
-    @commands.cooldown(1, 10, BucketType.user)
-    async def maths(self, ctx):
-        user = ctx.author
-        msg = await ctx.send('**Welcome to maths sim. Your goal is to get as many questions correct in the given time!**\n__There will be a 10 second time limit for every question__\n**Respond with `yes` to proceed.**')
-        em = discord.Embed(title='Final Results', color=discord.Color.gold())
-        def check(m):
-            if m.author.id == user.id and m.content.lower() == 'yes':
-                return True
-            return False
-        try:
-            choice1=random.randrange(50)
-            choice2=random.randrange(50)
-            await self.bot.wait_for('message', timeout=10.0, check=check)
-            await msg.delete()
-            msg = await ctx.send('**Lets start easy then!**')
-            embed = discord.Embed(
-                title='Easy',
-                color=discord.Color.green()
-            )
-            embed.add_field(name='What is:', value=f'{choice1} + {choice2}')
-            msg = await ctx.send(embed=embed)
-            result = choice1 + choice2
-            def check(m):
-                if m.author.id == user.id and m.content.lower() == f'{result}':
-                    return True
-                return False
-            try:
-                choice1=random.randrange(50, 100)
-                choice2=random.randrange(1, 50)
-                await self.bot.wait_for('message', timeout=10.0, check=check)
-                await ctx.send('**Correct!**')
-                embed = discord.Embed(title='Easy',color=discord.Color.green())
-                embed.add_field(name='What is:', value=f'{choice1} - {choice2}')
-                result = choice1 - choice2
-                msg = await ctx.send(embed=embed)
-                def check(m):
-                    if m.author.id == user.id and m.content.lower() == f'{result}':
-                        return True
-                    return False
-                try:
-                    choice1=random.randrange(12)
-                    choice2=random.randrange(12)
-                    await self.bot.wait_for('message', timeout=10.0, check=check)
-                    await ctx.send('**Correct!**\nYour doing well.')
-                    embed=discord.Embed(title='Easy', color=discord.Color.green())
-                    embed.add_field(name='What is:', value=f'{choice1} x {choice2}')
-                    result = choice1 * choice2
-                    msg = await ctx.send(embed=embed)
-                    def check(m):
-                        if m.author.id == user.id and m.content.lower() == f'{result}':
-                            return True
-                        return False
-                    try:
-                        choice1=random.randrange(1, 100)
-                        choice2=random.randrange(1, 10)
-                        await self.bot.wait_for('message', timeout=10.0, check=check)
-                        await ctx.send('**Correct!** Your doing really well. 2 More easy ones and we will see if your worthy!')
-                        embed=discord.Embed(title='Easy', color=discord.Color.green())
-                        embed.add_field(name='What is:', value=f'{choice1} ÷ {choice2}')
-                        embed.set_footer(text='Give the base number without rounding.\nExample: 12.45565\nAnswer: 12')
-                        msg = await ctx.send(embed=embed)
-                        result = choice1 / choice2
-                        result = int(result)
-                        def check(m):
-                            if m.author.id == user.id and m.content.lower() == f'{round(result)}':
-                                return True
-                            return False
-                        try:
-                            choice1=random.randrange(1, 50)
-                            await self.bot.wait_for('message', timeout=15.0, check=check)
-                            await ctx.send('**Correct!** You seem to be a worthy opponent.')
-                            embed=discord.Embed(title='Easy', color=discord.Color.green())
-                            embed.add_field(name='What is:', value=f'√{choice1}')
-                            embed.set_footer(text='Give the base number without rounding.\nExample: 12.45565\nAnswer: 12')
-                            msg = await ctx.send(embed=embed)
-                            result = math.sqrt(choice1)
-                            def check(m):
-                                if m.author.id == user.id and m.content.lower() == f'{round(result)}':
-                                    return True
-                                return False
-                            try:
-                                choice1=random.randrange(10)
-                                await self.bot.wait_for('message', timeout=10.0, check=check)
-                                await ctx.send('**Correct!** You have 1 more question left before your receive the `Basic Knowledge` rank!')
-                                embed=discord.Embed(title='Easy', color=discord.Color.green())
-                                embed.add_field(name='What is:', value=f'{choice1}²')
-                                msg = await ctx.send(embed=embed)
-                                result = choice1**2
-                                def check(m):
-                                    if m.author.id == user.id and m.content.lower() == f'{result}':
-                                        return True
-                                    return False
-                                try:
-                                    await self.bot.wait_for('message', timeout=10.0, check=check)
-                                    await ctx.send(f'**Correct!** {ctx.author} has gained the `Basic Knowledge` Rank!')
-                                    role = discord.utils.get(ctx.guild.roles, name="Basic Knowledge")
-                                    guild = ctx.guild
-                                    if role not in guild.roles:
-                                        perms = discord.Permissions(send_messages=True, speak=True)
-                                        await guild.create_role(name="Basic Knowledge", permissions=perms, colour=discord.Color.teal())
-                                        await ctx.author.add_roles(role)
-                                    else:
-                                        await ctx.author.add_roles(role)
-                                    await ctx.send('**We will now be moving onto a harder topic. This time you will have double the time or `30` seconds**')
-                                    await ctx.send('*It is advised that you have a calculator nearby as some these questions will require 1. A scientific one is recommended*')
-                                    msg = await ctx.send(f'**{ctx.author.mention} do you with to carry on? Respond with `yes`**')
-                                    def check(m):
-                                        if m.author.id == user.id and m.content.lower() == 'yes':
-                                            return True
-                                        return False
-                                    try:
-                                        length = random.randint(1, 50)
-                                        await self.bot.wait_for('message', timeout=30.0, check=check)
-                                        await ctx.send(f'**{ctx.author} has accepted Mecha Karens Challenge!**')
-                                        embed = discord.Embed(title='Medium', color=discord.Color.gold())
-                                        embed.add_field(name='What is:', value=f'A square has a perimeter of {length}cm. What is the length of 1 side?')
-                                        msg = await ctx.send(embed=embed)
-                                        result = length / 4
-                                        def check(m):
-                                            if m.author.id == user.id and m.content.lower() == f'{result}':
-                                                return True
-                                            return False
-                                        try:
-                                            length = random.randrange(50)
-                                            height = random.randrange(50)
-                                            await self.bot.wait_for('message', timeout=30.0, check=check)
-                                            await ctx.send('**Correct!** Your a man of knowledge. 4 more questions till you recieve the `Challenger`')
-                                            embed = discord.Embed(title='Medium', color=discord.Color.gold())
-                                            embed.add_field(name='What is:', value=f'If i have a rectangle with the length of {length} and the height of {height}. What is the area?')
-                                            msg = await ctx.send(embed=embed)
-                                            result = length * height
-                                            def check(m):
-                                                if m.author.id == user.id and m.content.lower() == f'{result}':
-                                                    return True
-                                                return False
-                                            try:
-                                                radius = random.randrange(100)
-                                                await self.bot.wait_for('message', timeout=30.0, check=check)
-                                                await ctx.send('**Correct!** You seem to be a hard one. 3 more questions till you recieve the `Challenger` rank!')
-                                                embed = discord.Embed(title='Medium', color=discord.Color.gold())
-                                                embed.add_field(name='What is:', value=f'If i have a circle with a radius of {radius}. What is the circumference of the circle?')
-                                                embed.set_footer(text='If the number is huge dont round it instead give the base number.\nExample answer: 53.954567875433\nAnswer: 53')
-                                                result = math.pi * radius * 2
-                                                result = int(result)
-                                                msg = await ctx.send(embed=embed)
-                                                def check(m):
-                                                    if m.author.id == user.id and m.content.lower() == f'{result}':
-                                                        return True
-                                                    return False
-                                                try:
-                                                    radius = random.randrange(50)
-                                                    await self.bot.wait_for('message', timeout=30.0, check=check)
-                                                    await ctx.send('**Correct!** This cant be. Your surely going to fail now!!!')
-                                                    embed = discord.Embed(title='Medium', color=discord.Color.gold())
-                                                    embed.add_field(name='What is:', value=f'If a sphere has a radius of {radius}. What is the volume of the sphere?w')
-                                                    msg = await ctx.send(embed=embed)
-                                                    result = ((pi/3) * 4) * radius ** 3
-                                                    def check(m):
-                                                        if msg.id == msg.id and user.id and m.content.lower() == f'{result}':
-                                                            return True
-                                                        return False
-                                                    try:
-                                                        H = random.randrange(100)
-                                                        W = random.randrange(100)
-                                                        await self.bot.wait_for('message', timeout=30.0, check=check)
-                                                        await ctx.send('**Correct!** Impossible. 1 more questiong till your recieve the `Challenger` rank!')
-                                                        embed = discord.Embed(title='Medium', color=discord.Color.gold())
-                                                        embed.add_field(name='What is:', value=f'If i have a cone with the height {H} and a width of {W}. What is the volume of the cone?')
-                                                        msg = await ctx.send(embed=embed)
-                                                        result = math.pi * H * H * (W/3)
-                                                        def check(m):
-                                                            if msg.id == msg.id and user.id and m.content.lower() == f'{result}':
-                                                                return True
-                                                            return False
-                                                        try:
-                                                            await self.bot.wait_for('message', timeout=30.0, check=check)
-                                                            await ctx.send(f'**Correct!** {ctx.author.mention} has recieved the `Challenger` rank!')
-                                                            role = discord.utils.get(ctx.guild.roles, name="Challenger")
-                                                            guild = ctx.guild
-                                                            if role not in guild.roles:
-                                                                perms = discord.Permissions(send_messages=True, speak=True)
-                                                                await guild.create_role(name="Challenger", permissions=perms, colour=discord.Color.gold())
-                                                                await ctx.author.add_roles(role)
-                                                            else:
-                                                                await ctx.author.add_roles(role)
-                                                            msg = await ctx.send(f'**Congratulations {user}. These next questions are the toughest of the toughest. In the next `5` questions you will be competing for the `Mathematicians` rank**\n*These questions are much harder than before. It is advised that you have paper and a scientific calculator nearby. Since these questions are harder. You will have 1 min to complete them!*')
-                                                            def check(m):
-                                                                if msg.id == msg.id and user.id and m.content.lower() == 'yes':
-                                                                    return True
-                                                                return False
-                                                            try:
-                                                                await self.bot.wait_for('message', check=check)
-                                                                await ctx.send('Not added yet!!!. Stay tuned. Math freak!')
-                                                            except asyncio.TimeoutError:
-                                                                em.add_field('<:fail:751827644190031984>', value=f'{ctx.author.mention} got `10/11` questions correct. **A good attempt. But still they are a failure**')
-                                                                await ctx.send(embed=em)
-                                                        except asyncio.TimeoutError:
-                                                            em.add_field('<:fail:751827644190031984>', value=f'{ctx.author.mention} got `10/11` questions correct. **A good attempt. But still they are a failure**')
-                                                            await ctx.send(embed=em)
-                                                    except asyncio.TimeoutError:
-                                                        em.add_field('<:fail:751827644190031984>', value=f'{ctx.author.mention} got `9/10` questions correct. **A good attempt. But still they are a failure**')
-                                                        await ctx.send(embed=em)
-                                                except asyncio.TimeoutError:
-                                                    em.add_field('<:fail:751827644190031984>', value=f'{ctx.author.mention} got `8/9` questions correct. **A good attempt. But still they are a failure**')
-                                                    await ctx.send(embed=em)
-                                            except asyncio.TimeoutError:
-                                                em.add_field('<:fail:751827644190031984>', value=f'{ctx.author.mention} got `7/8` questions correct. **There parents are not going to be happy about that**')
-                                                await ctx.send(embed=em)
-                                        except asyncio.TimeoutError:
-                                            em.add_field('<:fail:751827644190031984>', value=f'{ctx.author.mention} got `6/7` questions correct. **There parents are not going to be happy about that**')
-                                            await ctx.send(embed=em)
-                                    except asyncio.TimeoutError:
-                                        await ctx.send(f'{ctx.author.mention} rejected the option to continue!')
-                                except asyncio.TimeoutError:
-                                    em.add_field(name='Awful.', value=f'{ctx.author.mention} got `5/6` questions correct. **Give them special lessons!**')
-                                    await ctx.send(embed=em)
-                            except asyncio.TimeoutError:
-                                em.add_field(name='Awful.', value=f'{ctx.author.mention} got `4/5` questions correct. **Give them special lessons!**')
-                                await ctx.send(embed=em)
-                        except asyncio.TimeoutError:
-                            em.add_field(name='Disgraceful.', value=f'{ctx.author.mention} got `3/4` questions correct. **SEND THEM TO SCHOOL**')
-                            await ctx.send(embed=em)
-                    except asyncio.TimeoutError:
-                        await msg.delete()
-                        em.add_field(name='Disgraceful.', value=f'{ctx.author.mention} got `2/3` questions correct. **SEND THEM TO SCHOOL**')
-                        await ctx.send(embed=em)
-                except asyncio.TimeoutError:
-                    await msg.delete()
-                    em.add_field(name='Disgraceful.', value=f'{ctx.author.mention} got `1/2` questions correct. **SEND THEM TO SCHOOL**')
-                    await ctx.send(embed=em)
-            except asyncio.TimeoutError:
-                await msg.delete()
-                em.add_field(name='Disgraceful.', value=f'{ctx.author.mention} got `0/1` questions correct. **SEND THEM TO SCHOOL**')
-                await ctx.send(embed=em)
-        except asyncio.TimeoutError:
-            await msg.delete()
-            await ctx.send('You never responded with `yes`. In the given time!')
-
     @commands.command()
     async def snipe(self, ctx):
         with open('JSON/snipe.json', 'r') as k:
@@ -371,5 +131,25 @@ class games(commands.Cog):
         except KeyError:
             await ctx.send('There is nothing to snipe!')
 
+    @commands.command()
+    async def flip(self, ctx, user_choice : str=None):
+        choices = ('heads', 'head', 'tails', 'tail')
+        if user_choice == None or user_choice.lower() not in choices:
+            await ctx.send('Give a valid choice of **Heads** or **Tails**')
+            return
+        bot_choice = random.choice(choices)
+        embed = discord.Embed(
+                title='Heads and Tails',
+                colour=ctx.author.colour or self.bot.user.colour
+            )
+        embed.add_field(name='{}'.format(ctx.author), value=user_choice)
+        embed.add_field(name='{}'.format(self.bot.user), value=bot_choice)
+        if user_choice.lower() == bot_choice or user_choice.lower() == bot_choice + 's':
+            embed.description = 'You WIN!'
+        else:
+            embed.description = 'You lost.'
+        await ctx.send(embed=embed)        
+            
 def setup(bot):
     bot.add_cog(games(bot))
+
