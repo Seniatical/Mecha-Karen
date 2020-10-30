@@ -1,25 +1,18 @@
 import discord
-from discord import File
 from discord.ext import commands
 from datetime import timedelta
-from discord import ChannelType, Guild, Member, Message, Role, Status, utils, Embed
-from discord.abc import GuildChannel
-from discord.ext.commands import BucketType, Cog, Context, Paginator, command, group, cooldown
-from discord.utils import escape_markdown
-import time
-from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageOps, ImageMath
-import os
+from discord.ext.commands import BucketType, cooldown
 import random
 
-from Others import *
+from Others import Quotes, IMG
 
-class Motivation(commands.Cog):
+class motivation(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command(aliases=['Quotes'])
-    @cooldown(1, 2, BucketType.user)
+    @cooldown(1, 10, BucketType.user)
     async def Quote(self, ctx):
         embed = discord.Embed(
             title='Quotes',
@@ -29,7 +22,7 @@ class Motivation(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(aliases=['VQ', 'ImgQ', 'IQuote'])
-    @cooldown(1, 2, BucketType.user)
+    @cooldown(1, 15, BucketType.user)
     async def ImgQuote(self, ctx):
         embed = discord.Embed(
             title='Visual Motivation',
@@ -39,7 +32,7 @@ class Motivation(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(aliases=['Speeches'])
-    @cooldown(1, 2, BucketType.user)
+    @cooldown(1, 120, BucketType.user)
     async def Speech(self, ctx):
         embed = discord.Embed(
             title='Motivation',
@@ -52,7 +45,7 @@ class Motivation(commands.Cog):
         await ctx.send(file=File(f'{random.choice(IMG.speech)}'))
 
     @commands.command(aliases=['Gspeech', 'gs'])
-    @cooldown(1, 2, BucketType.user)
+    @cooldown(1, 180, BucketType.user)
     async def GreatSpeech(self, ctx):
         embed = discord.Embed(
             title='Motivation',
@@ -65,7 +58,7 @@ class Motivation(commands.Cog):
         await ctx.send(file=File(f'{random.choice(IMG.speech)}'))
 
     @commands.command(aliases=['masterpiece', 'Arts', 'mp', 'Masterpieces'])
-    @cooldown(1, 2, BucketType.user)
+    @cooldown(1, 180, BucketType.user)
     async def Art(self, ctx):
         embed = discord.Embed(
             title='**Artworks:**',
@@ -75,4 +68,4 @@ class Motivation(commands.Cog):
         await ctx.send(embed=embed)
 
 def setup(bot):
-    bot.add_cog(Motivation(bot))
+    bot.add_cog(motivation(bot))
