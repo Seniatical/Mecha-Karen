@@ -139,3 +139,8 @@ class Mecha_Karen(commands.AutoShardedBot):
             await self.process_commands(message=msg)
         except Exception:
             pass
+        
+if __name__ == '__main__':
+    bot = Mecha_Karen()
+    bot.run('')
+
