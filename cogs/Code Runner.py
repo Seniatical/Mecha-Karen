@@ -23,11 +23,11 @@ class run(commands.Cog):
                 code = code[3:-3]
             @contextlib.contextmanager
             def evaluate(stdout = None):
-            old = sys.stdout
-            if stdout == None:
-                sys.stdout = io.StringIO()
-                yield sys.stdout
-                sys.stdout = old
+                old = sys.stdout
+                if stdout == None:
+                    sys.stdout = io.StringIO()
+                    yield sys.stdout
+                    sys.stdout = old
 
             with evaluate() as e:
                 exec(code, {})
