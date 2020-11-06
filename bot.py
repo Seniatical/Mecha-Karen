@@ -142,5 +142,23 @@ class Mecha_Karen(commands.AutoShardedBot):
         
 if __name__ == '__main__':
     bot = Mecha_Karen()
+    
+    '''
+    If you want to create a command or a bot task. 
+    This the place were you do it. 
+    Events go in the class.
+    We dont do the commands above. This is due to some confusion between events and loops
+    It is possible to put a task/command in the class by doing :
+    
+    self.before_invoke
+    
+    or
+    
+    self.command()
+    '''
+    @bot.command()
+    async def greet(ctx):
+        await ctx.send('Hello. I am Mecha Karen. View my code by running command `Source`!')
+    
     bot.run('')
 
