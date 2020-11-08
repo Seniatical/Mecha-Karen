@@ -15,12 +15,21 @@ import datetime
 import asyncio
 import os
 import json
+
 import discord
 from discord.ext import commands
 from discord.ext.commands import BucketType, cooldown
+
 from Utils.main import *
 import version
+
 import mysql.connector
+from __future__ import print_function
+from mysql.connector import errorcode
+
+TABLES = {}
+def NEWGUILDTABLE(cursor, ID, prefix, joined_at=None, join_position=None):
+    
 
 class Mecha_Karen(commands.AutoShardedBot):
     def __init__(self):
@@ -46,7 +55,8 @@ class Mecha_Karen(commands.AutoShardedBot):
                      password=self.password,
                      database='Mecha_Karen',
                      raise_on_warnings=True
-        )  
+        )
+        self.cursor = self.MySQL.cursor()
         
         for filename in os.listdir('./cogs'):
             if filename.endswith('.py'):
@@ -57,9 +67,6 @@ class Mecha_Karen(commands.AutoShardedBot):
         
     async def on_connect(self):
         print('Bot Connected')
-    
-    async def on_disconnect(self):
-        print('Bot has disconnected.\nReconnecting Shortly')
         
     async def on_message_delete(self, message):
         if message.author.bot == True:
@@ -76,23 +83,28 @@ class Mecha_Karen(commands.AutoShardedBot):
                 json.dump(snipe, f, indent=4) 
                 
     async def on_guild_remove(self, guild):
-        with open('JSON/prefixes.json', 'r') as f:
-            prefixes = json.load(f)
-
-        prefixes.pop(str(guild.id))
-
-        with open('JSON/prefixes.json', 'w') as f:
-            json.dump(prefixes, f, indent=4)
+        delete = "DROP TABLE {}".format(guild.id)
+        self.cursor.execute(delete)
             
     async def on_guild_join(self, guild):
-        x = 0
-        with open('JSON/prefixes.json', 'r') as f:
-            prefixes = json.load(f)
-
-        prefixes[str(guild.id)] = '-'
-
-        with open('JSON/prefixes.json', 'w') as f:
-            json.dump(prefixes, f, indent=4)
+        x = NEWGUILDTABLE(self.cursor, guild.id, '-')
+        if x == 'FAILED':
+            for channel in guild.TextChannels:
+                await channel.send('There was an error creating a table for your server. Please re-add me!')
+                await asyncio.sleep(1)
+            await guild.leave()
+        elif x == 'WARNING':
+            delete = "DROP TABLE {}".format(guild.id)
+            self.cursor.execute(delete)
+            try:
+                x = NEWGUILDTABLE(self.cursor, guild.id, '-')
+                if x == 'WARNING' or x == 'FAILED':
+                    for channel in guild.TextChannels:
+                        await channel.send('There was an error creating a table for your server. Please re-add me!')
+                        await asyncio.sleep(1)
+                    await guild.leave()
+            except mysql.connector.Error:
+                await guild.leave()
 
         channel = self.get_channel(753311458171027547)
         await channel.send('> <@!475357293949485076> You Retard.\n> I have made it into another server!\n\n> Guild Name: **{}**'.format(guild.name))
