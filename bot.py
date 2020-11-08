@@ -44,8 +44,9 @@ class Mecha_Karen(commands.AutoShardedBot):
                      host="127.0.0.1",
                      user=self.user,
                      password=self.password,
-                     database='Mecha_Karen'
-        )
+                     database='Mecha_Karen',
+                     raise_on_warnings=True
+        )  
         
         for filename in os.listdir('./cogs'):
             if filename.endswith('.py'):
