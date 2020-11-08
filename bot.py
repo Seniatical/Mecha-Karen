@@ -63,6 +63,12 @@ class Mecha_Karen(commands.AutoShardedBot):
                     raise 'Failed to load {}. Due to {}'.format(filename, e)
         
     async def on_connect(self):
+        try:
+            async self.logging with self.MySQL as logging:
+                start = "UPDATE logging SET start = main WHERE started = True"
+        except mysql.connector.Error as err:
+            raise err
+            print('Couldnt launch logging due to ^')
         print('Bot Connected')
         
     async def on_message_delete(self, message):
