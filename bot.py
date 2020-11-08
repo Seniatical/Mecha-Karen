@@ -66,6 +66,7 @@ class Mecha_Karen(commands.AutoShardedBot):
         try:
             async self.logging with self.MySQL as logging:
                 start = "UPDATE logging SET start = main WHERE started = True"
+                self.cursor.execute(start)
         except mysql.connector.Error as err:
             raise err
             print('Couldnt launch logging due to ^')
