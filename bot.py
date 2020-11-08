@@ -32,7 +32,6 @@ import datetime
 import asyncio
 from time import time
 import os
-import random
 import json
 import discord
 from discord.ext import commands
@@ -49,7 +48,7 @@ class Mecha_Karen(commands.AutoShardedBot):
             case_insensitive=True,
             allowed_mentions=allowed_mentions,
             intents=intents,
-            description='I am Mecha Karen. A open sourced bot inspiring others!',
+            description='I am Mecha Karen. An open sourced bot inspiring others!',
             help_command=None,
             owner_id=475357293949485076,
         )
@@ -139,6 +138,12 @@ class Mecha_Karen(commands.AutoShardedBot):
             await self.process_commands(message=msg)
         except Exception:
             pass
+        
+        '''
+        self.command / self.before_invoke may be used here.
+        If it doesnt work for you may be due to your python version or d.py version.
+        If you have any questions join the support server and ask!
+        '''
         
 if __name__ == '__main__':
     bot = Mecha_Karen()
