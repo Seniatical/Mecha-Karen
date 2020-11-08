@@ -10,27 +10,9 @@ Contributors provide an express grant of patent rights.
 Licensed works, modifications, and larger works may be distributed under different terms and without source code.
 "
 
-Any of my works are free for use. As mentioned above. Any small snippets or a few lines. Nothing too large. I dont mind if its not mentioned.
-How ever using larger works. Such as a good chunk (10 - 20+) lines. A mention that the code has been originally made by me and edited by you is required.
-
-When using this code you must remember what you can and cannot do.
-
-Permissions:
-    Commercial use
-    Modification
-    Distribution
-    Patent use
-    Private use
-
-Limitations:
-    Trademark use
-    Liability
-    Warranty
-
 """
 import datetime
 import asyncio
-from time import time
 import os
 import json
 import discord
@@ -38,6 +20,7 @@ from discord.ext import commands
 from discord.ext.commands import BucketType, cooldown
 from Utils.main import *
 import version
+import mysql.connector
 
 class Mecha_Karen(commands.AutoShardedBot):
     def __init__(self):
@@ -57,6 +40,12 @@ class Mecha_Karen(commands.AutoShardedBot):
         self.user = Utils.main.USERNAME
         self.password = Utils.main.PASSWORD
         self.logging = Utils.main.__logging__
+        self.MySQL = mysql.connector.connect(
+                     host="127.0.0.1",
+                     user=self.user,
+                     password=self.password,
+                     database='Mecha_Karen'
+        )
         
         for filename in os.listdir('./cogs'):
             if filename.endswith('.py'):
@@ -166,4 +155,3 @@ if __name__ == '__main__':
         await ctx.send('Hello. I am Mecha Karen. View my code by running command `Source`!')
     
     bot.run('')
-
