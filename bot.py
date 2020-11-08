@@ -63,7 +63,7 @@ class Mecha_Karen(commands.AutoShardedBot):
                 try:
                     self.load_extension(f'cogs.{filename[:-3]}')
                 except Exception as e:
-                    print('Failed to load {}. Due to {}'.format(filename, e))
+                    raise 'Failed to load {}. Due to {}'.format(filename, e)
         
     async def on_connect(self):
         print('Bot Connected')
