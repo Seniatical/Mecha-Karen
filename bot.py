@@ -29,7 +29,9 @@ from mysql.connector import errorcode
 
 TABLES = {}
 def NEWGUILDTABLE(cursor, ID, prefix, joined_at=None, join_position=None):
-    
+    cursor.execute(
+        "CREATE TABLE {} (id INT AUTO_INCREMENT PRIMARY KEY, prefix char(20) NOT NULL, joined_at date NOT NULL, join_position int(20))".format(str(guild.id))
+    )
 
 class Mecha_Karen(commands.AutoShardedBot):
     def __init__(self):
