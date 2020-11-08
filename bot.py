@@ -60,7 +60,7 @@ class Mecha_Karen(commands.AutoShardedBot):
                 try:
                     self.load_extension(f'cogs.{filename[:-3]}')
                 except Exception as e:
-                    raise 'Failed to load {}. Due to {}'.format(filename, e)
+                    raise e
         
     async def on_connect(self):
         try:
