@@ -59,9 +59,7 @@ class games(commands.Cog):
     @commands.cooldown(1, 10, BucketType.user)
     async def decipher(self, ctx, opt='Easy'):
         options = ['easy', 'medium', 'hard', 'impossible']
-        if opt.lower() in options:
-            pass
-        else:
+        if not opt.lower() in options:
             await ctx.send('Give a valid difficulty.\n**Current Difficulties:**\n> `Easy` `Medium` `Hard` `Impossible`')
             return
         choice = opt.lower()
