@@ -69,7 +69,7 @@ class Mecha_Karen(commands.AutoShardedBot):
                 self.cursor.execute(start)
         except mysql.connector.Error as err:
             raise err
-            print('Couldnt launch logging due to ^')
+            
         print('Bot Connected')
         
     async def on_message_delete(self, message):
