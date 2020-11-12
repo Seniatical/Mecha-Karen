@@ -4,7 +4,7 @@ import contextlib
 import sys
 import io
 
-class run(commands.Cog):
+class Run(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.nono = ['while', 'for', 'None', 'import', 'os', 'system', 'sys', 'eval', 'exec', 'exit', 'io', 'contextlib', 'input', '@', 'disable', 'quit', 'raise', 'crash', 'del']
