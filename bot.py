@@ -54,7 +54,7 @@ class Mecha_Karen(commands.AutoShardedBot):
                      raise_on_warnings=True
         )
         self.cursor = self.MySQL.cursor()
-        self.snipe_db = self.cursor.execute("SHOW TABLES")
+        self.TABLES = self.cursor.execute("SHOW TABLES")
         
         for filename in os.listdir('./cogs'):
             if filename.endswith('.py'):
@@ -77,7 +77,7 @@ class Mecha_Karen(commands.AutoShardedBot):
         if message.author.bot == True:
             pass
         else:
-            db = self.snipe_db[self.snipe_db.index('SNIPETABLE', 0, -1)]
+            db = self.TABLES[self.TABLES.index('SNIPETABLE', 0, -1)]
             sql = "INSERT INTO db (channel_id) VALUES (%s)"
             val = ('{message.channel.id : {"author" : message.author.name + "#" + message.author.discriminator, "user" : str(message.author.id), "content" : message.content, "created_at" : message.created_at.strftime('%I:%M %p')}}')
             db.cursor().execute(sql, val)
