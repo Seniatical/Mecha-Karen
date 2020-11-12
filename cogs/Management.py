@@ -25,7 +25,7 @@ class Management(commands.Cog):
         self.disabled = ['remove', 'allow', 'help', 'prefix', 'change_prefix', 'cp', 'suggest', 'report', 'stats', 'uptime', 'refresh', 'sync', 'enable', 'disable']
 
     @commands.command(aliases=['cp'])
-    @commands.is_owner()
+    @commands.has_permissions(administrator = True)
     async def change_prefix(self, ctx, *, prefix=None):
         global x
         try:
