@@ -54,6 +54,7 @@ class Mecha_Karen(commands.AutoShardedBot):
                      raise_on_warnings=True
         )
         self.cursor = self.MySQL.cursor()
+        self.snipe_db = self.cursor.execute("SHOW TABLES")
         
         for filename in os.listdir('./cogs'):
             if filename.endswith('.py'):
@@ -76,15 +77,10 @@ class Mecha_Karen(commands.AutoShardedBot):
         if message.author.bot == True:
             pass
         else:
-            with open('JSON/snipe.json', 'r') as f:
-                snipe = json.load(f)
-            snipe[str(message.channel.id)] = {}
-            snipe[str(message.channel.id)]['author'] = message.author.name + '#' + message.author.discriminator
-            snipe[str(message.channel.id)]['avatar'] = str(message.author.id)
-            snipe[str(message.channel.id)]['message'] = message.content
-            snipe[str(message.channel.id)]['created_at'] = message.created_at.strftime('%I:%M %p')
-            with open('JSON/snipe.json', 'w') as f:
-                json.dump(snipe, f, indent=4) 
+            db = self.snipe_db[self.snipe_db.index('SNIPETABLE', 0, -1)]
+            sql = "INSERT INTO db (channel_id) VALUES (%s)"
+            val = ('{message.channel.id : {"author" : message.author.name + "#" + message.author.discriminator, "user" : str(message.author.id), "content" : message.content, "created_at" : message.created_at.strftime('%I:%M %p')}}')
+            db.cursor().execute(sql, val)
                 
     async def on_guild_remove(self, guild):
         delete = "DROP TABLE {}".format(guild.id)
