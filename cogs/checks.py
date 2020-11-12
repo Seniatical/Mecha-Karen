@@ -4,6 +4,7 @@ from datetime import timedelta
 from discord.ext.commands import BucketType, cooldown
 import datetime
 import time
+import sys
 import asyncio
 import math
 
@@ -18,7 +19,7 @@ def convert_size(bytes):
    s = round(bytes / p, 2)
    return "%s %s" % (s, size_name[i])
 
-class checks(commands.Cog):
+class Checks(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
@@ -145,7 +146,7 @@ class checks(commands.Cog):
                 return False
             try:
                 await msg.add_reaction('▶️')
-                await self.bot.wait_for('raw_reaction_add', timeout=10.0, check=reaction_check)
+                await self.bot.wait_for('raw_reaction_add', timeout=300.0, check=reaction_check)
                 embed = discord.Embed(
                     title=f'{ctx.guild.name} Features!',
                     color=ctx.author.colour, timestamp=datetime.datetime.utcnow()
@@ -231,7 +232,7 @@ class checks(commands.Cog):
                     await ctx.send('Your channel History is to Large!')
                 else:
                     pass
-        await ctx.send(counter)
+        await ctx.send(f"Messages sent: {counter}")
 
     @commands.command(aliases=['stat'])
     @cooldown(1, 3, BucketType.user)
@@ -255,7 +256,8 @@ class checks(commands.Cog):
         embed.add_field(name='Extra Events?', value=f'{len(self.bot.extra_events)}')
         embed.add_field(name='Voice Clients?', value=f'{len(self.bot.voice_clients)}')
         embed.add_field(name='Bot Latency?', value=f'{round(self.bot.latency * 1000)} ms')
-        embed.add_field(name='Version?', value=f'{discord.__version__}')
+        embed.add_field(name='Discord.py Version?', value=f'{discord.__version__}')
+        embed.add_field(name='Python Version?', value =f"{sys.version.major}.{sys.version.minor}.{sys.version.micro}")
         embed.set_footer(text=f'Requested by {ctx.author} 🔸 {datetime.date.today()}')
         await ctx.send(embed=embed)
 
