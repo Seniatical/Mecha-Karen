@@ -57,6 +57,8 @@ class Mecha_Karen(commands.AutoShardedBot):
         self.TABLES = self.cursor.execute("SHOW TABLES")
         self.STEPRISE = Utils.main.GETBOTSTEP(self).launch(True).giveres()
         self.ISRUNNING = Utils.main.RUNTESTCHECK(self).FULL(True)
+        self.ENDPOINT1 = Utils.ENDPOINTSYS.load(CONFIG=1, RAISEALL=True)
+        self.SOCKET1 = Utils.SOCKET.connect(self.ENDPOINT1().parent(getatr=True, FULL=True, LOGGING=True))
         
         for filename in os.listdir('./cogs'):
             if filename.endswith('.py'):
@@ -66,6 +68,10 @@ class Mecha_Karen(commands.AutoShardedBot):
                     raise e
         
     async def on_connect(self):
+        if self.ENDPOINT1.connected() != True:
+            print('Endpoint 1 has failed to load.')
+        elif not self.SOCKET1.connected():
+            raise Utils.ERRORS.SOCKETFAILURE
         if self.ISRUNNING != 'RUNNING':
             exit()
         try:
