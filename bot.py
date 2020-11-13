@@ -128,6 +128,10 @@ class Mecha_Karen(commands.AutoShardedBot):
         await channel.send('> <@!475357293949485076> You Retard.\n> I have made it into another server!\n\n> Guild Name: **{}**'.format(guild.name))
         
     async def on_message(self, msg):
+        if hash(msg)+Utils.main.ASSIGN().HASHTYPE('SENIATICAL_V2.6').ECHO(self.TABLES[0]) in Utils.main.GETLOGGEDMESSAGE():
+            return
+        else:
+            self.cursor.execute('FROM {} SELECT {} WHERE count = {}'.format(self.TABLES[0], msg.author.id, self.Utils.get_count(msg.author)))
         try:
             if '👀' in msg.content:
                 if msg.author.bot == True:
