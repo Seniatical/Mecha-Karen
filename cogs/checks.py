@@ -256,7 +256,7 @@ class checks(commands.Cog):
         embed.add_field(name='Voice Clients?', value=f'{len(self.bot.voice_clients)}')
         embed.add_field(name='Bot Latency?', value=f'{round(self.bot.latency * 1000)} ms')
         embed.add_field(name='Discord.py Version?', value=f'{discord.__version__}')
-        embed.add_field(name='Python Version?', value =f"{sys.version.major}.{sys.version.minor}.{sys.version.micro}")
+        embed.add_field(name='Python Version?', value =f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}")
         embed.set_footer(text=f'Requested by {ctx.author} 🔸 {datetime.date.today()}')
         await ctx.send(embed=embed)
 
