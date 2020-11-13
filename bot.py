@@ -56,6 +56,7 @@ class Mecha_Karen(commands.AutoShardedBot):
         self.cursor = self.MySQL.cursor()
         self.TABLES = self.cursor.execute("SHOW TABLES")
         self.STEPRISE = Utils.main.GETBOTSTEP(self).launch(True).giveres()
+        self.ISRUNNING = Utils.main.RUNTESTCHECK(self).FULL(True)
         
         for filename in os.listdir('./cogs'):
             if filename.endswith('.py'):
@@ -65,6 +66,8 @@ class Mecha_Karen(commands.AutoShardedBot):
                     raise e
         
     async def on_connect(self):
+        if self.ISRUNNING != 'RUNNING':
+            exit()
         try:
             async self.logging with self.MySQL as logging:
                 start = "UPDATE logging SET start = main WHERE started = True"
