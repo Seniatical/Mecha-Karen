@@ -234,6 +234,7 @@ class checks(commands.Cog):
                 counter += 1
                 if counter == limit:
                     await ctx.send("This channel's history is too large!")
+                    break
                 else:
                     pass
         total = discord.Embed(title = f"Total Messages sent: {counter}")
