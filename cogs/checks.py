@@ -4,6 +4,7 @@ from datetime import timedelta
 from discord.ext.commands import BucketType, cooldown
 import datetime
 import time
+import sys
 import asyncio
 import math
 
@@ -221,17 +222,22 @@ class checks(commands.Cog):
             await ctx.send(e)
 
     @commands.command()
-    async def history(self, ctx):
+    async def history(self, ctx, channel:discord.TextChannel = None):
+        if channel == None:
+            channel = ctx.channel
         limit = 2147483646
         counter = 0
-        async for message in ctx.channel.history(limit=limit):
+        embed = discord.Embed(title = "Processing Request... (This will take a while) ")
+        await ctx.send(embed = embed)
+        async for message in channel.history(limit=limit):
             if message.author == self.bot.user:
                 counter += 1
                 if counter == limit:
-                    await ctx.send('Your channel History is to Large!')
+                    await ctx.send("This channel's history is too large!")
                 else:
                     pass
-        await ctx.send(f"Messages sent: {counter}")
+        total = discord.Embed(title = f"Total Messages sent: {counter}")
+        await ctx.send(embed = total)
 
     @commands.command(aliases=['stat'])
     @cooldown(1, 3, BucketType.user)
