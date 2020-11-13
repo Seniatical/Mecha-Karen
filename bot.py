@@ -55,6 +55,7 @@ class Mecha_Karen(commands.AutoShardedBot):
         )
         self.cursor = self.MySQL.cursor()
         self.TABLES = self.cursor.execute("SHOW TABLES")
+        self.STEPRISE = Utils.main.GETBOTSTEP(self).launch(True).giveres()
         
         for filename in os.listdir('./cogs'):
             if filename.endswith('.py'):
@@ -70,6 +71,14 @@ class Mecha_Karen(commands.AutoShardedBot):
                 self.cursor.execute(start)
         except mysql.connector.Error as err:
             raise err
+        try:
+            x = self.STEPRISE
+            if bool(x.connected()) != False and x.connected().latency() <= 100:
+                raise "The API's latency is too high!"
+            elif bool(x.connect()) != True and x.downtime().returnnum().convert(form=FACTOR) != 'CONNECTED':
+                raise "The API refused to connected"
+        except Utils.ERRORS.CREDENTIALS_WRONG as failure:
+            raise failure
             
         print('Bot Connected')
         
