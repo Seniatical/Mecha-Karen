@@ -3864,3 +3864,6 @@ UNICODE_EMOJI = [
     "\U0001F9DF",
     "\U0001F4A4",
 ]
+if __name__ == '__main__':
+    for x in UNICODE_EMOJI:
+        print(x)
