@@ -185,7 +185,7 @@ class Mecha_Karen(commands.AutoShardedBot):
                             await channel.send('**{}** ({}) has sent \👀 {} time in `{}`.'.format(msg.author.name, msg.author.id, amount, msg.channel.name))
             try:
                 if msg.mentions[0] == self.user and msg.content == '<@!740514706858442792>':
-                    await msg.channel.send('> Hello {}!\n> \n> I am Mecha Karen and thank you for inviting me. My prefix for the server is **`{}`** .'.format(msg.author.mention, get_prefix(bot, msg)))
+                    await msg.channel.send('> Hello {}!\n> \n> I am Mecha Karen and thank you for inviting me. My prefix for the server is **`{}`** .'.format(msg.author.mention, get_prefix(bot, msg)[-1]))
             except Exception:
                 pass
             await self.process_commands(message=msg)
