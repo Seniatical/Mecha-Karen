@@ -70,7 +70,8 @@ class Mecha_Karen(commands.AutoShardedBot):
             hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
             minutes, seconds = divmod(remainder, 60)
             days, hours = divmod(hours, 24)
-            await ctx.send(f"{days}d, {hours}h, {minutes}m")
+            embed = discord.Embed(title = "Uptime:",description = f"{days}d, {hours}h, {minutes}m", color = discord.Colour.red())
+            await ctx.send(embed = embed)
         
         for filename in os.listdir('./cogs'):
             if filename.endswith('.py'):
