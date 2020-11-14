@@ -11,7 +11,7 @@ class moderation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(aliases = ['purge'])
     @commands.has_permissions(manage_messages=True)
     @cooldown(1, 5, BucketType.user)
     async def clear(self, ctx, amount=2):
