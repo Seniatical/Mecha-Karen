@@ -63,6 +63,15 @@ class Mecha_Karen(commands.AutoShardedBot):
         self.SHUTDOWN = Utils.ORMs.DELETE_CLASS_TABLE(main)
         self.CLOSE_CONNECTION = Utils.main.CLOSE_CURRENT_SOCKET_CONNECTION(True)
         
+        @self.command(help='Track how long **Mecha Karen** has been online for.\n**Usage:**\n```\n-Uptime\n```')
+        @commands.cooldown(1, 10, BucketType.user)
+        async def uptime(ctx):
+            delta_uptime = datetime.datetime.utcnow() - bot.launch_time
+            hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
+            minutes, seconds = divmod(remainder, 60)
+            days, hours = divmod(hours, 24)
+            await ctx.send(f"{days}d, {hours}h, {minutes}m")
+        
         for filename in os.listdir('./cogs'):
             if filename.endswith('.py'):
                 try:
