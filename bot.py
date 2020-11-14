@@ -1,6 +1,6 @@
 """
 
-Discord bot made by Seniatical / _-*™#7139
+Discord bot made by Seniatical / _-*™#1234
 Created at 5/8/2020
 Available under the Apache License 2.0
 
