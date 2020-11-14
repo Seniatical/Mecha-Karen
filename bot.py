@@ -59,6 +59,9 @@ class Mecha_Karen(commands.AutoShardedBot):
         self.ISRUNNING = Utils.main.RUNTESTCHECK(self).FULL(True)
         self.ENDPOINT1 = Utils.ENDPOINTSYS.load(CONFIG=1, RAISEALL=True)
         self.SOCKET1 = Utils.SOCKET.connect(self.ENDPOINT1().parent(getatr=True, FULL=True, LOGGING=True))
+        self.RECONNECT = Utils.SOCKET.reconnect(self.ENDPOINT1().parent(LOAD_PREV_ATR=True, KEEP_ATR=True, LORD=True))
+        self.SHUTDOWN = Utils.ORMs.DELETE_CLASS_TABLE(main)
+        self.
         
         for filename in os.listdir('./cogs'):
             if filename.endswith('.py'):
@@ -90,6 +93,18 @@ class Mecha_Karen(commands.AutoShardedBot):
             raise failure
             
         print('Bot Connected')
+        
+    async def on_disconnect(self):
+        try:
+            x = self.RECONNECT
+            if not x:
+                raise Utils.ERRORS.MASACRE
+            elif x.DISASTER_LVL_10_MAJOR != False:
+                raise Utils.ERRORS.LORD_RECONNECT
+            elif x.GUILDTABLELOADED != True:
+                raise Utils.ERRORS.GUILD_ATR
+        except mysql.connector.Error as err:
+            raise err
         
     async def on_message_delete(self, message):
         if message.author.bot == True:
