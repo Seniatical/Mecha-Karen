@@ -61,7 +61,7 @@ class Mecha_Karen(commands.AutoShardedBot):
         self.SOCKET1 = Utils.SOCKET.connect(self.ENDPOINT1().parent(getatr=True, FULL=True, LOGGING=True))
         self.RECONNECT = Utils.SOCKET.reconnect(self.ENDPOINT1().parent(LOAD_PREV_ATR=True, KEEP_ATR=True, LORD=True))
         self.SHUTDOWN = Utils.ORMs.DELETE_CLASS_TABLE(main)
-        self.
+        self.CLOSE_CONNECTION = Utils.main.CLOSE_CURRENT_SOCKET_CONNECTION(True)
         
         for filename in os.listdir('./cogs'):
             if filename.endswith('.py'):
@@ -74,6 +74,7 @@ class Mecha_Karen(commands.AutoShardedBot):
         if self.ENDPOINT1.connected() != True:
             print('Endpoint 1 has failed to load.')
         elif not self.SOCKET1.connected():
+            self.CLOSE_CONNECTION
             raise Utils.ERRORS.SOCKETFAILURE
         if self.ISRUNNING != 'RUNNING':
             exit()
@@ -95,6 +96,9 @@ class Mecha_Karen(commands.AutoShardedBot):
         print('Bot Connected')
         
     async def on_disconnect(self):
+        for x in self.guilds:
+            if not Utils.main.ISTABLELOADED(x):
+                Utils.main.CLOSE(x, self.SHUTDOWN)
         try:
             x = self.RECONNECT
             if not x:
