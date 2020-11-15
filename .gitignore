@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+*$py.class
+MANIFEST
+*.manifest
+*.spec
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+instance/
+.webassets-cache
+.python-version
+__pypackages__/
+.env
+.venv
