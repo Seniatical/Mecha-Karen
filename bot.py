@@ -10,6 +10,10 @@ Contributors provide an express grant of patent rights.
 Licensed works, modifications, and larger works may be distributed under different terms and without source code.
 "
 
+Note:
+This bot has an extensive backend network.
+I will get around to publishing that soon. Rn its just full of personal info such as server IPs and webhooks
+
 """
 import datetime
 import asyncio
