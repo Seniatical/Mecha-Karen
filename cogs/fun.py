@@ -563,7 +563,7 @@ class fun(commands.Cog):
     @commands.command(aliases=['murder'])
     @cooldown(1, 10, BucketType.user)
     async def kill(self, ctx, *, user : discord.Member=None):
-        if user == None:
+        if user == None or user == 'me':
             user = ctx.author
         else:
             pass
