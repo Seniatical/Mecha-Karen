@@ -14,3 +14,4 @@ instance/
 __pypackages__/
 .env
 .venv
+Utils
