@@ -563,7 +563,7 @@ class fun(commands.Cog):
     @commands.command(aliases=['murder'])
     @cooldown(1, 10, BucketType.user)
     async def kill(self, ctx, *, user : discord.Member=None):
-        if user == None:
+        if user == None or user == 'me':
             user = ctx.author
         else:
             pass
@@ -583,6 +583,7 @@ class fun(commands.Cog):
                 'tried to brake check a train.',
                 'dressing up as a cookie and cookie monster ate them.',
                 'tried to react Indiana Jones, died from a snake bite.',
+                'tried to short circuit me, not that easy retard'
                 ]
         e = discord.Embed(title="", description="", color=0x50C878)
         e.add_field(name=f'**How did they die**', value=(f'{user.display_name} was killed by {random.choice(died)}'))
