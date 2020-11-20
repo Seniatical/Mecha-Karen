@@ -103,7 +103,7 @@ class Mecha_Karen(commands.AutoShardedBot):
             if bool(x.connected()) != False and x.connected().latency() <= 100:
                 raise "The API's latency is too high!"
             elif bool(x.connect()) != True and x.downtime().returnnum().convert(form=FACTOR) != 'CONNECTED':
-                raise "The API refused to connected"
+                raise ConnectionRefusedError("The API refused to connected")
         except Utils.ERRORS.CREDENTIALS_WRONG as failure:
             raise failure
             
