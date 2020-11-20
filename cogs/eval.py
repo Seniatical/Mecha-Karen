@@ -73,10 +73,11 @@ class Eval(commands.Cog):
             embed = discord.Embed(title = "Evaluating Code...", color = discord.Colour.green())
             await ctx.send(embed = embed)
             code = prepare_input(code)
-            print(code)
             data = await self.result(code)
             if data == False:
-                await ctx.send('Error with the eval...')
+                embed = discord.Embed(title = "The Result is too Large!", color = discord.Colour.red())
+                await ctx.send(embed = embed)
+                return
             embed = discord.Embed(title = "Eval Complete!", color = discord.Colour.green())
             embed.add_field(name = "**Results:** ", value = f"```{data}```")
             await ctx.send(embed = embed)
