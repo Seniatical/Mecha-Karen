@@ -53,7 +53,7 @@ class Eval(commands.Cog):
         requests.post('https://www.pythonanywhere.com/api/v0/user/{username}/files/path/home/{username}/main.py/'.format(username = username),
         files = {"content":code},headers={'Authorization': 'Token {token}'.format(token=token)})
 
-        requests.post('https://www.pythonanywhere.com/api/v0/user/{username}/consoles/17872672/send_input/'.format(username = username),
+        requests.post('https://www.pythonanywhere.com/api/v0/user/{username}/consoles/replace with console I'd/send_input/'.format(username = username),
         data = {"input":"python3 main.py &> output.txt\n"},headers={'Authorization': 'Token {token}'.format(token=token)})
 
         response = requests.get(
