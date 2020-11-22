@@ -9,8 +9,6 @@ In this repository you will find the code in Mecha Karen!
 
 <img alt="Mecha_Karen's logo" align="right" src="https://cdn.discordapp.com/avatars/740514706858442792/3d4c161d2bfa97ec86cc82102df5cad5.png?size=128" width=40%/>
 
-This is repository of Mecha Karen.
-
 A mostly fun bot but can offer some useful moderation tools. 
 Has many categories including `NSFW`, `Fun`, `Games`, `Motivation` and more!
 A robustly programmed bot which means there wont be as much errors in the long run.
