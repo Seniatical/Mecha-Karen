@@ -4,7 +4,7 @@
 ![Django-Version](https://img.shields.io/badge/Django-3.1.3-blue?style=flat-square)
 ![Flask-Version](https://img.shields.io/badge/Flask-1.1.2-blue?style=flat-square)
 
-# __Mecha-Karen-Source-Code__
+# __Mecha Karen Source Code__
 In this repository you will find the code in Mecha Karen!
 
 <img alt="Mecha_Karen's logo" align="right" src="https://cdn.discordapp.com/avatars/740514706858442792/3d4c161d2bfa97ec86cc82102df5cad5.png?size=128" width=40%/>
