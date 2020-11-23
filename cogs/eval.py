@@ -75,7 +75,7 @@ class Eval(commands.Cog):
         requests.post('https://www.pythonanywhere.com/api/v0/user/{username}/consoles/{console_id}/send_input/'.format(username = username, console_id = console_id),
         data = {"input":"python3 main.py &> output.txt\n"},headers={'Authorization': 'Token {token}'.format(token=token)})
         
-        await asyncio.sleep(1)
+        await asyncio.sleep(3)
 
         response = requests.get(
             'https://www.pythonanywhere.com/api/v0/user/{username}/files/path/home/{username}/output.txt/'.format(
