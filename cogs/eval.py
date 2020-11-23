@@ -2,26 +2,27 @@ import requests
 import time
 import discord
 import re
+import asyncio
 import textwrap
-from discord.ext import commands
-username = 'go to pythonanywhere'
-token = 'and get a api token'
+from discord.ext import commands, tasks
+username = 'USERNAME HERE'
+token = 'TOKEN HERE'
 
 ESCAPE_REGEX = re.compile("[`\u202E\u200B]{3,}")
 FORMATTED_CODE_REGEX = re.compile(
-    r"(?P<delim>(?P<block>```)|``?)"        # code delimiter: 1-3 backticks; (?P=block) only matches if it's a block
-    r"(?(block)(?:(?P<lang>[a-z]+)\n)?)"    # if we're in a block, match optional language (only letters plus newline)
-    r"(?:[ \t]*\n)*"                        # any blank (empty or tabs/spaces only) lines before the code
-    r"(?P<code>.*?)"                        # extract all code inside the markup
-    r"\s*"                                  # any more whitespace before the end of the code markup
-    r"(?P=delim)",                          # match the exact same delimiter from the start again
-    re.DOTALL | re.IGNORECASE               # "." also matches newlines, case insensitive
+    r"(?P<delim>(?P<block>```)|``?)"        
+    r"(?(block)(?:(?P<lang>[a-z]+)\n)?)"    
+    r"(?:[ \t]*\n)*"                        
+    r"(?P<code>.*?)"                        
+    r"\s*"                                  
+    r"(?P=delim)",                          
+    re.DOTALL | re.IGNORECASE               
 )
 RAW_CODE_REGEX = re.compile(
-    r"^(?:[ \t]*\n)*"                       # any blank (empty or tabs/spaces only) lines before the code
-    r"(?P<code>.*?)"                        # extract all the rest as code
-    r"\s*$",                                # any trailing whitespace until the end of the string
-    re.DOTALL                               # "." also matches newlines
+    r"^(?:[ \t]*\n)*"                       
+    r"(?P<code>.*?)"                        
+    r"\s*$",                                
+    re.DOTALL                               
 )
 
 def prepare_input(code: str) -> str:
@@ -49,12 +50,32 @@ class Eval(commands.Cog):
     def __init__(self,bot):
         self.bot = bot
 
+    @commands.Cog.listener()
+    async def on_ready(self):
+        self.keep_alive.start()
+
+    @tasks.loop(minutes = 30)
+    async def keep_alive(self):
+        console_id = await self.get_console()
+        requests.post('https://www.pythonanywhere.com/api/v0/user/{username}/consoles/{console_id}/send_input/'.format(username = username, console_id = console_id),
+        data = {"input":"ls\n"},headers={'Authorization': 'Token {token}'.format(token=token)})
+
+    async def get_console(self):
+        consoles = requests.get('https://www.pythonanywhere.com/api/v0/user/{username}/consoles/'.format(username = username),headers={'Authorization': 'Token {token}'.format(token=token)})
+        for x in consoles.json():
+            if x['executable'] == 'bash':
+                console_id = x['id']
+                return console_id
+
     async def result(self,code):
+        console_id = await self.get_console()
         requests.post('https://www.pythonanywhere.com/api/v0/user/{username}/files/path/home/{username}/main.py/'.format(username = username),
         files = {"content":code},headers={'Authorization': 'Token {token}'.format(token=token)})
 
-        requests.post('https://www.pythonanywhere.com/api/v0/user/{username}/consoles/17872672/send_input/'.format(username = username),
+        requests.post('https://www.pythonanywhere.com/api/v0/user/{username}/consoles/{console_id}/send_input/'.format(username = username, console_id = console_id),
         data = {"input":"python3 main.py &> output.txt\n"},headers={'Authorization': 'Token {token}'.format(token=token)})
+        
+        await asyncio.sleep(3)
 
         response = requests.get(
             'https://www.pythonanywhere.com/api/v0/user/{username}/files/path/home/{username}/output.txt/'.format(
@@ -67,22 +88,25 @@ class Eval(commands.Cog):
         else:
             return False
 
+
     @commands.command()
     async def eval(self,ctx,*,code):
         try:
             embed = discord.Embed(title = "Evaluating Code...", color = discord.Colour.green())
-            await ctx.send(embed = embed)
+            msg = await ctx.send(embed = embed)
             code = prepare_input(code)
             data = await self.result(code)
             if data == False:
-                embed = discord.Embed(title = "The Result is too Large!", color = discord.Colour.red())
-                await ctx.send(embed = embed)
-                return
+                embed = discord.Embed(title = "Something went wrong with the Internals.", color = discord.Colour.red())
+                return await msg.edit(embed = embed)
+            elif data == '':
+                data = "[No Result]"
             embed = discord.Embed(title = "Eval Complete!", color = discord.Colour.green())
             embed.add_field(name = "**Results:** ", value = f"```{data}```")
-            await ctx.send(embed = embed)
-        except Exception as e:
-            print(e)
+            await msg.edit(embed = embed)
+        except discord.HTTPException:
+            embed = discord.Embed(title = "The Results of the Eval was too large to send!", color = discord.Colour.red())
+            await msg.edit(embed = embed)
 
 def setup(bot):
     bot.add_cog(Eval(bot))
