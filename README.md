@@ -25,7 +25,7 @@ Facts :
 ```
 **Join the Server as this is the best way of contacting me.**
 
-**[Click me to join the support server](https://discord.gg/Q5mFhUM)**
+**[![widget](https://discord.com/api/guilds/740523643980873789/widget.png?style=banner2)](https://discord.gg/Q5mFhUM)**
 
 **Invite the bot.**
 
