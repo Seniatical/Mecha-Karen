@@ -84,6 +84,16 @@ class Mecha_Karen(commands.AutoShardedBot):
                 except Exception as e:
                     raise e
         
+        '''
+        @self.before_invoke
+        async def before_any_command(ctx):
+            ctx.timer = time()
+            try:
+                await ctx.trigger_typing()
+            except discord.errors.Forbidden:
+                pass
+        '''
+        
     async def on_connect(self):
         if self.ENDPOINT1.connected() != True:
             print('Endpoint 1 has failed to load.')
@@ -165,6 +175,25 @@ class Mecha_Karen(commands.AutoShardedBot):
             return
         else:
             self.cursor.execute('FROM {} SELECT {} WHERE count = {}'.format(self.TABLES[0], msg.author.id, self.Utils.get_count(msg.author)))
+        if isinstance(msg.channel, discord.DMChannel):
+            if msg.author.bot == True:
+                return
+            embed = discord.Embed(
+                title='Hello {}!'.format(msg.author),
+                colour=discord.Colour.from_rgb(random.randrange(255), random.randrange(255), random.randrange(255)),
+                timestamp=datetime.datetime.utcnow(),
+                description='I see you are interested! \👀'
+            )
+            embed.add_field(name='Support Server?', value='**[My Support Server!](https://discord.gg/Q5mFhUM)**')
+            embed.add_field(name='Bot Invite?', value='**[My Very Own Invite!](https://discord.com/api/oauth2/authorize?client_id=740514706858442792&permissions=8&scope=bot)**', inline=False)
+            embed.add_field(name='Source Code?', value='**[My Source Code!](https://github.com/Seniatical/Mecha-Karen-Source-Code)**', inline=False)
+            embed.add_field(name='Fun Fact!', value=random.choice(facts))
+            embed.set_thumbnail(url=self.user.avatar_url)
+            embed.set_footer(
+                text='Bot created by _-*™#1234',
+                icon_url='https://i.imgur.com/jSzSeva.jpeg'
+            )
+            await msg.channel.send(embed=embed)
         try:
             if '👀' in msg.content:
                 if msg.author.bot == True:
