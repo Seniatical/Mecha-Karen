@@ -100,7 +100,7 @@ class Eval(commands.Cog):
                 embed = discord.Embed(title = "Something went wrong with the Internals.", color = discord.Colour.red())
                 return await msg.edit(embed = embed)
             elif data == '':
-                data = "[No Result]"
+                data = "Bent Code Inserted"
             embed = discord.Embed(title = "Eval Complete!", color = discord.Colour.green())
             embed.add_field(name = "**Results:** ", value = f"```{data}```")
             await msg.edit(embed = embed)
