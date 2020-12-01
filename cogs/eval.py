@@ -5,8 +5,11 @@ import re
 import asyncio
 import textwrap
 from discord.ext import commands, tasks
-username = 'USERNAME HERE'
-token = 'TOKEN HERE'
+
+class DATA:
+    def __init__(self):
+        username = 'USERNAME HERE'
+        token = 'TOKEN HERE'
 
 ESCAPE_REGEX = re.compile("[`\u202E\u200B]{3,}")
 FORMATTED_CODE_REGEX = re.compile(
@@ -57,8 +60,8 @@ class Eval(commands.Cog):
     @tasks.loop(minutes = 30)
     async def keep_alive(self):
         console_id = await self.get_console()
-        requests.post('https://www.pythonanywhere.com/api/v0/user/{username}/consoles/{console_id}/send_input/'.format(username = username, console_id = console_id),
-        data = {"input":"ls\n"},headers={'Authorization': 'Token {token}'.format(token=token)})
+        requests.post('https://www.pythonanywhere.com/api/v0/user/{username}/consoles/{console_id}/send_input/'.format(username = DATA.username, console_id = console_id),
+        data = {"input":"ls\n"},headers={'Authorization': 'Token {token}'.format(token=DATA.token)})
 
     async def get_console(self):
         consoles = requests.get('https://www.pythonanywhere.com/api/v0/user/{username}/consoles/'.format(username = username),headers={'Authorization': 'Token {token}'.format(token=token)})
