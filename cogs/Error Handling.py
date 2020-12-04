@@ -31,7 +31,7 @@ def convert(time):
     return "%d:%d:%d:%d" % (day, hour, minutes, seconds)
 
 def gen_code():
-    chars = list(string.ascii_lowercase)
+    chars = list(string.ascii_lowercase) + list(string.ascii_uppercase) + list(string.punctuation)
     num = list(string.digits) + list(string.hexdigits) + list(string.octdigits)
     former = []
     for i in range(random.randint(10, 20)):
