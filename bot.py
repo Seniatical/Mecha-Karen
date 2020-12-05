@@ -32,6 +32,13 @@ import mysql.connector
 from __future__ import print_function
 from mysql.connector import errorcode
 
+class DATA:
+    def __init__(self):
+        self.cache_limit = 500
+        self.concurrent = False
+        self.CACHE = {}
+        self.CACHE_ = tuple(Utils.main.PRELOADED().cache)
+
 class Mecha_Karen(commands.AutoShardedBot):
     def __init__(self):
         allowed_mentions = discord.AllowedMentions(everyone=False, roles=False, users=True)
