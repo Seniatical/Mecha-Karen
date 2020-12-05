@@ -41,6 +41,14 @@ class DATA:
         self.concurrent = False
         self.CACHE = {}
         self.CACHE_ = tuple(Utils.main.PRELOADED().cache)
+        
+facts = ('Your server is seen in the support server once you add me!',
+         'I automatically report unknown bugs!', 'I am fully tunable!',
+         'I was made for fun!', 'I am still expanding with new features',
+         'You can contribute to Karen by opening a pull request on the repo',
+         'Show me an error code in the support server for a special role!',
+         'My Code was lost 10 times before! This is why you may loose your data from time to time.',
+         'I offer no premium so all commands can be used by anybody, anywhere!')
 
 class Mecha_Karen(commands.AutoShardedBot):
     def __init__(self):
