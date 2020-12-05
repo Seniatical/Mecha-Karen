@@ -14,6 +14,9 @@ Note:
 This bot has an extensive backend network.
 I will get around to publishing that soon. Rn its just full of personal info such as server IPs and webhooks
 
+Another thing:
+    Dont copy the entirety of this bot and complain it doesnt work,
+    It was made for people to learn from and to improve the code behind it,
 """
 import datetime
 import asyncio
