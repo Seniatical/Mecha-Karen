@@ -265,6 +265,13 @@ class Mecha_Karen(commands.AutoShardedBot):
     def run(self):
         try:
             super().run('TOKEN', reconnect=True)
+            for _ in self.logging.FILES:
+                try:
+                    __logging__.update('cache')
+                except Utils.LOGGINGERRORS.file_empty_error:
+                    print('File : {} was empty. Couldnt be emptied within the cache.'.format(_))
+            self.logging.load(__logging__.CACHE)
+                
         except discord.errors.LoginFailure:
             return 'Failed to run Mecha Karen!\nDue to Incorrect Credentials...'
 
