@@ -18,22 +18,18 @@ Another thing:
     Dont copy the entirety of this bot and complain it doesnt work,
     It was made for people to learn from and to improve the code behind it,
 """
-import datetime
-import asyncio
-import os
-import json
-
-import discord
+import datetime, asyncio, os, json, discord, version
 from discord.ext import commands
 from discord.ext.commands import BucketType, cooldown
+from time import time
 
 from Utils.main import *
 from Utils.SQL import NEWGUILDTABLE
-import version
 
 import mysql.connector
 from __future__ import print_function
 from mysql.connector import errorcode
+from Utils import UD
 
 class DATA:
     def __init__(self):
@@ -102,7 +98,6 @@ class Mecha_Karen(commands.AutoShardedBot):
                 except Exception as e:
                     raise e
         
-        '''
         @self.before_invoke
         async def before_any_command(ctx):
             ctx.timer = time()
@@ -110,7 +105,27 @@ class Mecha_Karen(commands.AutoShardedBot):
                 await ctx.trigger_typing()
             except discord.errors.Forbidden:
                 pass
-        '''
+            
+        async def search(QUERY : str=None):
+            data = UD.Search(QUERY)
+            return {
+                'PREV' : data
+            }
+        
+        async def QUANTITIFY(x : list):
+            if len(x) != 1:
+                raise AttributeError('MUST CONTAIN 1 ELEMENT')
+            for element in x:
+                if not isinstance(element, list):
+                    raise AttributeError('LIST GIVEN >> NOT NESTED')
+                try:
+                    current_ = x.index(element, 0)
+                    if not isinstance(x[current_+1], list):
+                        raise AttributeError('LIST GIVEN >> NOT NESTED ^2 <INDEX: yourlist[0][0]>')
+                    prev, attrs = x[current_][0], x[current_]
+                    index_swap = x[current_] = prev
+                    final = index_swapp[0].append(attrs)
+                    return final
         
     async def on_connect(self):
         if self.ENDPOINT1.connected() != True:
