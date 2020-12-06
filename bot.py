@@ -243,30 +243,18 @@ class Mecha_Karen(commands.AutoShardedBot):
         except Exception:
             pass
         
-        '''
-        self.command / self.before_invoke may be used here.
-        If it doesnt work for you may be due to your python version or d.py version.
-        If you have any questions join the support server and ask!
-        '''
-        
-if __name__ == '__main__':
-    bot = Mecha_Karen()
-    
-    '''
-    If you want to create a command or a bot task. 
-    This the place were you do it. 
-    Events go in the class.
-    We dont do the commands above. This is due to some confusion between events and loops
-    It is possible to put a task/command in the class by doing :
-    
-    self.before_invoke
-    
-    or
-    
-    self.command()
-    '''
-    @bot.command()
-    async def greet(ctx):
-        await ctx.send('Hello. I am Mecha Karen. View my code by running command `Source`!')
-    
-    bot.run('')
+    async def close(self):
+        await super().close()
+        await self.session.close()
+
+    def run(self):
+        try:
+            super().run('TOKEN', reconnect=True)
+        except discord.errors.LoginFailure:
+            return 'Failed to run Mecha Karen!\nDue to Incorrect Credentials...'
+
+    @property
+    async def ver(self):
+        return __import__('version')
+
+Mecha_Karen().run()
