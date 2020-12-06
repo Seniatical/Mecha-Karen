@@ -18,14 +18,13 @@ Another thing:
     Dont copy the entirety of this bot and complain it doesnt work,
     It was made for people to learn from and to improve the code behind it,
 """
-import datetime, asyncio, os, json, discord, version
+import datetime, asyncio, os, json, discord, version, subprocess
 from discord.ext import commands
 from discord.ext.commands import BucketType, cooldown
 from time import time
-
+from pathlib import Path
 from Utils.main import *
 from Utils.SQL import NEWGUILDTABLE
-
 import mysql.connector
 from __future__ import print_function
 from mysql.connector import errorcode
@@ -37,6 +36,41 @@ class DATA:
         self.concurrent = False
         self.CACHE = {}
         self.CACHE_ = tuple(Utils.main.PRELOADED().cache)
+        
+PATH = Path(__file__).parents
+EXE = PATH[0]
+stringed_exe = str(EXE)
+
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
+CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
+SECONDARY_DIR = '{}\\Utils'.format(CURRENT_DIR)
+
+def PING(file, dir_):
+    try:
+        try:
+            data = open(dir_+'\\'+file)
+        except NotADirectoryError:
+            raise NotADirectoryError('Directory Given doesnt Exist.')
+    except FileNotFoundError:
+        raise FileNotFoundError('File Given doesnt Exist.')
+        
+    lines = data.readlines()
+    holder = []
+        
+    for line in lines:
+        response=subprocess.Popen(["ping", "-c", "1", line.strip()],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT)
+        stdout, stderr = response.communicate()
+        #print(stdout)
+        #print(stderr)
+
+        if (response.returncode == 0):
+            status = line.rstrip() + " is Reachable"
+        else:
+            status = line.rstrip() + " is Not reachable"
+        holder.append(status)
+    return holder
         
 facts = ('Your server is seen in the support server once you add me!',
          'I automatically report unknown bugs!', 'I am fully tunable!',
