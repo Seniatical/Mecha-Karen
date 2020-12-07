@@ -18,7 +18,7 @@ Another thing:
     Dont copy the entirety of this bot and complain it doesnt work,
     It was made for people to learn from and to improve the code behind it,
 """
-import datetime, asyncio, os, json, discord, version, subprocess
+import datetime, asyncio, os, json, discord, version, subprocess, sys
 from discord.ext import commands
 from discord.ext.commands import BucketType, cooldown
 from time import time
@@ -36,6 +36,12 @@ class DATA:
         self.concurrent = False
         self.CACHE = {}
         self.CACHE_ = tuple(Utils.main.PRELOADED().cache)
+        self.IMPORTED = (
+            'datetime', 'asyncion', 'os',
+            'json', 'discord', 'version', 'subprocess',
+            'sys', 'time', 'pathlib', 'Utils', 'mysql',
+            '__future__'
+        )
         
 PATH = Path(__file__).parents
 EXE = PATH[0]
@@ -71,6 +77,24 @@ def PING(file, dir_):
             status = line.rstrip() + " is Not reachable"
         holder.append(status)
     return holder
+
+async def is_guild_owner(ctx):
+    if ctx.author != ctx.guild.owner:
+        return False
+    return True
+
+async def is_member(ctx):
+    if ctx.author.bot != False:
+        return False
+    return True
+
+def IMPORTED():
+    loaded = globals()
+    for i in DATA().IMPORTED:
+        if i not in loaded:
+            raise ImportError('{} isnt loaded.'.format(i.title()))
+        continue
+    return True
         
 facts = ('Your server is seen in the support server once you add me!',
          'I automatically report unknown bugs!', 'I am fully tunable!',
