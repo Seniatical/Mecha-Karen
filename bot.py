@@ -116,6 +116,14 @@ class Mecha_Karen(commands.AutoShardedBot):
             description='I am Mecha Karen. An open sourced bot inspiring others!',
             help_command=None,
             owner_id=475357293949485076,
+            heartbeat_timeout=200.0,
+            help_attrs=dict(hidden=False),
+            assume_unsync_clock=False ''' <---
+                                        Dont Bother Adding this.
+                                        Your Code will slowly errode if you dont know much about syncing,
+                                        If your adding this its recommended you sync it with :
+                                            "Google’s NTP server"
+                                        '''
         )
         self.launch_time = datetime.datetime.utcnow()
         self.version = version.__version__
