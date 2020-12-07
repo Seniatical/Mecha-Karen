@@ -170,20 +170,19 @@ class Mecha_Karen(commands.AutoShardedBot):
                 'PREV' : data
             }
         
-        async def QUANTITIFY(x : list):
+        def QUANTITIFY(x : list):
             if len(x) != 1:
                 raise AttributeError('MUST CONTAIN 1 ELEMENT')
             for element in x:
                 if not isinstance(element, list):
                     raise AttributeError('LIST GIVEN >> NOT NESTED')
-                try:
-                    current_ = x.index(element, 0)
-                    if not isinstance(x[current_+1], list):
-                        raise AttributeError('LIST GIVEN >> NOT NESTED ^2 <INDEX: yourlist[0][0]>')
-                    prev, attrs = x[current_][0], x[current_]
-                    index_swap = x[current_] = prev
-                    final = index_swapp[0].append(attrs)
-                    return final
+                current_ = x.index(element, 0)
+                if not isinstance(x[current_], list):
+                  raise AttributeError('LIST GIVEN >> NOT NESTED ^2 <INDEX: yourlist[0][0]>')
+                prev, attrs = x[current_][0], x[current_]
+                x[current_] = [prev]
+                x[0].append(attrs)
+                return x
         
     async def on_connect(self):
         if self.ENDPOINT1.connected() != True:
