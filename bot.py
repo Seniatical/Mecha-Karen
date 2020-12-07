@@ -109,15 +109,11 @@ class Mecha_Karen(commands.AutoShardedBot):
         allowed_mentions = discord.AllowedMentions(everyone=False, roles=False, users=True)
         intents = discord.Intents.all()
         super().__init__(
-            command_prefix=PREFIX,
-            case_insensitive=True,
-            allowed_mentions=allowed_mentions,
-            intents=intents,
+            command_prefix=PREFIX,case_insensitive=True,
+            allowed_mentions=allowed_mentions,intents=intents,
             description='I am Mecha Karen. An open sourced bot inspiring others!',
-            help_command=None,
-            owner_id=475357293949485076,
-            heartbeat_timeout=200.0,
-            help_attrs=dict(hidden=False),
+            help_command=None,owner_id=475357293949485076,heartbeat_timeout=200.0,
+            help_attrs=dict(hidden=False),guild_ready_timeout=5.0
             assume_unsync_clock=False ''' <---
                                         Dont Bother Adding this.
                                         Your Code will slowly errode if you dont know much about syncing,
