@@ -95,6 +95,40 @@ def IMPORTED():
             raise ImportError('{} isnt loaded.'.format(i.title()))
         continue
     return True
+
+PERM_COGS = (
+    "cogs.Error Handler",
+    "cogs.Loadup",
+    "cogs.R&R,",
+    "cogs.Help",
+    "cogs.Join_Events",
+)
+
+for file in os.listdir('./cogs/mini_helpers'):
+    try:
+        exec('import %s' % (file))
+    except FileNotFoundError:
+        raise ImportError('Couldnt Import %s From Mini Helpers -> (cogs/mini_helpers)')
+
+for file in os.listdir('./Helpers'):
+    if file == 'Sockets.py':
+        try:
+            exec('''
+                from Helpers.Sockets import get_res
+                try:
+                    x = get_res(ping('socks.txt', '.\\Utils\\sockets'))
+                except socket.error as failure:
+                    raise failure
+                if x == True:
+                    return
+                raise Warning('Results from helper func >> Sockets/get_res returned False\nRerun to prevent any long term errors.')
+            ''')
+        except SyntaxError as error:
+            raise error
+    try:
+        exec('import %s' % (file))
+    except FileNotFoundError:
+        print('Couldnt Import %s From Helpers.')
         
 facts = ('Your server is seen in the support server once you add me!',
          'I automatically report unknown bugs!', 'I am fully tunable!',
