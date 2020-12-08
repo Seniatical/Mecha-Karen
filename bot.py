@@ -42,6 +42,7 @@ class DATA:
             'sys', 'time', 'pathlib', 'Utils', 'mysql',
             '__future__'
         )
+        self.TOKEN = Utils.customs.READ_ENV('./Utils/Sensitive/LOGINS.env').give_obj('TOKEN')
         
 PATH = Path(__file__).parents
 EXE = PATH[0]
@@ -359,7 +360,7 @@ class Mecha_Karen(commands.AutoShardedBot):
 
     def run(self):
         try:
-            super().run('TOKEN', reconnect=True)
+            super().run(DATA().TOKEN, reconnect=True)
             for _ in self.logging.FILES:
                 try:
                     __logging__.update('cache')
