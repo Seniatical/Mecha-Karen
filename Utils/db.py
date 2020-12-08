@@ -3,10 +3,10 @@ from sqlite3 import connect
 import os
 from apscheduler.triggers.cron import CronTrigger
 
-os.chdir('C:\\Users\\Isa\\PycharmProjects\\Discord Bot\\Utils\\SQL\\Data')
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
-DB_PATH = 'DB\\database.db'
-BUILD_PATH = "build.sql"
+DB_PATH = './DB/database.db'
+BUILD_PATH = "./build/.sql"
 
 cxn = connect(DB_PATH, check_same_thread=False)
 cur = cxn.cursor()
