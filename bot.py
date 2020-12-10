@@ -209,7 +209,7 @@ class Mecha_Karen(commands.AutoShardedBot):
                 'PREV' : data
             }
         
-        def QUANTITIFY(x : list):
+        def QUANTIFY(x : list):
             if len(x) != 1:
                 raise AttributeError('MUST CONTAIN 1 ELEMENT')
             for element in x:
