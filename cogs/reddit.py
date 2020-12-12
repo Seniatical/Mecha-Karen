@@ -15,6 +15,13 @@ class reddit(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.all_subs = []
+        self.reddit = praw.Reddit(
+            username='XXXXXXXXXXX',
+            password='XXXXXXXXXXX',
+            client_id='XXXXXXXXXX',
+            client_secret='XXXXXXXXXXXXXXXXXXXXXXX',
+            user_agent='Anything goes here bois'
+        )
 
     @commands.Cog.listener()
     async def on_ready(self):
