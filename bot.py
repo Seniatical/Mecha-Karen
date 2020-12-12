@@ -28,7 +28,7 @@ from Utils.SQL import NEWGUILDTABLE
 import mysql.connector
 from __future__ import print_function
 from mysql.connector import errorcode
-from Utils import UD
+from Utils import UD, __logging__
 
 class DATA:
     def __init__(self):
@@ -138,6 +138,9 @@ facts = ('Your server is seen in the support server once you add me!',
          'Show me an error code in the support server for a special role!',
          'My Code was lost 10 times before! This is why you may loose your data from time to time.',
          'I offer no premium so all commands can be used by anybody, anywhere!')
+
+def stock():
+    return __file__.globals()
 
 class Mecha_Karen(commands.AutoShardedBot):
     def __init__(self):
@@ -366,11 +369,10 @@ class Mecha_Karen(commands.AutoShardedBot):
                     __logging__.update('cache')
                 except Utils.LOGGINGERRORS.file_empty_error:
                     print('File : {} was empty. Couldnt be emptied within the cache.'.format(_))
-            self.logging.load(__logging__.CACHE)
-                
+            self.logging.load(__logging__.CACHE) 
         except discord.errors.LoginFailure:
             return 'Failed to run Mecha Karen!\nDue to Incorrect Credentials...'
-
+        
     @property
     async def ver(self):
         return __import__('version')
