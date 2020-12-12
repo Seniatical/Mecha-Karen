@@ -16,12 +16,16 @@ class reddit(commands.Cog):
         self.bot = bot
         self.all_subs = []
         self.reddit = praw.Reddit(
-            username='XXXXXXXXXXX',
-            password='XXXXXXXXXXX',
-            client_id='XXXXXXXXXX',
-            client_secret='XXXXXXXXXXXXXXXXXXXXXXX',
+            username='YOUR REDDIT ACCOUNT USERNAME',
+            password='YOUR REDDIT ACCOUNT PASSWORD',
+            client_id='YOUR REDDIT APP CLIENT_ID (THE SHORT ONE)',
+            client_secret='YOUR REDDIT APP SECRET (THE LONG ONE)',
             user_agent='Anything goes here bois'
         )
+        '''
+        TO GET A REDDIT APPLICATION, VISIT:
+            https://www.reddit.com/prefs/apps
+        '''
 
     @commands.Cog.listener()
     async def on_ready(self):
