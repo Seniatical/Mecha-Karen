@@ -7,7 +7,7 @@ KAREN_FAIL = {
 KAREN_SUCESS = {
 }
 
-KARNEN_MIDDLE = {
+KAREN_MIDDLE = {
 }
 
 UNICODE = {
