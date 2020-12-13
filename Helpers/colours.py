@@ -164,9 +164,33 @@ HEX_GREEN_SHADES = {
 
 RGB_CYAN_SHADES = {
     "BASE_COLOUR" : (0,255,255),
+    "lightcyan" : (224,255,255),
+    "aqua" : (0,255,255),
+    "aquamarine" : (127,255,212),
+    "mediumaquamarine" : (102,205,170),
+    "paleturquoise" : (175,238,238),
+    "turquoise" : (64,224,208),
+    "mediumturquoise" : (72,209,204),
+    "darkturquoise" : (0,206,209),
+    "lightseagreen" : (32,178,170),
+    "cadetblue" : (95,158,160),
+    "darkcyan" : (0,139,139),
+    "teal" : (0,128,128)
 }
 HEX_CYAN_SHADES = {
     "BASE_COLOUR" : 0x00FFFF,
+    "lightcyan" : 0xE0FFFF,
+    "aqua" : 0x00FFFF,
+    "aquamarine" : 0x7FFFD4,
+    "mediumaquamarine" : 0x66CDAA,
+    "paleturquoise" : 0xAFEEEE,
+    "turquoise" : 0x40E0D0,
+    "mediumturquoise" : 0x48D1CC,
+    "darkturquoise" : 0x00CED1,
+    "lightseagreen" : 0x20B2AA,
+    "cadetblue" : 0x5F9EA0,
+    "darkcyan" : 0x008B8B,
+    "teal" : 0x008080
 }
 
 RGB_BLUE_SHADES = {
