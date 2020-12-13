@@ -236,9 +236,37 @@ HEX_BLUE_SHADES = {
 
 RGB_PURPLE_SHADES = {
     "BASE_COLOUR" : (128,0,128)
+    "lavender" : (230,230,250),
+    "thistle" : (216,191,216),
+    "plum" : (221,160,221),
+    "violet" : (238,130,238),
+    "orchid" : (218,112,214),
+    "fuchsia" : (255,0,255),
+    "magenta" : (255,0,255),
+    "mediumorchid" : (186,85,211),
+    "mediumpurple" : (147,112,219),
+    "blueviolet" : (138,43,226),
+    "darkviolet" : (148,0,211),
+    "darkorchid" : (153,50,204),
+    "darkmagenta" : (139,0,139),
+    "indigo" : (75,0,130)
 }
 HEX_PURPLE_SHADES = {
-    "BASE_COLOUR" : 0x800080
+    "BASE_COLOUR" : 0x800080,
+    "lavender" : 0xE6E6FA,
+    "thistle" : 0xD8BFD8,
+    "plum" : 0xDDA0DD,
+    "violet" : 0xEE82EE,
+    "orchid" : 0xDA70D6,
+    "fuchsia" : 0xFF00FF,
+    "magenta" : 0xFF00FF,
+    "mediumorchid" : 0xBA55D3,
+    "mediumpurple" : 0x9370DB,
+    "blueviolet" : 0x8A2BE2,
+    "darkviolet" : 0x9400D3,
+    "darkorchid" : 0x9932CC,
+    "darkmagenta" : 0x8B008B,
+    "indigo" : 0x4B0082,
 }
 
 RGB_PINK_SHADES = {
