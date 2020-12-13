@@ -70,3 +70,17 @@ def check_status():
 	## log('==> Tor: %s' % OTH_STAT)
 	log('==> Current ip: %s' % str(PUB_IP),end=True)
 	return getip
+
+def main():
+	try:
+		job = (sys.argv)[1]
+	except:
+		sys.exit(usage())
+	else:
+		job = job.lower()
+		filters = ['start','stop','status']
+
+		if job not in filters:
+			sys.exit(usage())
+		else:
+			DoJob(job)
