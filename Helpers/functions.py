@@ -62,3 +62,10 @@ def interface_check(_iface=None):
 			)
 	else:
 		return _iface
+	
+def check_status():
+	getip = urlopen('http://ipinfo.io/ip').read()
+	PUB_IP = getip.decode('utf-8').strip()
+	## OTH_STAT = os.popen('systemctl status tor | grep \"Active\" | awk \'{print $2}\'').read()
+	## log('==> Tor: %s' % OTH_STAT)
+	log('==> Current ip: %s' % str(PUB_IP),end=True)
