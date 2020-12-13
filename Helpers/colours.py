@@ -270,10 +270,20 @@ HEX_PURPLE_SHADES = {
 }
 
 RGB_PINK_SHADES = {
-    "BASE_COLOUR" : (255,192,203)
+    "BASE_COLOUR" : (255,192,203),
+    "lightpink" : (255,182,193),
+    "hotpink" : (255,105,180),
+    "deeppink" : (255,20,147),
+    "palevioletred" : (219,112,147),
+    "mediumvioletred" : (199,21,133),
 }
 HEX_PINK_SHADES = {
-    "BASE_COLOUR" : 0xFFC0CB
+    "BASE_COLOUR" : 0xFFC0CB,
+    "lightpink" : 0xFFB6C1,
+    "hotpink" : 0xFF69B4,
+    "deeppink" : 0xFF1493,
+    "palevioletred" : 0xDB7093,
+    "mediumvioletred" : 0xC71585,
 }
 
 RGB_WHITE_SHADES = {
