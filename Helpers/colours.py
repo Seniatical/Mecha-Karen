@@ -87,3 +87,28 @@ HEX_ORANGE_SHADES = {
     "gold" : 0xFFD700,
     "darkorange" : 0xFF8C00
 }
+
+RGB_YELLOW_SHADES = {
+    "BASE_COLOUR" : (189,183,107),
+    "lightyellow" : (255,255,224),
+    "lemonchiffon" : (255,250,205),
+    "lightgoldenrodyellow" : (250,250,210),
+    "papayawhip" : (255,239,213),
+    "moccasin" : (255,228,181),
+    "peachpuff" : (255,218,185),
+    "palegoldenrod" : (238,232,170),
+    "khaki" : (240,230,140),
+    "darkkhaki" : (189,183,107),
+}
+HEX_YELLOW_SHADES = {
+    "BASE_COLOUR" : 0xFFFF00
+    "lightyellow" : 0xFFFFE0,
+    "lemonchiffon" 0xFFFACD,
+    "lightgoldenrodyellow" : 0xFAFAD2,
+    "papayawhip" : 0xFFEFD5,
+    "moccasin" : 0xFFE4B5,
+    "peachpuff" : 0xFFDAB9,
+    "palegoldenrod" : 0xEEE8AA,
+    "khaki" : 0xF0E68C,
+    "darkkhaki" : 0xBDB76B,
+}
