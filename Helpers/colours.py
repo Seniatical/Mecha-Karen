@@ -112,3 +112,46 @@ HEX_YELLOW_SHADES = {
     "khaki" : 0xF0E68C,
     "darkkhaki" : 0xBDB76B,
 }
+
+RGB_GREEN_SHADES = {
+    "BASE_COLOUR" : (0,128,0),
+    "lawngreen" : (124,252,0),
+    "chartreuse" : (127,255,0),
+    "limegreen" : (50,205,50),
+    "lime" : (0,255,0),
+    "forestgreen" : (34,139,34),
+    "darkgreen" : (0,100,0),
+    "greenyellow" : (173,255,47),
+    "yellowgreen" : (154,205,50),
+    "springgreen" : (0,255,127),
+    "mediumspringgreen" : (0,250,154),
+    "lightgreen" : (144,238,144),
+    "palegreen" : (152,251,152),
+    "darkseagreen" : (143,188,143),
+    "mediumseagreen" : (60,179,113),
+    "seagreen" : (46,139,87),
+    "olive" : (128,128,0),
+    "darkolivegreen" : (85,107,47),
+    "olivedrab" : 
+}
+HEX_GREEN_SHADES = {
+    "BASE_COLOUR" : 0x008000,
+    "lawngreen" : 0x7CFC00,
+    "chartreuse" : 0x7FFF00,
+    "limegreen" : 0x32CD32,
+    "lime" : 0x00FF00,
+    "forestgreen" : 0x228B22,
+    "darkgreen" : 0x006400,
+    "greenyellow" : 0xADFF2F,
+    "yellowgreen" : 0x9ACD32,
+    "springgreen" : 0x00FF7F,
+    "mediumspringgreen" : 0x00FA9A,
+    "lightgreen" : 0x90EE90,
+    "palegreen" : 0x98FB98,
+    "darkseagreen" : 0x8FBC8F,
+    "mediumseagreen" : 0x3CB371,
+    "seagreen" : 0x2E8B57,
+    "olive" : 0x808000,
+    "darkolivegreen": 0x556B2F,
+    "olivedrab" : 0x6B8E23
+} 
