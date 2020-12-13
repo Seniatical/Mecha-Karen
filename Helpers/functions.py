@@ -55,11 +55,7 @@ def interface_check(_iface=None):
 			else:
 				pass
 	if _iface == None:
-		sys.exit(log
-				(
-					'Check the connection retard.',err=True,end=True
-				)
-			)
+		sys.exit(log('Check the connection retard.',err=True,end=True))
 	else:
 		return _iface
 	
