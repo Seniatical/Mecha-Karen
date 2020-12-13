@@ -376,5 +376,7 @@ class Mecha_Karen(commands.AutoShardedBot):
     @property
     async def ver(self):
         return __import__('version')
-
-Mecha_Karen().run()
+    
+    @property
+    async def config(self):
+        return __import__('Utils')
