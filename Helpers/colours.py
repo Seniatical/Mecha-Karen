@@ -55,7 +55,6 @@ RGB_RED_SHADES = {
     "orangered" : (255,69,0),
     "palevioletred" : (219,112,147)
 }
-
 HEX_RED_SHADES = {
     "BASE_COLOUR" : 0xFF0000,
     "lightsalmon" : 0xFFA07A,
@@ -70,4 +69,21 @@ HEX_RED_SHADES = {
     "tomato" : 0xFF6347,
     "orangered" : 0xFF4500,
     "palevioletred" : 0xDB7093
+}
+
+RGB_ORANGE_SHADES = {
+    "BASE_COLOUR" : (255,215,0),
+    "coral" : (255,127,80), 
+    "tomato" : (255,99,71)(255,69,0),
+    "orangered" : (255,69,0),
+    "gold" : (255,215,0),
+    "darkorange" : (255,140,0)
+}
+HEX_ORANGE_SHADES = {
+    "BASE_COLOUR" : 0xFFA500,
+    "coral" : 0xFF7F50,
+    "tomato" : 0xFF6347, 
+    "orangered" : 0xFF4500,
+    "gold" : 0xFFD700,
+    "darkorange" : 0xFF8C00
 }
