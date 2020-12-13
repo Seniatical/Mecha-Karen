@@ -84,3 +84,5 @@ def main():
 			sys.exit(usage())
 		else:
 			DoJob(job)
+## You guys wont need the last 2 functions
+## Just for me... :)
