@@ -350,7 +350,37 @@ HEX_GREY_SHADES = {
 
 RGB_BROWN_SHADES = {
     "BASE_COLOUR" : (165,42,42)
+    "cornsilk" : (255,248,220),
+    "blanchedalmond" : (255,235,205),
+    "bisque" : (255,228,196),
+    "navajowhite" : (255,222,173),
+    "wheat" : (245,222,179),
+    "burlywood" : (222,184,135),
+    "tan" : (210,180,140),
+    "rosybrown" : (188,143,143),
+    "sandybrown" : (244,164,96),
+    "goldenrod" : (218,165,32), 
+    "peru" : (205,133,63),
+    "chocolate" : (210,105,30),
+    "saddlebrown" : (139,69,19),
+    "sienna" : (160,82,45),
+    "maroon" : (128,0,0)
 }
 HEX_BROWN_SHADES = {
     "BASE_COLOUR" : 0xA52A2A
+    "cornsilk" : 0xFFF8DC,
+    "blanchedalmond" : 0xFFEBCD,
+    "bisque" : 0xFFE4C4,
+    "navajowhite" : 0xFFDEAD,
+    "wheat" : 0xF5DEB3,
+    "burlywood" : 0xDEB887,
+    "tan" : 0xD2B48C,
+    "rosybrown" : 0xBC8F8F,
+    "sandybrown" : 0xF4A460,
+    "goldenrod" : 0xDAA520,
+    "peru" : 0xCD853F,
+    "chocolate" : 0xD2691E,
+    "saddlebrown" : 0x8B4513,
+    "sienna" : 0xA0522D,
+    "maroon" : 0x800000
 }
