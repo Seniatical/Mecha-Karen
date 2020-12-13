@@ -1,3 +1,9 @@
+'''
+THESE ARE ALL HTML COLOUR CODES,
+SOURCE:
+    https://www.rapidtables.com/web/color/html-color-codes.html
+'''
+
 BINARY_COLOURS_RGB = {
     1 : (0, 0, 0),
     0 : (255, 255, 255)
@@ -155,3 +161,52 @@ HEX_GREEN_SHADES = {
     "darkolivegreen": 0x556B2F,
     "olivedrab" : 0x6B8E23
 } 
+
+RGB_CYAN_SHADES = {
+    "BASE_COLOUR" : (0,255,255),
+}
+HEX_CYAN_SHADES = {
+    "BASE_COLOUR" : 0x00FFFF,
+}
+
+RGB_BLUE_SHADES = {
+    "BASE_COLOUR" : (0,0,255)
+}
+HEX_BLUE_SHADES = {
+    "BASE_COLOUR" : 0x0000FF
+}
+
+RGB_PURPLE_SHADES = {
+    "BASE_COLOUR" : (128,0,128)
+}
+HEX_PURPLE_SHADES = {
+    "BASE_COLOUR" : 0x800080
+}
+
+RGB_PINK_SHADES = {
+    "BASE_COLOUR" : (255,192,203)
+}
+HEX_PINK_SHADES = {
+    "BASE_COLOUR" : 0xFFC0CB
+}
+
+RGB_WHITE_SHADES = {
+    "BASE_COLOUR" : (255,255,255)
+}
+HEX_WHITE_SHADES = {
+    "BASE_COLOUR" : 0xFFFFFF
+}
+
+RGB_GREY_SHADES = {
+    "BASE_COLOUR" : (128,128,128)
+}
+HEX_GREY_SHADES = {
+    "BASE_COLOUR" : 0x808080
+}
+
+RGB_BROWN_SHADES = {
+    "BASE_COLOUR" : (165,42,42)
+}
+HEX_BROWN_SHADES = {
+    "BASE_COLOUR" : 0xA52A2A
+}
