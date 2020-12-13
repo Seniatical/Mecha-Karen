@@ -326,10 +326,26 @@ HEX_WHITE_SHADES = {
 }
 
 RGB_GREY_SHADES = {
-    "BASE_COLOUR" : (128,128,128)
+    "BASE_COLOUR" : (128,128,128),
+    "gainsboro" : (220,220,220),
+    "lightgray" : (211,211,211),
+    "silver" : (192,192,192),
+    "darkgray" : (169,169,169),
+    "dimgray" : (105,105,105),
+    "lightslategray" : (119,136,153),
+    "slategray" : (112,128,144),
+    "darkslategray" : (47,79,79)
 }
 HEX_GREY_SHADES = {
     "BASE_COLOUR" : 0x808080
+    "gainsboro" : 0xDCDCDC,
+    "lightgray" : 0xD3D3D3,
+    "silver" : 0xC0C0C0,
+    "darkgray" : 0xA9A9A9,
+    "dimgray" : 0x696969,
+    "lightslategray" : 0x778899,
+    "slategray" : 0x708090,
+    "darkslategray" : 0x2F4F4F,
 }
 
 RGB_BROWN_SHADES = {
