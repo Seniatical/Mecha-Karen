@@ -69,3 +69,4 @@ def check_status():
 	## OTH_STAT = os.popen('systemctl status tor | grep \"Active\" | awk \'{print $2}\'').read()
 	## log('==> Tor: %s' % OTH_STAT)
 	log('==> Current ip: %s' % str(PUB_IP),end=True)
+	return getip
