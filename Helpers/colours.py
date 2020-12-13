@@ -275,7 +275,7 @@ RGB_PINK_SHADES = {
     "hotpink" : (255,105,180),
     "deeppink" : (255,20,147),
     "palevioletred" : (219,112,147),
-    "mediumvioletred" : (199,21,133),
+    "mediumvioletred" : (199,21,133)
 }
 HEX_PINK_SHADES = {
     "BASE_COLOUR" : 0xFFC0CB,
@@ -283,14 +283,46 @@ HEX_PINK_SHADES = {
     "hotpink" : 0xFF69B4,
     "deeppink" : 0xFF1493,
     "palevioletred" : 0xDB7093,
-    "mediumvioletred" : 0xC71585,
+    "mediumvioletred" : 0xC71585
 }
 
 RGB_WHITE_SHADES = {
-    "BASE_COLOUR" : (255,255,255)
+    "BASE_COLOUR" : (255,255,255),
+    "snow" : (255,250,250),
+    "honeydew" : (240,255,240),
+    "mintcream" : (245,255,250),
+    "azure" : (240,255,255),
+    "aliceblue" : (240,248,255),
+    "ghostwhite" : (248,248,255),
+    "whitesmoke" : (245,245,245),
+    "seashell" : (255,245,238),
+    "beige" : (245,245,220),
+    "oldlace" : (253,245,230),
+    "floralwhite" : (255,250,240),
+    "ivory" : (255,255,240),
+    "antiquewhite" : (250,235,215),
+    "linen" : (250,240,230),
+    "lavenderblush" : (255,240,245),
+    "mistyrose" : (255,228,225)
 }
 HEX_WHITE_SHADES = {
     "BASE_COLOUR" : 0xFFFFFF
+    "snow" : 0xFFFAFA,
+    "honeydew" : 0xF0FFF0,
+    "mintcream" : 0xF5FFFA,
+    "azure" : 0xF0FFFF,
+    "aliceblue" : 0xF0F8FF,
+    "ghostwhite" : 0xF8F8FF,
+    "whitesmoke" : 0xF5F5F5,
+    "seashell" : 0xFFF5EE,
+    "beige" : 0xF5F5DC,
+    "oldlace" : 0xFDF5E6,
+    "floralwhite" : 0xFFFAF0,
+    "ivory" : 0xFFFFF0,
+    "antiquewhite" : 0xFAEBD7,
+    "linen" : 0xFAF0E6,
+    "lavenderblush" : 0xFFF0F5,
+    "mistyrose" : 0xFFE4E1
 }
 
 RGB_GREY_SHADES = {
