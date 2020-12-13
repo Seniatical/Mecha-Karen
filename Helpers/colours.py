@@ -194,10 +194,44 @@ HEX_CYAN_SHADES = {
 }
 
 RGB_BLUE_SHADES = {
-    "BASE_COLOUR" : (0,0,255)
+    "BASE_COLOUR" : (0,0,255),
+    "powderblue" : (176,224,230),
+    "lightblue" : (173,216,230),
+    "lightskyblue" : (135,206,250),
+    "skyblue" : (135,206,235),
+    "deepskyblue" : (0,191,255),
+    "lightsteelblue" : (176,196,222),
+    "dodgerblue" : (30,144,255),
+    "cornflowerblue" : (100,149,237),
+    "steelblue" : (70,130,180),
+    "royalblue" : (65,105,225),
+    "mediumblue" : (0,0,205),
+    "darkblue" : (0,0,139),
+    "navy" : (0,0,128),
+    "midnightblue" : (25,25,112),
+    "mediumslateblue" : (123,104,238),
+    "slateblue" : (106,90,205),
+    "darkslateblue" : (72,61,139)
 }
 HEX_BLUE_SHADES = {
-    "BASE_COLOUR" : 0x0000FF
+    "BASE_COLOUR" : 0x0000FF,
+    "powderblue" : 0xB0E0E6,
+    "lightblue" : 0xADD8E6,
+    "lightskyblue" : 0x87CEFA,
+    "skyblue" : 0x87CEEB,
+    "deepskyblue" : 0x00BFFF,
+    "lightsteelblue" : 0xB0C4DE,
+    "dodgerblue" : 0x1E90FF,
+    "cornflowerblue" : 0x6495ED,
+    "steelblue" : 0x4682B4,
+    "royalblue" : 0x4169E1,
+    "mediumblue" : 0x0000CD,
+    "darkblue" : 0x00008B,
+    "navy" : 0x000080,
+    "midnightblue" : 0x191970,
+    "mediumslateblue" : 0x7B68EE, 
+    "slateblue" : 0x6A5ACD, 
+    "darkslateblue" : 0x483D8B,
 }
 
 RGB_PURPLE_SHADES = {
