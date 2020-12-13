@@ -1,5 +1,5 @@
 BINARY_COLOURS_RGB = {
-    1 : (0, 0, 0)
+    1 : (0, 0, 0),
     0 : (255, 255, 255)
 }
 
@@ -19,9 +19,8 @@ RGB_PRIMARY = {
     "yellow" : (0, 255, 0),
     "blue" : (0, 0, 255)
 }
-
 HEX_PRIMARY = {
-    "red" : 0x0000FF,
+    "red" : 0xFF0000,
     "yellow" : 0xFF0000,
     "blue" : 0xFFFF00
 }
@@ -29,15 +28,20 @@ HEX_PRIMARY = {
 RGB_SECONDARY = {
     "orange" : (255, 102, 0),
     "green" : (0, 255, 0),
-    "purple" : (102, 0, 255),
+    "purple" : (102, 0, 255)
+}
+HEX_SECONDARY = {
+    "orange" : 0xFF6600,
+    "green" : 0x00FF00,
+    "purple" : 0x6600FF
 }
 
-RGB_RED_SHADES = {
-    "BASE_COLOUR" : (255, 0, 0),
-    '''
+'''
     All Shades of colour with have "RED" as the main colour
     Only shades that i use are here.
-    '''
+'''
+RGB_RED_SHADES = {
+    "BASE_COLOUR" : (255, 0, 0),
     "lightsalmon" : (255,160,122),
     "salmon" : (250,128,114),
     "darksalmon" : (233,150,122),
@@ -49,8 +53,21 @@ RGB_RED_SHADES = {
     "maroon" : (128,0,0),
     "tomato" : (255,99,71),
     "orangered" : (255,69,0),
-    "palevioletred" : (219,112,147),
+    "palevioletred" : (219,112,147)
 }
 
 HEX_RED_SHADES = {
+    "BASE_COLOUR" : 0xFF0000,
+    "lightsalmon" : 0xFFA07A,
+    "salmon" : 0xFA8072,
+    "darksalmon" : 0xE9967A,
+    "lightcoral" : 0xF08080,
+    "indianred" : 0xCD5C5C,
+    "crimson" : 0xDC143C,
+    "firebrick" : 0xB22222,
+    "darkred" : 0x8B0000,
+    "maroon" : 0x800000,
+    "tomato" : 0xFF6347,
+    "orangered" : 0xFF4500,
+    "palevioletred" : 0xDB7093
 }
