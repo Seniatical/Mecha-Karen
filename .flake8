@@ -1,0 +1,16 @@
+[flake8]
+count = True
+statistics = True
+max-complexity = 16
+max-line-length = 120
+exclude =
+    .git,
+    __pycache__,
+    docs/source/conf.py,
+    old,
+    build,
+    dist,
+    env,
+    venv,
+    dev,
+    test.py
