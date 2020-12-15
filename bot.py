@@ -226,7 +226,8 @@ class Mecha_Karen(commands.AutoShardedBot):
                 x[0].append(attrs)
                 return x
         
-    async def on_connect(self):
+    @staticmethod
+    async def on_connect():
         if self.ENDPOINT1.connected() != True:
             print('Endpoint 1 has failed to load.')
         elif not self.SOCKET1.connected():
@@ -251,7 +252,8 @@ class Mecha_Karen(commands.AutoShardedBot):
             
         print('Bot Connected')
         
-    async def on_disconnect(self):
+    @staticmethod
+    async def on_disconnect():
         for x in self.guilds:
             if not Utils.main.ISTABLELOADED(x):
                 Utils.main.CLOSE(x, self.SHUTDOWN)
