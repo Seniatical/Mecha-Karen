@@ -131,5 +131,4 @@ def random_rgb_value():
     return holder
 
 def rand_hex_value_STR():
-    return hex(random.randint(0x000000, 0xFFFFFF))
-    
+    return hex(random.randint(0x000000, 0xFFFFFF))   
