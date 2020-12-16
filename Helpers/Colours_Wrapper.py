@@ -124,5 +124,12 @@ class TOBINARY:
                 return True
             return False
             
-        
-        
+def random_rgb_value():
+    holder = []
+    for i in range(3):
+        holder.append(random.randint(0, 256))
+    return holder
+
+def rand_hex_value_STR():
+    return hex(random.randint(0x000000, 0xFFFFFF))
+    
