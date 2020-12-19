@@ -82,15 +82,10 @@ def PING(file, dir_):
         holder.append(status)
     return holder
 
-async def is_guild_owner(ctx):
-    if ctx.author != ctx.guild.owner:
-        return False
-    return True
-
-async def is_member(ctx):
-    if ctx.author.bot != False:
-        return False
-    return True
+'''
+Moved stuff which was here to:
+    ./Helpers/functions.py
+'''
 
 def IMPORTED():
     loaded = globals()
