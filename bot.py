@@ -44,6 +44,9 @@ class DATA:
         )
         self.TOKEN = Utils.customs.READ_ENV('./Utils/Sensitive/LOGINS.env').give_obj('TOKEN')
         
+class BASE(Exception):
+    pass
+        
 PATH = Path(__file__).parents
 EXE = PATH[0]
 stringed_exe = str(EXE)
@@ -154,7 +157,7 @@ class Mecha_Karen(commands.AutoShardedBot):
             help_attrs=dict(hidden=False),guild_ready_timeout=5.0
             assume_unsync_clock=False ''' <---
                                         Dont Bother Adding this.
-                                        Your Code will slowly errode if you dont know much about syncing,
+                                        Your Code will slowly erode if you dont know much about syncing,
                                         If your adding this its recommended you sync it with :
                                             "Google’s NTP server"
                                         '''
@@ -232,7 +235,7 @@ class Mecha_Karen(commands.AutoShardedBot):
             print('Endpoint 1 has failed to load.')
         elif not self.SOCKET1.connected():
             self.CLOSE_CONNECTION
-            raise Utils.ERRORS.SOCKETFAILURE
+            raise Utils.ERRORS.SOCKETFAILURE('Check if the socket is actually on.')
         if self.ISRUNNING != 'RUNNING':
             exit()
         try:
@@ -382,3 +385,9 @@ class Mecha_Karen(commands.AutoShardedBot):
     @property
     async def config(self):
         return __import__('Utils')
+
+def kickstart():
+    Utils.MechaBootUp('./Bot/bot.py')
+    return True
+    
+    
