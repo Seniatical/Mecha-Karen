@@ -1,5 +1,3 @@
-// BootMain.cpp
-
 #include "CDisplay.h"
 
 #define HELLO_STR               "\"Were Ready To Boot Up! Run the Boot From Utils to complete.\"10s Till Automatic Shutdown"
