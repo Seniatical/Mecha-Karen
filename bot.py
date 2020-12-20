@@ -137,6 +137,9 @@ facts = ('Your server is seen in the support server once you add me!',
          'My Code was lost 10 times before! This is why you may loose your data from time to time.',
          'I offer no premium so all commands can be used by anybody, anywhere!')
 
+class NotValid(Exception):
+    pass
+
 def stock():
     return __file__.globals()
 
@@ -144,6 +147,14 @@ class Mecha_Karen(commands.AutoShardedBot):
     def __init__(self):
         allowed_mentions = discord.AllowedMentions(everyone=False, roles=False, users=True)
         intents = discord.Intents.all()
+        
+        def is_support():
+            async def predicate(ctx):
+                if ctx.guild != Utils.TABLES.CLASS_BUILDS().support_server:
+                    raise NotValid('This server isnt the support server!')
+                return True
+            commands.check(predicate)
+        
         super().__init__(
             command_prefix=PREFIX,case_insensitive=True,
             allowed_mentions=allowed_mentions,intents=intents,
