@@ -22,6 +22,8 @@ Facts :
   Wacky Commands,
   
   Fast Responce Times (Most times)
+  
+  Useful Tools such as Word Searches | Vid Searches | Image Searches  | + MORE
 ```
 **Join the Server as this is the best way of contacting me.**
 
