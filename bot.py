@@ -29,6 +29,7 @@ import mysql.connector
 from __future__ import print_function
 from mysql.connector import errorcode
 from Utils import UD, __logging__
+import Helpers
 
 class DATA:
     def __init__(self):
@@ -376,8 +377,7 @@ class Mecha_Karen(commands.AutoShardedBot):
 
     def run(self):
         try:
-            if x:
-                Utils.ANTICOPY()
+            Helpers.functions.help(x)
             super().run(DATA().TOKEN, reconnect=True)
             for _ in self.logging.FILES:
                 try:
