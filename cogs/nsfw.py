@@ -1,9 +1,32 @@
 import discord
 from discord.ext import commands
-from Others import Stuff
+from Utils import API as api
+from Utils.API import NSFW as nsfw
 import random
 import asyncio
 import time
+
+'''
+Version Info:
+    Intergrated the API into the bot
+    Attempted to make the API async didnt go well
+    Brought it up to current version of 1.4.2
+    Custom Handling
+    Doesnt work on sometimes as gifv isnt supported
+    
+Improvements:
+    Faster Response
+    Library is updated everyday
+    Members can contribute to the library
+    
+Disadvantages:
+    Less Reliable
+    May Crash
+    Need to intergrate caching to prevent API timing out
+    
+Version Info:
+    Added Caching
+'''
 
 class nsfw(commands.Cog):
     def __init__(self, bot):
@@ -16,9 +39,10 @@ class nsfw(commands.Cog):
             title='MILF Topic',
             color=discord.Color.red()
         )
-        embed.set_image(url=f'{random.choice(Stuff.MILF)}')
+        embed.set_image(url=f'{api(nsfw.milf)}')
         embed.set_footer(text='From a weird source')
         await ctx.send(embed=embed)
+        
     @commands.command()
     @commands.is_nsfw()
     async def Pussy(self, ctx):
@@ -26,7 +50,7 @@ class nsfw(commands.Cog):
             title='Wet or Dry?',
             color=discord.Color.red()
         )
-        embed.set_image(url=random.choice(Stuff.Pussy))
+        embed.set_image(url=api(nsfw.pussy))
         embed.set_footer(text='From a weird source')
         await ctx.send(embed=embed)
 
@@ -37,9 +61,10 @@ class nsfw(commands.Cog):
             title='You like them small?',
             color=discord.Color.red()
             )
-        embed.set_image(url=random.choice(Stuff.Teen))
+        embed.set_image(url=api(nsfw.teen))
         embed.set_footer(text='From a weird source')
         await ctx.send(embed=embed)
+        
     @commands.command()
     @commands.is_nsfw()
     async def Spreading(self, ctx):
@@ -47,9 +72,10 @@ class nsfw(commands.Cog):
             title='Speechless',
             color=discord.Color.red()
             )
-        embed.set_image(url=random.choice(Stuff.Spreading))
+        embed.set_image(url=api(nsfw.spreading))
         embed.set_footer(text='From a weird source')
         await ctx.send(embed=embed)
+        
     @commands.command()
     @commands.is_nsfw()
     async def Ass(self, ctx):
@@ -57,19 +83,21 @@ class nsfw(commands.Cog):
             title='Drums!',
             color=discord.Color.red()
         )
-        embed.set_image(url=random.choice(Stuff.Ass))
+        embed.set_image(url=api(nsfw.ass))
         embed.set_footer(text='From a weird source')
         await ctx.send(embed=embed)
+        
     @commands.command()
     @commands.is_nsfw()
-    async def Facial(self, ctx):
+    async def creampie(self, ctx):
         embed = discord.Embed(
             title='Drench them white.',
             color=discord.Color.red()
             )
-        embed.set_image(url=random.choice(Stuff.Facial))
+        embed.set_image(url=api(nsfw.creampie))
         embed.set_footer(text='From a weird source')
         await ctx.send(embed=embed)
+        
     @commands.command()
     @commands.is_nsfw()
     async def Fisting(self, ctx):
@@ -77,9 +105,10 @@ class nsfw(commands.Cog):
             title='Doesnt that hurt?',
             color=discord.Color.red()
             )
-        embed.set_image(url=random.choice(Stuff.Fisting))
+        embed.set_image(url=api(nsfw.fisting))
         embed.set_footer(text='From a weird source')
         await ctx.send(embed=embed)
+        
     @commands.command()
     @commands.is_nsfw()
     async def Closeup(self, ctx):
@@ -87,9 +116,10 @@ class nsfw(commands.Cog):
             title='Got that good `V` Shape.',
             color=discord.Color.red()
             )
-        embed.set_image(url=random.choice(Stuff.Closeup))
+        embed.set_image(url=api(nsfw.closeup))
         embed.set_footer(text='From a weird source')
         await ctx.send(embed=embed)
+        
     @commands.command(aliases=['BJ'])
     @commands.is_nsfw()
     async def Blowjob(self, ctx):
@@ -97,9 +127,10 @@ class nsfw(commands.Cog):
             title='Tingling goodness. Bet your a girl!',
             color=discord.Color.red()
             )
-        embed.set_image(url=random.choice(Stuff.BlowJob))
+        embed.set_image(url=api(nsfw.bj))
         embed.set_footer(text='From a weird source')
         await ctx.send(embed=embed)
+        
     @commands.command(aliases=['FS'])
     @commands.is_nsfw()
     async def FaceSitting(self, ctx):
@@ -107,19 +138,21 @@ class nsfw(commands.Cog):
             title='Can they breathe?',
             color=discord.Color.red()
             )
-        embed.set_image(url=random.choice(Stuff.FaceSitting))
+        embed.set_image(url=api(nsfw.facesitting))
         embed.set_footer(text='From a weird source')
         await ctx.send(embed=embed)
+        
     @commands.command(aliases=['gif'])
     @commands.is_nsfw()
-    async def Gifs(self, ctx):
+    async def porn(self, ctx):
         embed = discord.Embed(
             title='Live Action.',
             color=discord.Color.red()
             )
-        embed.set_image(url=random.choice(Stuff.Gifs))
+        embed.set_image(url=api(nsfw.animated))
         embed.set_footer(text='From a weird source')
         await ctx.send(embed=embed)
+        
     @commands.command(alises=['tits', 'titties', 'tit', 'boob'])
     @commands.is_nsfw()
     async def boobs(self, ctx):
@@ -127,7 +160,7 @@ class nsfw(commands.Cog):
             title='Bouncing!',
             color=discord.Color.purple()
         )
-        embed.set_image(url=random.choice(Stuff.Boobs))
+        embed.set_image(url=api(nsfw.tits))
         embed.set_footer(text='From a weird source')
         await ctx.send(embed=embed)
 
