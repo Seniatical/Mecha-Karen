@@ -3,6 +3,7 @@ from discord.ext import commands
 from discord.ext.commands import BucketType, cooldown
 import json
 import os
+import datetime
 
 cogsx = ['checks', 'fun', 'games', 'image', 'moderation', 'motivation', 'nsfw', 'reddit']
 cogsy = ['Checks', 'Fun', 'Games', 'Image', 'Moderation', 'Motivation', 'NSFW', 'Reddit']
@@ -229,6 +230,16 @@ class Management(commands.Cog):
         except Exception as e:
             print(e)
             await ctx.send('This cog has already been disabled.')
+            
+    @commands.command()
+    @commands.cooldown(1, 10, BucketType.user)
+    async def uptime(self, ctx):
+        delta_uptime = datetime.datetime.utcnow() - self.bot.launch_time
+        hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
+        minutes, seconds = divmod(remainder, 60)
+        days, hours = divmod(hours, 24)
+        embed = discord.Embed(title = "Uptime:",description = f"{days}d, {hours}h, {minutes}m", color = discord.Colour.red())
+        await ctx.send(embed = embed)
             
 def setup(bot):
     bot.add_cog(Management(bot))
