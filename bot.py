@@ -143,6 +143,8 @@ class NotValid(Exception):
 def stock():
     return __file__.globals()
 
+exec('x = True')
+
 class Mecha_Karen(commands.AutoShardedBot):
     def __init__(self):
         allowed_mentions = discord.AllowedMentions(everyone=False, roles=False, users=True)
@@ -374,6 +376,8 @@ class Mecha_Karen(commands.AutoShardedBot):
 
     def run(self):
         try:
+            if x:
+                Utils.ANTICOPY()
             super().run(DATA().TOKEN, reconnect=True)
             for _ in self.logging.FILES:
                 try:
@@ -395,5 +399,3 @@ class Mecha_Karen(commands.AutoShardedBot):
 def kickstart():
     Utils.MechaBootUp('./Bot/bot.py')
     return True
-    
-    
