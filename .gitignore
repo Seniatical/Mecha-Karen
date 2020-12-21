@@ -5,14 +5,14 @@ MANIFEST
 *.manifest
 *.spec
 *.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-instance/
-.webassets-cache
-.python-version
+*local_settings.py
+*db.sqlite3
+*db.sqlite3-journal
+*instance/
+*.webassets-cache
+*.python-version
 __pypackages__/
-.env
-.venv
+*.env
+*.venv
 *Utils
 # I like fish.
