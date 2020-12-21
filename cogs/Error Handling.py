@@ -4,6 +4,7 @@ from discord.ext import commands
 from asyncio import sleep
 import traceback
 import string, random
+from Utils import __logging__
 
 errors = ('ArithmeticError', 'AssertionError', 'AttributeError', 'BaseException', 'BlockingIOError',
           'BrokenPipeError', 'BufferError', 'BytesWarning', 'ChildProcessError', 'ConnectionAbortedError',
@@ -16,7 +17,7 @@ errors = ('ArithmeticError', 'AssertionError', 'AttributeError', 'BaseException'
           'PendingDeprecationWarning', 'PermissionError', 'ProcessLookupError', 'RecursionError',
           'ReferenceError', 'ResourceWarning', 'RuntimeError', 'RuntimeWarning', 'StopAsyncIteration',
           'StopIteration', 'SyntaxError', 'SyntaxWarning', 'SystemError', 'SystemExit', 'TabError',
-          'TimeoutError', 'True', 'TypeError', 'UnboundLocalError', 'UnicodeDecodeError', 'UnicodeEncodeError',
+          'TimeoutError', 'TypeError', 'UnboundLocalError', 'UnicodeDecodeError', 'UnicodeEncodeError',
           'UnicodeError', 'UnicodeTranslateError', 'UnicodeWarning', 'UserWarning', 'ValueError', 'Warning',
           'WindowsError', 'ZeroDivisionError')
 
@@ -49,6 +50,20 @@ class Events(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.logging = __logging__
+          
+        def __cache__():
+            return __logging__.cache(mode='json')
+
+        def update_cache():
+            current = __logging__.cache()
+            updating = __logging__.holder(data='Full')
+            for i in updating:
+                for j in current:
+                    if j.category == i.category:
+                        __logging__.replace_cache(j, i)
+                        continue
+                    __logging__.create_category(revert=True, temp=True)
+            return True
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
