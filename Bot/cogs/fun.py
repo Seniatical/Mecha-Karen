@@ -8,7 +8,7 @@ from discord.ext.commands import BucketType, cooldown
 import os
 import requests
 
-from Others import IMG, Bio, Channel, Co, gender, Jokes, Numbers, Numbers2, Quotes, Stuff, words
+from Others import IMG, Bio, Channel, Co, gender, Jokes, Numbers, Numbers2, Quotes, words
 
 class fun(commands.Cog):
 
