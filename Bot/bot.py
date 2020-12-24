@@ -365,6 +365,17 @@ class Mecha_Karen(commands.AutoShardedBot):
         await super().close()
         await self.session.close()
 
+    @staticmethod
+    async def on_socket_raw_receive(message):
+        y = self.logging.call('./Logs/recieved.log')
+        @y.update()
+        def clog(message_):
+            x = self.logging.encode(message)
+            if not x:
+                return
+            message_.repel(x)
+            return True
+        
     def run(self):
         try:
             Helpers.functions.help(x)
