@@ -1,0 +1,42 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = false
+
+[dev-packages]
+flake8 = "*"
+pre-commit = "*"
+
+[packages]
+psutil = "*"
+pysocks = "*"
+youtube-search = "*"
+discord-py = {version = "~=1.5.1"}
+requests = "*"
+bs4 = "*"
+lxml = "*"
+aPRAW = "*"
+APScheduler = "*"
+python-dateutil = "*"
+colorama = "*"
+mysql-connector-python = "*"
+networkx = "*"
+numpy = "*"
+colorama = "*"
+beautifulsoup4 = "*"
+cloc = "*"
+html5lib = "*"
+pickleshare = "*"
+pillow = "*"
+profanity-filter = "*"
+spacy = "*"
+webcolors = "*"
+
+
+[requires]
+python_version = "3.8"
+
+[scripts]
+start = "python -m bot"
+lint = "python -m flake8"
+precommit = "pre-commit install"
