@@ -1,23 +1,16 @@
 [[source]]
 url = "https://pypi.org/simple"
-verify_ssl = true
+verify_ssl = false
 name = "pypi"
 
-[dev-packages]
-flake8 = "*"
-pre-commit = "*"
-wheel = "*"
 
 [packages]
 psutil = "*"
 pysocks = "*"
-youtube-search = "*"
 discord-py = {version = "~=1.5.1"}
 requests = "*"
 bs4 = "*"
-lxml = "*"
-aPRAW = "*"
-APScheduler = "*"
+apscheduler = "*"
 python-dateutil = "*"
 colorama = "*"
 mysql-connector-python = "*"
@@ -32,6 +25,10 @@ profanity-filter = "*"
 spacy = "*"
 webcolors = "*"
 
+[dev-packages]
+pre-commit = "*"
+wheel = "*"
+flake8 = "*"
 
 [requires]
 python_version = "3.8"
