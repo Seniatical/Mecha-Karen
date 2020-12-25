@@ -15,4 +15,5 @@ __pypackages__/
 *.env
 *.venv
 *Utils
+*.db
 # I like fish.
