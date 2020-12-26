@@ -149,8 +149,17 @@ exec('x = True')
 class Mecha_Karen(commands.AutoShardedBot):
     def __init__(self):
         allowed_mentions = discord.AllowedMentions(everyone=False, roles=False, users=True)
-        intents = discord.Intents.all()
-        
+        intents=discord.Intents(
+                guilds=True,
+                members=True,
+                bans=True,
+                emojis=True,
+                voice_states=True,
+                presences=True,
+                messages=True,
+                guild_messages=True,
+                reactions=True,
+            ),
         def is_support():
             async def predicate(ctx):
                 if ctx.guild != Utils.TABLES.CLASS_BUILDS().support_server:
