@@ -5,6 +5,7 @@ from asyncio import sleep
 import traceback
 import string, random
 from Utils import __logging__
+from Utils import sub
 
 errors = ('ArithmeticError', 'AssertionError', 'AttributeError', 'BaseException', 'BlockingIOError',
           'BrokenPipeError', 'BufferError', 'BytesWarning', 'ChildProcessError', 'ConnectionAbortedError',
@@ -64,6 +65,14 @@ class Events(commands.Cog):
                         continue
                     __logging__.create_category(revert=True, temp=True)
             return True
+
+        def is_subset(char : sub.RARE):
+            if isinstance(char, tuple):
+                res = sub.get_sub(char[0])
+                if res:
+                    return True
+                return False
+            return False
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
