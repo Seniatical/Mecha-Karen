@@ -10,8 +10,6 @@ import math
 import random
 from wand.image import Image as swirler
 
-# is_avatar_animated()
-
 class image(commands.Cog):
 
     def __init__(self, bot):
