@@ -1,23 +1,18 @@
+#!/usr/bin/python
+
 """
 
 Discord bot made by Seniatical / _-*™#1234
-Created at 5/8/2020
+Created at 05/08/2020
 Available under the Apache License 2.0
-
 "
 A permissive license whose main conditions require preservation of copyright and license notices.
 Contributors provide an express grant of patent rights.
 Licensed works, modifications, and larger works may be distributed under different terms and without source code.
 "
 
-Note:
-This bot has an extensive backend network.
-I will get around to publishing that soon. Rn its just full of personal info such as server IPs and webhooks
-
-Another thing:
-    Dont copy the entirety of this bot and complain it doesnt work,
-    It was made for people to learn from and to improve the code behind it,
 """
+
 import datetime, asyncio, os, json, discord, version, subprocess, sys
 from discord.ext import commands
 from discord.ext.commands import BucketType, cooldown
@@ -73,8 +68,8 @@ def PING(file, dir_):
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT)
         stdout, stderr = response.communicate()
-        #print(stdout)
-        #print(stderr)
+        ## print(stdout)
+        ## print(stderr)
 
         if (response.returncode == 0):
             status = line.rstrip() + " is Reachable"
@@ -82,11 +77,6 @@ def PING(file, dir_):
             status = line.rstrip() + " is Not reachable"
         holder.append(status)
     return holder
-
-'''
-Moved stuff which was here to:
-    ./Helpers/functions.py
-'''
 
 def IMPORTED():
     loaded = globals()
@@ -405,7 +395,3 @@ class Mecha_Karen(commands.AutoShardedBot):
     @property
     async def config(self):
         return __import__('Utils')
-
-def kickstart():
-    Utils.MechaBootUp('./Bot/bot.py')
-    return True
