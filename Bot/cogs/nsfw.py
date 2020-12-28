@@ -5,6 +5,7 @@ from Utils.API import NSFW as nsfw
 import random
 import asyncio
 import time
+from Utils import __logging__
 
 '''
 Version Info:
@@ -27,6 +28,17 @@ Disadvantages:
 Version Info:
     Added Caching
 '''
+def cache_(reg : __logging__.col, **kwargs):
+    y = reg.load_col()
+    if y:
+        raise AttributeError('Column is already in use')
+    reg.update(
+        **kwargs
+    )
+    return True
+
+def load_(reg : __logging__.col):
+    return reg.load_col()
 
 class nsfw(commands.Cog):
     def __init__(self, bot):
@@ -149,7 +161,10 @@ class nsfw(commands.Cog):
             title='Live Action.',
             color=discord.Color.red()
             )
-        embed.set_image(url=api(nsfw.animated))
+        y = api(nsfw.animated)
+        embed.set_image(url=y)
+        if not y in load_():
+            cache_('NSFW_TABLE/animated')
         embed.set_footer(text='From a weird source')
         await ctx.send(embed=embed)
         
