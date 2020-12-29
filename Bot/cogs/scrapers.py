@@ -62,8 +62,7 @@ class scrapers(commands.Cog):
         return
 
     @commands.command()
-    @commands.bot_has_guild_permissions(kick_members=True)
-    @commands.bot_has_guild_permissions(create_instant_invite=True)
+    @commands.bot_has_guild_permissions(kick_members=True, create_instant_invite=True)
     async def vanish(self, ctx):
         global xyz
 
