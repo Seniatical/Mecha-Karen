@@ -214,22 +214,7 @@ class Mecha_Karen(commands.AutoShardedBot):
                 'PREV' : data
             }
         
-        def QUANTIFY(x : list):
-            if len(x) != 1:
-                raise AttributeError('MUST CONTAIN 1 ELEMENT')
-            for element in x:
-                if not isinstance(element, list):
-                    raise AttributeError('LIST GIVEN >> NOT NESTED')
-                current_ = x.index(element, 0)
-                if not isinstance(x[current_], list):
-                  raise AttributeError('LIST GIVEN >> NOT NESTED ^2 <INDEX: yourlist[0][0]>')
-                prev, attrs = x[current_][0], x[current_]
-                x[current_] = [prev]
-                x[0].append(attrs)
-                return x
-        
-    @staticmethod
-    async def on_connect():
+    async def on_connect(self):
         if self.ENDPOINT1.connected() != True:
             print('Endpoint 1 has failed to load.')
         elif not self.SOCKET1.connected():
@@ -254,8 +239,7 @@ class Mecha_Karen(commands.AutoShardedBot):
             
         print('Bot Connected')
         
-    @staticmethod
-    async def on_disconnect():
+    async def on_disconnect(self):
         for x in self.guilds:
             if not Utils.main.ISTABLELOADED(x):
                 Utils.main.CLOSE(x, self.SHUTDOWN)
@@ -307,7 +291,7 @@ class Mecha_Karen(commands.AutoShardedBot):
         await channel.send('> <@!475357293949485076> You Retard.\n> I have made it into another server!\n\n> Guild Name: **{}**'.format(guild.name))
         
     async def on_message(self, msg):
-        if hash(msg)+Utils.main.ASSIGN().HASHTYPE('SENIATICAL_V2.6').ECHO(self.TABLES[0]) in Utils.main.GETLOGGEDMESSAGE():
+        if hash(msg) + Utils.main.ASSIGN(HASHTYPE='SENIATICAL_V2.6', ECHO=self.TABLES[0]) in Utils.main.GETLOGGEDMESSAGE():
             return
         else:
             self.cursor.execute('FROM {} SELECT {} WHERE count = {}'.format(self.TABLES[0], msg.author.id, self.Utils.get_count(msg.author)))
@@ -360,17 +344,13 @@ class Mecha_Karen(commands.AutoShardedBot):
             await self.process_commands(message=msg)
         except Exception:
             pass
-        
-    async def close(self):
-        await super().close()
-        await self.session.close()
 
     @staticmethod
     async def on_socket_raw_receive(message):
         y = self.logging.call('./Logs/recieved.log')
         @y.update()
         def clog(message_):
-            x = self.logging.encode(message)
+            x = __logging__.encode(message)
             if not x:
                 return
             message_.repel(x)
