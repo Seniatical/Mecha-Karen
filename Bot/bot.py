@@ -25,6 +25,7 @@ from __future__ import print_function
 from mysql.connector import errorcode
 from Utils import UD, __logging__
 import Helpers
+import traceback
 
 class DATA:
     def __init__(self):
@@ -197,7 +198,7 @@ class Mecha_Karen(commands.AutoShardedBot):
                 try:
                     self.load_extension(f'cogs.{filename[:-3]}')
                 except Exception as e:
-                    raise e
+                    traceback.print_exception(etype=type(error), value=error, tb=error.__traceback__)
         
         @self.before_invoke
         async def before_any_command(ctx):
