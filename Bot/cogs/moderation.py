@@ -3,193 +3,420 @@ from discord.ext import commands
 from datetime import timedelta
 from discord.ext.commands import BucketType, cooldown
 import asyncio
+from Helpers import functions
+from Helpers import emoji
+from Helpers import colours
+import random
 
 from Others import *
+
+class Muted:
+    def __init__(self):
+        self.muted = {}
+
+def convert(time: int, unit):
+    unit = unit.lower()
+    if unit == 's':
+        return time
+    elif unit == 'm':
+        return time*60
+    elif unit == 'h':
+        return (time*60)*60
+    elif unit == 'd':
+        return ((time*60)*60)*24
 
 class moderation(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases = ['purge'])
+    @commands.command(aliases=['purge'])
     @commands.has_permissions(manage_messages=True)
+    @commands.bot_has_guild_permissions(manage_messages=True)
     @cooldown(1, 5, BucketType.user)
-    async def clear(self, ctx, amount=2):
+    async def clear(self, ctx, amount='5', member: discord.Member = None):
+        try:
+            amount = int(amount)
+        except ValueError:
+            ctx.command.reset_cooldown(ctx)
+            return await ctx.send('**The amount of messages to delete must be a number!**')
         if amount > 100:
+            ctx.command.reset_cooldown(ctx)
             await ctx.send('Amount cant be larger than **100**.')
             return
-        await ctx.channel.purge(limit=amount)
-        await ctx.send(f'Cleared {amount} messages from the channel {ctx.channel.name}')
+        try:
+            if member == None:
+                await ctx.channel.purge(limit=amount)
+            else:
+                def check(m):
+                    return m.author == member
+                await ctx.channel.purge(limit=amount, check=check)
+                return await ctx.send('Cleared any messages which were from `{}` within the range of **{}** messages.'.format(member, amount))
+        except discord.errors.Forbidden:
+            return await ctx.send('Failed to purge. I am Missing Permissions!')
+        await ctx.send(f'Cleared **{amount}** messages from the channel {ctx.channel.name}')
 
     @commands.command()
     @cooldown(1, 5, BucketType.user)
     @commands.has_permissions(kick_members=True)
-    async def kick(self, ctx, member: discord.Member=None, *, reason='Wasnt Provided.'):
+    @commands.bot_has_guild_permissions(kick_members=True)
+    async def kick(self, ctx, member: discord.Member = None, *, reason="Wasn't Provided."):
         if member == None:
-            await ctx.send('Please provide a member.')
-            return
+            ctx.command.reset_cooldown(ctx)
+            return await ctx.send('Please provide a member.')
         try:
-            await member.send('You have been kicked from {}.\n**Reason:**\n\n{}'.format(reason))
-        except Exception:
-            pass
-        await member.kick(reason=reason)
-        await ctx.send('Sucessfully kicked **{}**.'.format(member))
+            if ctx.channel.permissions_for(member).kick_members and ctx.author != ctx.guild.owner:
+                return await ctx.send('{} I cannot kick this members as they are a **mod/admin**.'.format(emoji.KAREN_ADDITIONS_ANIMATED['nope']))
+            try:
+                await member.send(embed=discord.Embed(
+                    title='You Have Been Kicked From {}'.format(ctx.guild),
+                    description='**{}** Has Kicked You From this server.\n**Reason:**\n```{}```'.format(ctx.author.mention, reason),
+                    color=discord.Color.red()
+                ).set_thumbnail(url=ctx.author.avatar_url))
+            except discord.errors.HTTPException:
+                pass
+            await member.kick(reason=reason)
+        except discord.errors.Forbidden:
+            ctx.command.reset_cooldown(ctx)
+            return await ctx.send('{} I cannot **Kick** this member due to role hierarchy.'.format(emoji.KAREN_ADDITIONS_ANIMATED['nope']))
+        await ctx.send(embed=discord.Embed(
+            description='{} Successfully kicked **{}**.'.format(emoji.KAREN_ADDITIONS_ANIMATED['pass'],member),
+            color=0x008000,
+            )
+        )
 
     @commands.command()
     @commands.has_permissions(ban_members=True)
+    @commands.bot_has_guild_permissions(ban_members=True, embed_links=True)
     @cooldown(1, 5, BucketType.user)
-    async def ban(self, ctx, member: discord.Member=None, *, reason='Wasnt Provided.'):
+    async def ban(self, ctx, member: discord.User = None, *, reason="Wasn't Provided."):
         if member == None:
+            ctx.command.reset_cooldown(ctx)
             await ctx.send('Please provide a member.')
             return
         try:
-            await member.send('You have been banned from **{}**.\n**Reason:**\n\n{}'.format(reason))
+            if ctx.channel.permissions_for(member).kick_members and ctx.author != ctx.guild.owner:
+                return await ctx.send('{} I cannot kick this members as they are a **mod/admin**.'.format(emoji.KAREN_ADDITIONS_ANIMATED['nope']))
+            if str(ctx.guild.get_member(member.id)) == 'None':
+                pass
+            else:
+                await member.send('You have been banned from **{}**.\n**Reason:**\n\n{}'.format(ctx.guild, reason))
         except Exception:
             pass
-        await member.ban(reason=reason)
-        await ctx.send('Sucessfully banned **{}**.'.format(member))
+        try:
+            await ctx.guild.ban(member, reason=reason, delete_message_days=7)
+        except discord.errors.Forbidden:
+            ctx.command.reset_cooldown(ctx)
+            return await ctx.send('I cannot **Ban** this member due to role hierarchy.')
+        await ctx.send(embed=discord.Embed(
+            description='{} Successfully banned **{}**.'.format(emoji.KAREN_ADDITIONS_ANIMATED['pass'],member),
+            color=0x008000,
+            )
+        )
 
     @commands.command()
     @commands.has_permissions(ban_members=True)
+    @commands.bot_has_guild_permissions(ban_members=True, embed_links=True)
     @cooldown(1, 5, BucketType.user)
-    async def unban(self, ctx, member=None, *, reason='Wasnt Provided.'):
+    async def unban(self, ctx, member=None, *, reason="Wasn't Provided."):
         if member == None:
+            ctx.command.reset_cooldown(ctx)
             await ctx.send('Who would you like unbanned?\nNext time provide a user.')
         banned_users = await ctx.guild.bans()
-        member_name, member_disc = member.split('#')
-
-        for banned_entry in banned_users:
-            user = banned_entry.user
-
-            if (user.name, user.discriminator) == (member_name, member_disc):
-                await ctx.guild.unban(user)
-                await ctx.send(member_name + f' was unbanned. | {reason}')
-                return
-        await ctx.send(member + ' was not found')
-
-    @commands.command()
-    @commands.has_guild_permissions(manage_messages=True)
-    @cooldown(1, 5, BucketType.user)
-    async def Mute(self, ctx, member: discord.Member=None, *, reason='Not Given'):
-        if member == None:
-            await ctx.send('Please provide a member.')
-            return
-        role = discord.utils.get(ctx.guild.roles, name="Muted")
-        if role not in ctx.guild.roles:
-            perms = discord.Permissions(add_reactions=False, send_messages=False, connect=False)
-            await ctx.guild.create_role(name='Muted', permissions=perms)
-            await member.add_roles(role)
-            for x in member.roles:
-                if x == ctx.guild.default_role:
-                    pass
-                else:
-                    y = discord.utils.get(ctx.guild.roles, name=x.name)
-                    await member.remove_roles(y)
-            await ctx.send(f"{member} has been muted by {ctx.author.name}")
-        else:
-            for x in member.roles:
-                if x == ctx.guild.default_role:
-                    pass
-                else:
-                    y = discord.utils.get(ctx.guild.roles, name=x.name)
-                    await member.remove_roles(y)
-            await member.add_roles(role)
-            await ctx.send(f"{member} has been muted by {ctx.author.name} using the role: {role}")
-
-    @commands.command()
-    @cooldown(1, 10, BucketType.user)
-    @commands.has_guild_permissions(manage_messages=True)
-    async def Unmute(self, ctx, member : discord.Member=None):
-        if member == None:
-            await ctx.send('Please give a member.')
-            return
-        role = discord.utils.get(ctx.guild.roles, name="Muted")
         try:
-            await member.remove_roles(role)
-            await ctx.send('Sucessfully unmuted {}.'.format(member))
-        except Exception:
-            await ctx.send('That user isnt muted!')
+            id_ = int(member)
+            for user in banned_users:
+                user_ = user.user
+                if user_.id == id_:
+                    try:
+                        await ctx.guild.unban(user_, reason=reason)
+                        return await ctx.send(embed=discord.Embed(
+                            description='{} Successfully unbanned **{}**.'.format(emoji.KAREN_ADDITIONS_ANIMATED['pass'],member),
+                            color=0x008000,
+                            )
+                        )
+                    except discord.errors.Forbidden:
+                        return await ctx.send("I cannot **Unban** this member. I either don't have **Permission (s)** or due to role hierarchy.")
+            if id_ not in [i.id for i in self.bot.users]:
+                return await ctx.send(embed=discord.Embed(
+                    description="<a:nope:787764352387776523> I couldn't find a user with the ID matching: **{}**.".format(id_),
+                    colour=colours.HEX_RED_SHADES[random.choice(list(colours.HEX_RED_SHADES.keys()))]
+                ))
+            user = [i for i in self.bot.users if i.id == id_]
+            return await ctx.send(embed=discord.Embed(
+                description="<a:nope:787764352387776523> The user **{}** isn't banned!".format(user[0]),
+                colour=colours.HEX_RED_SHADES[random.choice(list(colours.HEX_RED_SHADES.keys()))]
+            ))
+        except ValueError:
+            try:
+                member_name, member_disc = member.split('#')
+            except ValueError:
+                return await ctx.send(
+                    embed=discord.Embed(
+                        description="<a:nope:787764352387776523> Use the correct format! **e.g. **_-*™#7519",
+                        colour=discord.Color.red()
+                    )
+                )
+            for banned_entry in banned_users:
+                user = banned_entry.user
+    
+                if (user.name, user.discriminator) == (member_name, member_disc):
+                    await ctx.guild.unban(user)
+                    try:
+                        return await ctx.send(embed=discord.Embed(
+                            description='{} Successfully unbanned **{}**.'.format(emoji.KAREN_ADDITIONS_ANIMATED['pass'],member),
+                            color=0x008000,
+                            )
+                        )
+                    except discord.errors.Forbidden:
+                        return await ctx.send('I cannot **Unban** this member due to role hierarchy.')
+            user = [i.name+'#'+i.discriminator for i in self.bot.users if i.name == member_name]
+            if len(user) == 0:
+                return await ctx.send(embed=discord.Embed(
+                    description="<a:nope:787764352387776523> I couldn't find the user with the name matching: **{}**".format(member),
+                    colour=discord.Color.red()
+                ))
+            return await ctx.send(embed=discord.Embed(
+                description="<a:nope:787764352387776523> The user **{}** isn't banned!".format(user[0]),
+                colour=colours.HEX_RED_SHADES[random.choice(list(colours.HEX_RED_SHADES.keys()))]
+            ))
 
     @commands.command()
+    @commands.bot_has_guild_permissions(manage_channels=True)
+    @functions.is_guild_owner()
     @cooldown(1, 300, BucketType.user)
-    @commands.is_owner()
-    async def nuke(self, ctx, channels : discord.TextChannel=None):
+    async def nuke(self, ctx, channels: discord.TextChannel = None):
         if channels == None:
+            ctx.command.reset_cooldown(ctx)
             await ctx.send('Give a channel')
             return
-        if ctx.author != ctx.guild.owner:
-            await ctx.send('Only **{}** Can use this Command'.format(ctx.guild.owner))
         else:
-            verif = await ctx.send('Are you sure!')
+            await ctx.send('Are you sure!')
             await ctx.send('Type in `yes`. To proceed')
 
             def check(m):
                 user = ctx.author
-                return m.author.id == user.id and m.content == 'yes'
+                return m.author.id == user.id and m.content.lower() == 'yes'
 
-            msg = await self.bot.wait_for('message', check=check)
+            await self.bot.wait_for('message', check=check)
             await ctx.channel.send('Theres no going back!\n**Are you sure.**')
-            def check(m):
-                user = ctx.author
-                return m.author.id == user.id and m.content == 'yes'
-
-            msg = await self.bot.wait_for('message', check=check)
-            new = await channels.clone()
-            await channels.delete()
+            await self.bot.wait_for('message', check=check)
+            try:
+                new = await channels.clone()
+                await channels.delete()
+            except discord.errors.Forbidden:
+                return await ctx.send('**Nuke Failed. I am missing permissions!**')
             await new.send('https://media1.tenor.com/images/6c485efad8b910e5289fc7968ea1d22f/tenor.gif?itemid=5791468')
             await asyncio.sleep(2)
             await new.send('**Mecha Karen** has nuked this channel!')
-
                 
     @commands.command(aliases=['nick'])
     @commands.has_guild_permissions(manage_nicknames=True)
-    async def nickname(self, ctx, member : discord.Member, *args):
+    @commands.bot_has_guild_permissions(manage_nicknames=True)
+    async def nickname(self, ctx, member: discord.Member = None, *args):
         if member == None:
-            await ctx.send('Give me a user dumbass')
+            ctx.command.reset_cooldown(ctx)
+            return await ctx.send(embed=discord.Embed(
+                description='<a:nope:787764352387776523> Give a member. **-nickname <MEMBER> <NICKNAME>**',
+                colour=discord.Color.red()
+            ))
         elif member == ctx.guild.owner:
-            await ctx.send('You cant name the owner!')
+            ctx.command.reset_cooldown(ctx)
+            return await ctx.send(embed=discord.Embed(
+                description='<a:nope:787764352387776523> You cannot change the owners nickname!',
+                colour=discord.Color.red()
+            ))
         else:
+            if len(args) == 0:
+                ctx.command.reset_cooldown(ctx)
+                return await ctx.send(embed=discord.Embed(
+                    description='<a:nope:787764352387776523> Need to give a new nickname!',
+                    colour=discord.Color.red()
+                ))
+            old = member.display_name
             x = ' '.join(map(str, args))
-            await member.edit(nick=f'{x}')
-            await ctx.send(f'{member.name} has been changed to {x}')
+            if x == old:
+                ctx.command.reset_cooldown(ctx)
+                return await ctx.send(embed=discord.Embed(
+                    description='<a:nope:787764352387776523> New nickname needs to be different to the old nickname',
+                    colour=discord.Color.red()
+                ))
+            try:
+                await member.edit(nick=f'{x}')
+            except discord.errors.Forbidden:
+                return await ctx.send(embed=discord.Embed(
+                    description='<a:nope:787764352387776523> Cannot change **{}** nickname due to role hierarchy.'.format(member),
+                    colour=discord.Color.red()
+                ))
+            await ctx.send(embed=discord.Embed(
+                description='<a:Passed:757652583392215201> Successfully renamed **{}** to **{}**.'.format(old, x),
+                colour=discord.Color.green()
+            ))
 
     @commands.command()
     @commands.has_guild_permissions(manage_channels=True)
+    @commands.bot_has_guild_permissions(manage_channels=True)
     @commands.cooldown(1, 60, BucketType.user)
-    async def slowmode(self, ctx, time : int=0):
-        if time < 0:
-            await ctx.send('Give a positive number.')
-            return
+    async def slowmode(self, ctx, time='0', channel: discord.TextChannel = None):
+        channel = channel or ctx.channel
         try:
-            if time > 21600:
-                await ctx.send('Number is too large. You can only have a maximum time of `21600` seconds (6 Hours)')
-            else:
-                await ctx.channel.edit(slowmode_delay=time)
-                await ctx.send(f'The channel {ctx.channel.name} now has a slowmode of {time} seconds')
-        except Exception:
-            await ctx.send('Not a number!')
+            time = int(time)
+        except ValueError:
+            ctx.command.reset_cooldown(ctx)
+            return await ctx.send(embed=discord.Embed(
+                description='<a:nope:787764352387776523> Slowmode delay must be a number!',
+                colour=discord.Color.red()
+            ))
+        if time < 0:
+            ctx.command.reset_cooldown(ctx)
+            return await ctx.send(embed=discord.Embed(
+                description='<a:nope:787764352387776523> Slowmode delay must be a positive number!'
+            ))
+        if time > 21600:
+            ctx.command.reset_cooldown(ctx)
+            return await ctx.send(
+                embed=discord.Embed(
+                    description='<a:nope:787764352387776523> Channel can only have a maximum slowmode of **21600** seconds (6 Hours).',
+                    colour=discord.Color.red()
+                )
+            )
+        else:
+            await channel.edit(slowmode_delay=time)
+            await ctx.send(embed=discord.Embed(
+                description='<a:Passed:757652583392215201> The channel {} now has a slowmode delay of **{}** seconds'.format(channel.mention, time),
+                colour=discord.Color.green()
+            ))
 
     @commands.command()
     @commands.has_permissions(manage_channels=True)
-    async def lock(self, ctx, channel: discord.TextChannel=None):
+    async def lock(self, ctx, channel: discord.TextChannel = None):
         channel = channel or ctx.channel
 
         if ctx.guild.default_role not in channel.overwrites:
             overwrites = {
-            ctx.guild.default_role: discord.PermissionOverwrite(send_messages=False)
+                ctx.guild.default_role: discord.PermissionOverwrite(send_messages=False)
             }
             await channel.edit(overwrites=overwrites)
-            await ctx.send("**The channel `{}` has successfully been locked!**".format(ctx.channel.name))
-        elif channel.overwrites[ctx.guild.default_role].send_messages == True or channel.overwrites[ctx.guild.default_role].send_messages == None:
+            await ctx.send(embed=discord.Embed(
+                description='<a:Passed:757652583392215201> Successfully locked the channel {}.'.format(channel.mention),
+                colour=discord.Color.green()
+            ))
+        elif channel.overwrites[ctx.guild.default_role].send_messages or channel.overwrites[ctx.guild.default_role].send_messages == None:
             overwrites = channel.overwrites[ctx.guild.default_role]
             overwrites.send_messages = False
             await channel.set_permissions(ctx.guild.default_role, overwrite=overwrites)
-            await ctx.send("**The channel `{}` has successfully been locked!**".format(ctx.channel.name))
+            await ctx.send(embed=discord.Embed(
+                description='<a:Passed:757652583392215201> Successfully locked the channel {}.'.format(channel.mention),
+                colour=discord.Color.green()
+            ))
         else:
             overwrites = channel.overwrites[ctx.guild.default_role]
             overwrites.send_messages = True
             await channel.set_permissions(ctx.guild.default_role, overwrite=overwrites)
-            await ctx.send('**The channel `{}` has now been unlocked!**'.format(ctx.channel.name))
+            await ctx.send(embed=discord.Embed(
+                description='<a:Passed:757652583392215201> Successfully unlocked the channel {}.'.format(channel.mention),
+                colour=discord.Color.green()
+            ))
+
+    @commands.command()
+    @commands.has_guild_permissions(manage_messages=True)
+    @commands.bot_has_guild_permissions(manage_channels=True, manage_roles=True)
+    async def mute(self, ctx, user: discord.Member = None, time='10s'):
+        if user == None:
+            return await ctx.send(embed=discord.Embed(
+                description='<a:nope:787764352387776523> Need to provide a member! -Mute <MEMBER> <TIME>',
+                colour=discord.Colour.red()
+            ))
+        if ctx.channel.permissions_for(user).manage_messages:
+            return await ctx.send(embed=discord.Embed(
+                description='<a:nope:787764352387776523> This member is a **mod/admin**, I cannot mute them.',
+                colour=discord.Colour.red()
+            ))
+        try:
+            time = time.lower()
+            if time[-1] not in ['s', 'h', 'd', 'm'] and not time[-2].isnumeric():
+                return await ctx.send(embed=discord.Embed(
+                    description='<a:nope:787764352387776523> Incorrect time format used! `S | M | H | D`',
+                    colour=discord.Colour.red()
+                ))
+            timex = convert(int(time[:-1]), time[-1])
+        except ValueError:
+            return await ctx.send('Duration must be a number!')
+
+        async def mute_(member: discord.Member):
+            role = discord.utils.get(ctx.guild.roles, name='Muted')
+            if not role:
+                role = await ctx.guild.create_role(
+                    name='Muted',
+                    reason='Mute Role has been set automatically!',
+                    permissions=discord.Permissions(
+                        send_messages=False,
+                        add_reactions=False,
+                        view_channel=True,
+                        change_nickname=False,
+                        connect=False
+                    )
+                )
+            await member.add_roles(role)
+            for channel in ctx.guild.text_channels:
+                overwrites = channel.overwrites
+                if member not in overwrites:
+                    overwrites[user] = discord.PermissionOverwrite(
+                        send_messages=False,
+                        add_reactions=False,
+                        view_channel=True,
+                        change_nickname=False,
+                        connect=False
+                    )
+                    await channel.edit(overwrites=overwrites)
+            await asyncio.sleep(timex)
+            try:
+                await member.remove_roles(role)
+            except AttributeError:
+                pass
+        self.bot.loop.create_task(mute_(user))
+        if time[-1].lower() == 'm':
+            form = 'Minutes'
+        elif time[-1].lower() == 'h':
+            form = 'Hours',
+        elif time[-1].lower() == 'd':
+            form = 'Days'
+        else:
+            form = 'Seconds'
+        await ctx.send(
+            embed=discord.Embed(
+                description='{} Successfully muted **{}** for **{}** {}.'.format('<a:Passed:757652583392215201>', user, time, form),
+                colour=discord.Color.green()
+            )
+        )
+
+    @commands.command()
+    @commands.has_guild_permissions(manage_channels=True)
+    @commands.bot_has_guild_permissions(manage_channels=True)
+    @commands.cooldown(1, 10, BucketType.user)
+    async def unmute(self, ctx, user: discord.Member = None):
+        if user == None:
+            return await ctx.send('Provide a user to be unmuted!')
+        if user == ctx.guild.owner:
+            return await ctx.send(embed=discord.Embed(
+                description='<a:nope:787764352387776523> The Server Owner can Never be Muted.',
+                colour=discord.Color.red()
+            ))
+        for channel in ctx.guild.text_channels:
+            overwrites = channel.overwrites
+            if user in overwrites:
+                del overwrites[user]
+                await channel.edit(overwrites=overwrites)
+            else:
+                ctx.command.reset_cooldown(ctx)
+                return await ctx.send(embed=discord.Embed(
+                    description="<a:nope:787764352387776523> This user **{}** isn't muted!".format(user),
+                    color=discord.Color.red()
+                ))
+        await ctx.send(embed=discord.Embed(
+            description='<a:Passed:757652583392215201> Successfully unmuted the user **{}**.'.format(user),
+            colour=discord.Color.green()
+        ))
 
 def setup(bot):
     bot.add_cog(moderation(bot))
