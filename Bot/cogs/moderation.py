@@ -30,7 +30,7 @@ class moderation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=['purge'])
+   @commands.command(aliases=['purge'])
     @commands.has_permissions(manage_messages=True)
     @commands.bot_has_guild_permissions(manage_messages=True)
     @cooldown(1, 5, BucketType.user)
@@ -39,22 +39,36 @@ class moderation(commands.Cog):
             amount = int(amount)
         except ValueError:
             ctx.command.reset_cooldown(ctx)
-            return await ctx.send('**The amount of messages to delete must be a number!**')
+            return await ctx.send(embed=discord.Embed(
+                description='<a:nope:787764352387776523> Amount to purge must be number!',
+                colour=discord.Colour.red()
+            ))
         if amount > 100:
             ctx.command.reset_cooldown(ctx)
-            await ctx.send('Amount cant be larger than **100**.')
-            return
+            return await ctx.send(embed=discord.Embed(
+                description='<a:nope:787764352387776523> Amount to purge must be cannot be larger than **100**!',
+                colour=discord.Colour.red()
+            ))
         try:
             if member == None:
                 await ctx.channel.purge(limit=amount)
+                return await ctx.send(embed=discord.Embed(
+                    description='<a:Passed:757652583392215201> Successfully clear **{}** messages from {}.'.format(amount, ctx.channel.mention),
+                    colour=discord.Colour.red()
+                ))
             else:
                 def check(m):
                     return m.author == member
                 await ctx.channel.purge(limit=amount, check=check)
-                return await ctx.send('Cleared any messages which were from `{}` within the range of **{}** messages.'.format(member, amount))
+                return await ctx.send(embed=discord.Embed(
+                    description='<a:Passed:757652583392215201> Cleared any messages from **{}** in the last **{}** messages.'.format(amount, member),
+                    colour=discord.Colour.red()
+                ))
         except discord.errors.Forbidden:
-            return await ctx.send('Failed to purge. I am Missing Permissions!')
-        await ctx.send(f'Cleared **{amount}** messages from the channel {ctx.channel.name}')
+            return await ctx.send(embed=discord.Embed(
+                description='<a:nope:787764352387776523> I do not Have the Permissions to complete this action!',
+                colour=discord.Colour.red()
+            ))
 
     @commands.command()
     @cooldown(1, 5, BucketType.user)
