@@ -35,6 +35,12 @@ Basically these just :
 except i represented them in binary form.
 '''
 
+PLAIN = {
+    "white" : 0xFFFFFF,
+    "black" : 0x000000,
+    "grey" : 0x36393F
+}
+
 RGB_PRIMARY = {
     "red" : (255, 0, 0),
     "yellow" : (0, 255, 0),
