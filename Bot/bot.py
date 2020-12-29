@@ -2,7 +2,7 @@
 
 """
 
-Discord bot made by Seniatical / _-*™#1234
+Discord bot made by Seniatical / _-*™#7519
 Created at 05/08/2020
 Available under the Apache License 2.0
 "
