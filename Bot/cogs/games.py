@@ -101,9 +101,7 @@ class games(commands.Cog):
             pass
         else:
             member = 'Mecha Karen'
-        embed.add_field(name='‏‏‎ ‎', value='‏‏‎ ‎')
-        embed.add_field(name=member, value=dice2)
-        embed.add_field(name='‏‏‎ ‎', value='Join our [Support Server](https://discord.gg/Q5mFhUM)')
+        embed.add_field(name=member, value=dice2, inline=False)
         embed.set_footer(
                 icon_url='https://cdn.discordapp.com/avatars/475357293949485076/a0c190d9ffeea49f85d5468f9501b507.webp?size=256',
                 text='Bot created by _-*™#7139')
@@ -111,25 +109,7 @@ class games(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
-    async def snipe(self, ctx):
-        with open('JSON/snipe.json', 'r') as k:
-            word = json.load(k)
-        try:
-            x = word[str(ctx.channel.id)]
-            avatar = self.bot.get_user(int(x['avatar']))
-            embed = discord.Embed(
-                description=x['message']
-            )
-            embed.set_author(name=x['author'], icon_url=avatar.avatar_url)
-            embed.set_footer(text='Today at ' + x['created_at'])
-            await ctx.send(embed=embed)
-            with open('JSON/snipe.json', 'w') as f:
-                word.pop(str(ctx.channel.id))
-                json.dump(word, f, indent=4)
-        except KeyError:
-            await ctx.send('There is nothing to snipe!')
-
-    @commands.command()
+    @commands.cooldown(1, 10, BucketType.member)
     async def flip(self, ctx, user_choice : str=None):
         choices = ('heads', 'head', 'tails', 'tail')
         if user_choice == None or user_choice.lower() not in choices:
