@@ -63,6 +63,12 @@ class roles(commands.Cog):
                                     continue
                                 elif user == payload.member:
                                     await msg.remove_reaction(msg.reactions[j].emoji, payload.member)
+                '''
+                The code above
+                removes the other reaction which the user has placed on the message
+                for instance if i reacted with red, then blue
+                it will remove the reaction from red
+                '''
                 await payload.member.add_roles(role)
             except AttributeError:
                 return
