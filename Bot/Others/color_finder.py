@@ -863,8 +863,12 @@ class ColorNames:
 
     async def colours(self, rgb):
         color = rgb
-
-if __name__ == "__main__":
-    color = (0, 0, 0)
-    print (ColorNames.findNearestWebColorName(color))
-print (ColorNames.findNearestImageMagickColorName(color))
+    
+## ColorNames.findNearestWebColorName(color)
+## ColorNames.findNearestImageMagickColorName(color)
+    
+def find_(colour) -> 'RGB VALUE':
+    N1 = ColorNames.findNearestWebColorName(color)
+    N2 = ColorNames.findNearestImageMagickColorName(color)
+    
+    return (N1, N2)
