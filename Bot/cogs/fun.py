@@ -8,99 +8,12 @@ from discord.ext.commands import BucketType, cooldown
 import os
 import requests
 
-from Others import IMG, Bio, Channel, Co, gender, Jokes, Numbers, Numbers2, Quotes, words
+from Others import IMG, Bio, Channel, Co, gender, Jokes, Numbers, Numbers2, Quotes, Stuff, words
 
 class fun(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-
-    @commands.command()
-    @cooldown(1, 10, BucketType.user)
-    async def fly(self, ctx):
-        flying = ['You became a bird and flew around the world.',
-                  'Jumped off your roof and ended up in a bush of thorns. What a retard',
-                  'Flew straight into a building. Doesnt that remind us of something.',
-                  'Went to a mental asylum because the theropist thought you was mentally disabled',
-                  'Failed landing and you skidded right into a tree and snapped your beak in half',
-                  ]
-        embed = discord.Embed(
-            title='Fly machine 10000',
-            color=discord.Color.blue()
-        )
-        embed.add_field(name='**The sky**', value=f'{random.choice(flying)}')
-        await ctx.send(embed=embed)
-
-
-    @commands.command()
-    @cooldown(1, 10, BucketType.user)
-    async def parent(self, ctx):
-        parents = ['Left you when they were young',
-                   'There still with you.',
-                   'Dad went to  get the milk. idk were hes gone',
-                   'Mommys boy. HAHAHA',
-                   'Idk mate. You were adopted',
-                   ]
-        await ctx.send(f'{random.choice(parents)}')
-
-    @commands.command()
-    @cooldown(1, 10, BucketType.user)
-    async def Wobbler(self, ctx, user : discord.Member=None):
-        if user == None:
-            user = ctx.author
-        else:
-            pass
-        number = random.randint(1, 101)
-        embed = discord.Embed(
-            title='**Do {} walk straight??**'.format(user),
-            color=discord.Color.purple()
-        )
-        embed.add_field(name='‏‏‎ ‎', value=f'{number}% a Wobbler.')
-        if number > 50:
-            embed.add_field(name='‏‏‎ ‎', value='\n\nLearn to walk. LMFAO')
-        else:
-            embed.add_field(name='‏‏‎ ‎', value='\n\n{} parents did a good job. I think. ;-;'.format(user))
-        await ctx.send(embed=embed)
-
-
-    @commands.command(aliases=['diprate', 'dip', 'stab'])
-    @cooldown(1, 10, BucketType.user)
-    async def stabrate(self, ctx, user : discord.Member=None):
-        if user == None:
-            user = ctx.author
-        else:
-            pass
-        chance = random.randint(1, 101)
-        embed = discord.Embed(
-            title='**Chances of {} getting stabbed:**'.format(user),
-            color=discord.Color.blue()
-        )
-        embed.add_field(name='‏‏‎ ', value='The chance of {} getting stabbed is {}%.'.format(user, chance))
-        if chance < 50:
-            embed.add_field(name='‏‏‎ ', value='\nLooks like {} gonna live another day..'.format(user), inline=False)
-        else:
-            embed.add_field(name='‏‏‎ ', value='\nWell Good luck.', inline=False)
-        await ctx.send(embed=embed)
-
-
-    @commands.command(aliases=['begr', 'Brate'])
-    @cooldown(1, 10, BucketType.user)
-    async def begrate(self, ctx, user : discord.Member=None):
-        if user == None:
-            user = ctx.author
-        else:
-            pass
-        begrate = random.randint(1, 101)
-        embed = discord.Embed(
-            title='**How much of a beg are {}!!!!**'.format(user),
-            color=discord.Color.blue()
-        )
-        embed.add_field(name='‏‏‎ ', value=f'{user} are **{begrate}%** a beg')
-        if begrate < 50:
-            embed.add_field(name='‏‏‎ ', value='{} is not a beg.'.format(user))
-        else:
-            embed.add_field(name='‏‏‎ ', value='Watch out {} is a beg!'.format(user))
-        await ctx.send(embed=embed)
 
     @commands.command(aliases=['slots', 'bet'])
     @cooldown(1, 10, BucketType.user)
@@ -112,10 +25,10 @@ class fun(commands.Cog):
 
         slotmachine = f"**[ {a} {b} {c} ]\n{ctx.author.name}**,"
 
-        if (a == b == c):
-            await ctx.send(f"{slotmachine} Has gotten 3 out of 3, ¡HE WINS!!! 🎉")
+        if a == b == c:
+            await ctx.send(f"{slotmachine} Has gotten 3 out of 3, HE WINS!!! 🎉")
         elif (a == b) or (a == c) or (b == c):
-            await ctx.send(f"{slotmachine} 2 out of 3, ¡HE WINS!!! 🎉")
+            await ctx.send(f"{slotmachine} 2 out of 3, HE WINS!!! 🎉")
         else:
             await ctx.send(f"{slotmachine} 0 out of 3, He looses 😢")
 
@@ -125,7 +38,7 @@ class fun(commands.Cog):
         msg = await ctx.send("`Bot Latency...`")
         times = []
         counter = 0
-        embed = discord.Embed(title="More Information:", description="4 pings have been made and here are the results:", colour=discord.Color.red())
+        embed = discord.Embed(title="More Information:", description="Pings from BOT to YOU::", colour=discord.Color.red())
         for _ in range(3):
             counter += 1
             start = time.perf_counter()
@@ -150,7 +63,8 @@ class fun(commands.Cog):
     async def useless(self, ctx):
         user = ctx.author
         await ctx.send('Hello ' + user.name)
-        msg = await ctx.send('Type `press` to press the useless button.')
+        await ctx.send('Type `press` to press the useless button.')
+
         def check(m):
             if m.author.id == user.id and m.content.lower() == 'press':
                 return True
@@ -159,30 +73,10 @@ class fun(commands.Cog):
         await ctx.send('http://66.media.tumblr.com/d1483298e112b3bf08d35a2bd345a097/tumblr_n5ig6cjyk81t2csv8o2_500.gif')
         await ctx.send('Button has been pressed by {}'.format(user.name))
 
-    @commands.command()
-    @commands.cooldown(1, 10, BucketType.user)
-    async def odds(self, ctx, user : discord.Member=None):
-        if user == None:
-            user = ctx.author
-        else:
-            pass
-        odd = ['homeless', 'a chippie', 'lost', 'rich', 'disabled', 'unwanted', 'loved', 'wanted']
-        counter = random.randint(1, 101)
-        emoji = ['😭','😰','<:trashcan:744626891948032124>','😥','😬','🤐','<:you_wot:748867944649588776>','<:birdonem:744615651645063219>','👍']
-        embed = discord.Embed(
-            title=f'The odds of {user} becoming {random.choice(odd)}',
-            color=discord.Color.purple(),
-            description=f'**{counter}%** {random.choice(emoji)}'
-        )
-        await ctx.send(embed=embed)
-
     @commands.command(aliases=['le'])
     @commands.cooldown(1, 10, BucketType.user)
-    async def lifeexpectancy(self, ctx, user : discord.Member=None):
-        if user == None:
-            user = ctx.author
-        else:
-            pass
+    async def lifeexpectancy(self, ctx, user: discord.Member = None):
+        user = user or ctx.author
         counter = random.randint(1, 150)
         embed = discord.Embed(
             title="{}'s life expectancy is:".format(user),
@@ -193,11 +87,8 @@ class fun(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 10, BucketType.user)
-    async def BWeight(self, ctx, user : discord.Member=None):
-        if user == None:
-            user = ctx.author
-        else:
-            pass
+    async def bweight(self, ctx, user: discord.Member = None):
+        user = user or ctx.author
         weight = ['Pinweight\t(44 - 46 Kg)', 'Light Flyweight\t(Below 48Kg)', 'Flyweight\t(49 - 52 Kg)', 'Bantamweight\t(52 - 53.5 Kg)', 'Featherweight\t(54 - 57 Kg)', 'Lightweight\t(59 - 61 Kg)', 'Lighter welterweight\t(54 - 67 Kg)', 'Welterweight\t(64 - 69 Kg)', 'Middleweight\t(70 - 73 Kg)', 'Light heavyweight\t(76 - 80 Kg)', 'Heavyweight\t(Above 81 Kg)', 'Super Heavyweight\t(Above 91 Kg)']
         choice = random.choice(weight)
         embed = discord.Embed(
@@ -209,29 +100,23 @@ class fun(commands.Cog):
 
     @commands.command(aliases=['Weight', 'WI'])
     @commands.cooldown(1, 10, BucketType.user)
-    async def WeighIn(self, ctx, user : discord.Member=None):
+    async def weighin(self, ctx, user: discord.Member = None):
         if user == None:
             user = ctx.author
-        else:
-            pass
         weight = random.randint(1, 200)
-        if weight > 150:
-            msg = 'Loose some weight bruv!'
         embed = discord.Embed(
-            title='How much do you weigh?',
+            title='How much do {} weigh?'.format(user),
             color=discord.Color.red(),
             description=f'**`{weight}` Kg**'
         )
         await ctx.send(embed=embed)
-        await ctx.send(msg)
 
     @commands.command()
     async def beer(self, ctx, user: discord.Member = None, *, reason: commands.clean_content = ""):
         if not user or user.id == ctx.author.id:
             return await ctx.send(f"**{ctx.author.mention}**: fieeeeestaaa!🎉🍺")
-        if user.bot == True:
-            return await ctx.send(f"I would love to give a beer to {user.mention}. But i am unsure they will respond to you!")
-
+        if user.bot:
+            return await ctx.send(f"You that lonely? Give an actual person not a bot.")
         beer_offer = f"**{user.mention}**, You have a 🍺 offered from **{ctx.author.mention}**"
         beer_offer = beer_offer + f"\n\n**Reason:** {reason}" if reason else beer_offer
         msg = await ctx.send(beer_offer)
@@ -248,7 +133,7 @@ class fun(commands.Cog):
             await msg.clear_reactions()
         except asyncio.TimeoutError:
             await msg.delete()
-            await ctx.send(f"well it seems **{user.name}** didnt want a beer with **{ctx.author.name}** ;-;")
+            await ctx.send(f"well it seems **{user.name}** didn't want a beer with **{ctx.author.name}** ;-;")
         except discord.Forbidden:
             beer_offer = f"**{user.name}**, you have a 🍺 from **{ctx.author.name}**"
             beer_offer = beer_offer + f"\n\n**reason:** {reason}" if reason else beer_offer
@@ -257,132 +142,61 @@ class fun(commands.Cog):
     @commands.command()
     @commands.cooldown(1, 10, BucketType.user)
     async def reverse(self, ctx, *args):
-        try:
-            args = ' '.join(map(str, args))
-            x = list(args)
-            if '@' in x:
-                await ctx.send('Cant reverse the sentence as `@` is present!')
-            else:
-                x = reversed(x)
-                x = ''.join(map(str, x))
-                await ctx.channel.purge(limit=1)
-                await ctx.send(x)
-        except Exception:
-            await ctx.send('Cant send nothing :/')
-
-    @commands.command(aliases=['W'])
-    @cooldown(1, 300, BucketType.user)
-    async def weather(self, ctx, *, location : str=None):
-        if location == None:
-            await ctx.send('You havent provided a location!')
-        else:
-            try:
-                x = location
-                x = x.lower()
-                r = requests.get('http://api.openweathermap.org/data/2.5/weather?q={}&APPID=NICETRY'.format(x))
-                x = r.json()
-                country = x['sys']['country']
-                city = x['name']
-                cord1 = x['coord']['lon']
-                cord2 = x['coord']['lat']
-                main = x['weather'][0]['main']
-                desc = x['weather'][0]['description']
-                speed = x['wind']['speed']
-                humid = x['main']['humidity']
-                icon = x['weather'][0]['icon']
-                pressure = x['main']['pressure']
-                clouds = x['clouds']['all']
-                temp = x['main']['temp']
-                temp_f = x['main']['feels_like']
-                zone = x['timezone']
-                embed=discord.Embed(
-                    title=f'{city} ({country})',
-                    colour=discord.Color.blue(),
-                    description=f'Longitude : {cord1} | Latitude : {cord2}'
-                )
-                embed.add_field(name='Wind', value=f'{speed} MPH')
-                embed.add_field(name='Humidity', value=f'{humid}%')
-                embed.add_field(name='Weather', value=f'{main} ({desc})')
-                embed.add_field(name='Pressure', value=f'{pressure}')
-                embed.add_field(name='Clouds', value=f'{clouds}')
-                embed.add_field(name='Temperature', value=f'{round(temp - 273.15)} °C')
-                embed.add_field(name='Feels Like', value=f'{round(temp_f - 273.15)} °C')
-                embed.add_field(name=f'Time Zone', value=f'{zone}')
-                embed.add_field(name=f'Min Temp', value=str(round(x['main']['temp_min'] - 273.15)) + ' °C')
-                embed.add_field(name=f'Max Temp', value=str(round(x['main']['temp_max'] - 273.15)) + ' °C')
-                await ctx.send(embed=embed)
-            except KeyError:
-                await ctx.send('Location was invalid.')
+        if not args:
+            ctx.command.reset_cooldown(ctx)
+            return await ctx.send('Give me something to reverse!')
+        args = ' '.join(map(str, args))
+        await ctx.send(embed=discord.Embed(
+            description=args[::-1],
+            colour=discord.Colour.red()
+        ))
 
     @commands.command()
     @cooldown(1, 10, BucketType.user)
-    async def simp(self, ctx, user : discord.Member=None):
-        if user == None:
-            user = ctx.author
-        else:
-            pass
+    async def simp(self, ctx, user: discord.Member = None):
+        user = user or ctx.author
         embed = discord.Embed(
             title=f'How much of a simp are they?',
-            color=discord.Color.dark_green()
+            color=discord.Color.red()
         )
-        embed.add_field(name='**Simp**', value=f'{user.display_name} is {random.choice(IMG.Numbers)}% a simp')
+        embed.add_field(name='**Simp**', value=f'{user.display_name} is {random.randint(0, 101)}% simp')
         await ctx.send(embed=embed)
-
 
     @commands.command()
     @cooldown(1, 10, BucketType.user)
-    async def retard(self, ctx, user : discord.Member=None):
-        if user == None:
-            user = ctx.author
-        else:
-            pass
+    async def retard(self, ctx, user: discord.Member = None):
+        user = user or ctx.author
         embed = discord.Embed(
             title='',
-            color=discord.Color.dark_green()
+            color=discord.Color.red()
         )
-        embed.add_field(name='**Retard**', value=f'{user.display_name} is {random.choice(IMG.Numbers)}% retarded')
+        embed.add_field(name='**Retard**', value=f'{user.display_name} is {random.randint(0, 101)}% retarded')
         await ctx.send(embed=embed)
-
 
     @commands.command()
     @cooldown(1, 10, BucketType.user)
-    async def Human(self, ctx, user : discord.Member=None):
-        if user == None:
-            user = ctx.author
-        else:
-            pass
+    async def human(self, ctx, user: discord.Member = None):
+        user = user or ctx.author
         embed = discord.Embed(
             title='',
-            color=discord.Color.dark_green()
+            color=discord.Color.red()
         )
-        embed.add_field(name='**Human**', value=f'{user.display_name} is {random.choice(IMG.Numbers)}% human')
+        embed.add_field(name='**Human**', value=f'{user.display_name} is {random.randint(0, 101)}% human')
         await ctx.send(embed=embed)
-
 
     @commands.command()
     @cooldown(1, 10, BucketType.user)
-    async def buff(self, ctx, user : discord.Member=None):
-        if user == None:
-            user = ctx.author
-        else:
-            pass
-        embed = discord.Embed(
-            title='',
-            color=discord.Color.dark_green()
-        )
-        embed.add_field(name='**Buff Test**', value=f'{user.display_name} is {random.choice(IMG.Numbers)}/100 Buff :muscle:')
+    async def buff(self, ctx, user: discord.Member = None):
+        user = user or ctx.author
+        embed = discord.Embed(color=discord.Color.dark_green())
+        embed.add_field(name='**Buffness**', value=f'{user.display_name} is {random.randint(0, 101)}/100 Buff :muscle:')
         await ctx.send(embed=embed)
-
 
     @commands.command()
     @cooldown(1, 10, BucketType.user)
-    async def Waifu(self, ctx, user : discord.Member=None):
-        if user == None:
-            user = ctx.author
-        else:
-            pass
+    async def waifu(self, ctx, user: discord.Member = None):
+        user = user or ctx.author
         embed = discord.Embed(
-            title='',
             color=discord.Color.dark_green()
         )
         embed.add_field(name='**Waifu**', value=f'{user.display_name} is {random.choice(IMG.Number1)}')
@@ -390,36 +204,29 @@ class fun(commands.Cog):
 
     @commands.command()
     @cooldown(1, 10, BucketType.user)
-    async def Dad(self, ctx, *, message : str=None):
+    async def dad(self, ctx, *, message: str = None):
         if message == None:
-            await ctx.send('I cant name you anything.')
-            return
+            ctx.command.reset_cooldown(ctx)
+            return await ctx.send('I cant name you anything.')
         embed = discord.Embed(
-            title='',
-            color=discord.Color.dark_orange()
+            color=discord.Color.red()
         )
         embed.add_field(name='Daddo Machine 9000', value=f'Hello {message}. Im Dad')
         await ctx.send(embed=embed)
 
     @commands.command()
     @cooldown(1, 10, BucketType.user)
-    async def gay(self, ctx, user : discord.Member=None):
-        if user == None:
-            user = ctx.author
-        else:
-            pass
+    async def gay(self, ctx, user: discord.Member = None):
+        user = user or ctx.author
         embed = discord.Embed(
-            title='',
-            color=discord.Color.dark_green()
-        )
-        embed.add_field(name='**Gay**', value=f'{user.display_name} is {random.randint(1, 101)}% gay :rainbow_flag:')
+            color=random.randint(0x000000, 0xFFFFFF)
+        ).description = f'{user.display_name} is {random.randint(1, 101)}% gay :rainbow_flag:'
         await ctx.send(embed=embed)
 
     @commands.command(aliases=['jokes'])
     @cooldown(1, 10, BucketType.user)
     async def joke(self, ctx):
         embed = discord.Embed(
-            title='',
             color=discord.Color.gold()
         )
         embed.add_field(name='**Joke**', value=f'{random.choice(Jokes.joke)}')
@@ -437,9 +244,8 @@ class fun(commands.Cog):
 
     @commands.command(aliases=['gender'])
     @cooldown(1, 10, BucketType.user)
-    async def genderfinder(self, ctx, user : discord.Member=None):
-        if user == None:
-            user = ctx.author
+    async def genderfinder(self, ctx, user: discord.Member = None):
+        user = user or ctx.author
         genders = random.choice(gender.gend)
         embed = discord.Embed(
             title=f"**{user.display_name}'s Gender!**",
@@ -450,10 +256,10 @@ class fun(commands.Cog):
 
     @commands.command(aliases=['mk', 'MagicK', 'MKaren'])
     @cooldown(1, 10, BucketType.user)
-    async def MagicKaren(self, ctx, *, question=None):
+    async def magickaren(self, ctx, *, question=None):
         if question == None:
-            await ctx.send('What are u asking me?')
-            return
+            ctx.command.reset_cooldown(ctx)
+            return await ctx.send('What are u asking me?')
         responses = ["It is certain.",
                      "It is decidedly so.",
                      "Without a doubt.",
@@ -475,16 +281,13 @@ class fun(commands.Cog):
                      "Outlook not so good.",
                      "Very doubtful."]
         e = discord.Embed(title="", description="__**MagicKaren:**__", color=0x50C878)
-        e.add_field(name='**Results**', value=(f'Question:\t{question}\n\nAnswer:\t{random.choice(responses)}'))
+        e.add_field(name='**Results**', value=f'Question:\t{question}\n\nAnswer:\t{random.choice(responses)}')
         await ctx.send(embed=e)
 
-    @commands.command()
+    @commands.command(name='IQ')
     @cooldown(1, 10, BucketType.user)
-    async def IQ(self, ctx, user : discord.Member=None):
-        if user == None:
-            user = ctx.author
-        else:
-            pass
+    async def iq(self, ctx, user: discord.Member = None):
+        user = user or ctx.author
         iq = ['130 and above (Very Superior)',
               '120–129 (Superior)',
               '110–119 (High Average)',
@@ -492,39 +295,21 @@ class fun(commands.Cog):
               '80–89 (Low Average)',
               '70–79 (Borderline)',
               '69 and below	(Extremely Low)']
-        e = discord.Embed(title="", description="__**Mecha Karen:**__", color=0x50C878)
-        e.add_field(name='**IQ Machine 9000**', value=(f'{user.display_name} IQ is {random.choice(iq)} '))
+        e = discord.Embed(description="__**Mecha Karen:**__", color=0x50C878)
+        e.add_field(name='**IQ Machine 9000**', value=f'{user.display_name} IQ is {random.choice(iq)}')
         await ctx.send(embed=e)
 
-
-    @commands.command(aliases=['Penis'])
+    @commands.command(aliases=['Penis'], name='PP')
     @cooldown(1, 10, BucketType.user)
-    async def PP(self, ctx, user : discord.Member=None):
-        if user == None:
-            user = ctx.author
-        else:
-            pass
-        pen = ['8D',
-               '8=D',
-               '8==D',
-               '8===D',
-               '8====D',
-               '8=====D',
-               '8======D',
-               '8=======D',
-               '8========D',
-               '8=========D',
-               '8==========D',
-               '8===========D',
-               '8============D',
-               '8=============D',
-               '8==============D',
-               '8===============D']
+    async def pp(self, ctx, user: discord.Member = None):
+        user = user or ctx.author
+        former = ['8', 'D']
+        for i in range(random.randrange(10)):
+            former.insert(1, '=')
         e = discord.Embed(title="", description="__**Mecha Karen:**__", color=0x50C878)
-        e.add_field(name='**PP machine 4356**',
-                    value=f'{user.display_name} penis is:\n{random.choice(pen)}\n**Even my angel has a bigger one**', )
+        e.add_field(name="**{}'s penis is:**".format(user),
+                    value=''.join(map(str, former)))
         await ctx.send(embed=e)
-
 
     @commands.command(aliases=['insult'])
     @cooldown(1, 10, BucketType.user)
@@ -557,16 +342,13 @@ class fun(commands.Cog):
              'there is approximately 1,010,030 words in the language english, but i cannot string enough words together to express how much i want to hit you with a chair']
 
         e = discord.Embed(title="", description="__**Mecha Karen:**__", color=0x50C878)
-        e.add_field(name='**Roast**', value=(f'{random.choice(A)}'))
+        e.add_field(name='**Roast**', value=f'{random.choice(A)}')
         await ctx.send(embed=e)
 
     @commands.command(aliases=['murder'])
     @cooldown(1, 10, BucketType.user)
-    async def kill(self, ctx, *, user : discord.Member=None):
-        if user == None or user == 'me':
-            user = ctx.author
-        else:
-            pass
+    async def kill(self, ctx, *, user: discord.Member = None):
+        user = user or ctx.author
         died = ['rolling out of the bed and the demon under the bed ate them.',
                 'getting impaled on the bill of a swordfish.',
                 'falling off a ladder and landing head first in a water bucket.',
@@ -586,15 +368,14 @@ class fun(commands.Cog):
                 'tried to short circuit me, not that easy retard'
                 ]
         e = discord.Embed(title="", description="", color=0x50C878)
-        e.add_field(name=f'**How did they die**', value=(f'{user.display_name} was killed by {random.choice(died)}'))
+        e.add_field(name=f'**How did they die**', value=f'{user.display_name} was killed by {random.choice(died)}')
         await ctx.send(embed=e)
 
-    @commands.command(aliases=['punch'])
+    @commands.command(aliases=['punch'], name='PunchMachine')
     @cooldown(1, 10, BucketType.user)
-    async def PunchMachine(self, ctx):
+    async def punchmachine(self, ctx):
         answer = random.randint(0, 999)
-
-        responce = ['**Nice shot bro**',
+        response = ['**Nice shot bro**',
                     '**Did you miss the machine**',
                     '**DAHM HAVE SOME MERCY**',
                     '**Even a baby can hit harder**',
@@ -602,34 +383,59 @@ class fun(commands.Cog):
                     '**You wasted money to get that score**',
                     ]
         embed = discord.Embed(
-            title='',
-            color=discord.Color.default()
+            color=discord.Color.red()
         )
         embed.add_field(name='**Punch MACHINE**',
-                        value=f'\n\n*You swing and hit*\n\n**{answer}**\n\n*The crowd around you:*\n\n{random.choice(responce)}')
+                        value=f'\n\n*You swing and hit*\n\n**{answer}**\n\n*The crowd around you:*\n\n{random.choice(response)}')
         await ctx.send(embed=embed)
         
     @commands.command()
     @commands.cooldown(1, 10, BucketType.user)
-    async def say(self, ctx, *, quote : str=None):
-        if quote == None:
-            await ctx.send('What are u saying!')
-            return
-        await ctx.send('{}\n\n**-    {}**'.format(quote, ctx.author))
+    async def say(self, ctx, *, quote: str = None):
+        if not quote:
+            ctx.command.reset_cooldown(ctx)
+            return await ctx.send('What are u saying!')
+        await ctx.send('{}\n\t- **{}**'.format(quote, ctx.author))
         
     @commands.command()
     @commands.cooldown(1, 60, BucketType.user)
-    async def annoy(self, ctx, member : discord.Member=None):
-        if member == None:
-            await ctx.send('Please ping a user.')
-            return
+    async def annoy(self, ctx, member: discord.Member = None):
+        if not member:
+            ctx.command.reset_cooldown(ctx)
+            return await ctx.send('Please ping a user.')
 
-        if ctx.message.content != '<@{}>'.format(member.id):
-            await ctx.send('I will have to ping him for you!\n{}'.format(member.mention))
-            return
-        await ctx.send('You have successfully pinged {}'.format(member.id))
+        if ctx.message.content == '<@!{}>'.format(member.id):
+            return await ctx.send('I will have to ping him for you!\n{}'.format(member.mention))
+        await ctx.send('You have successfully pinged {}'.format(member))
 
+    @commands.command()
+    async def f(self, ctx, *, message: str = None):
+        if message == None:
+            await ctx.send('<:F_:745287381816574125>')
+            return await ctx.send('**{} Has Paid Their Respects.**'.format(ctx.author.display_name))
+        await ctx.send('<:F_:745287381816574125>')
+        await ctx.send('**{} Has Paid There Respects:** {}'.format(ctx.author.display_name, message.title()))
+
+    @commands.command()
+    async def spoiler(self, ctx, *, message: str = None):
+        if message == None:
+            ctx.command.reset_cooldown(ctx)
+            return await ctx.send('||{} Is a retard. Retry with an actual message.||'.format(ctx.author))
+        await ctx.send('||{}||'.format(message))
+
+    @commands.command()
+    @commands.bot_has_guild_permissions(read_message_history=True, read_messages=True)
+    async def pings(self, ctx, limit='10', user: discord.Member = None):
+        user = ctx.author if not user else user
+        try:
+            limit = int(limit)
+        except ValueError:
+            return await ctx.send('The limit for the searching must be a number.')
+        counter = 0
+        async for message in ctx.channel.history(limit=limit):
+            if '<@!{}>'.format(user.id) in message.content:
+                counter += 1
+        await ctx.send('You have been pinged {} times in the last {} messages'.format(counter, limit))
         
 def setup(bot):
     bot.add_cog(fun(bot))
-
