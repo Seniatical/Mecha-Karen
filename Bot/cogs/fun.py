@@ -7,6 +7,7 @@ from discord.ext import commands
 from discord.ext.commands import BucketType, cooldown
 import os
 import requests
+import aiohttp
 
 from Others import IMG, Bio, Channel, Co, gender, Jokes, Numbers, Numbers2, Quotes, Stuff, words
 
@@ -23,14 +24,20 @@ class fun(commands.Cog):
         b = random.choice(emojis)
         c = random.choice(emojis)
 
-        slotmachine = f"**[ {a} {b} {c} ]\n{ctx.author.name}**,"
+        slotmachine = f"**[ {a} | {b} | {c} ]\n{ctx.author.name}**,"
 
         if a == b == c:
-            await ctx.send(f"{slotmachine} Has gotten 3 out of 3, HE WINS!!! 🎉")
+            await ctx.send(embed=discord.Embed(title='Slot Machine:',
+                                               description=slotmachine + ' has gotten 3/3 he wins!!! :tada:',
+                                               colour=discord.Colour.red()))
         elif (a == b) or (a == c) or (b == c):
-            await ctx.send(f"{slotmachine} 2 out of 3, HE WINS!!! 🎉")
+            await ctx.send(embed=discord.Embed(title='Slot Machine:',
+                                               description=slotmachine + ' has gotten 2/3 he wins!!! :tada:',
+                                               colour=discord.Colour.red()))
         else:
-            await ctx.send(f"{slotmachine} 0 out of 3, He looses 😢")
+            await ctx.send(embed=discord.Embed(title='Slot Machine:',
+                                               description=slotmachine + ' has gotten 0/3 he looses. :pensive:',
+                                               colour=discord.Colour.red()))
 
     @commands.command(aliases=['Latency'])
     @cooldown(1, 10, BucketType.user)
@@ -69,9 +76,19 @@ class fun(commands.Cog):
             if m.author.id == user.id and m.content.lower() == 'press':
                 return True
             return False
-        await self.bot.wait_for('message', timeout=10.00, check=check)
-        await ctx.send('http://66.media.tumblr.com/d1483298e112b3bf08d35a2bd345a097/tumblr_n5ig6cjyk81t2csv8o2_500.gif')
-        await ctx.send('Button has been pressed by {}'.format(user.name))
+        try:
+            await self.bot.wait_for('message', timeout=10.0, check=check)
+            await ctx.send(embed=discord.Embed(
+                title='Button has been pressed!',
+                description='Button has been pressed by {}'.format(ctx.author),
+                colour=discord.Colour.green()
+            ).set_image(url='http://66.media.tumblr.com/d1483298e112b3bf08d35a2bd345a097/tumblr_n5ig6cjyk81t2csv8o2_500.gif'))
+        except asyncio.TimeoutError:
+            ctx.command.reset_cooldown(ctx)
+            return await ctx.send(embed=discord.Embed(
+                description='<a:nope:787764352387776523> Button press has failed.',
+                colour=discord.Colour.red()
+            ))
 
     @commands.command(aliases=['le'])
     @commands.cooldown(1, 10, BucketType.user)
@@ -188,7 +205,7 @@ class fun(commands.Cog):
     @cooldown(1, 10, BucketType.user)
     async def buff(self, ctx, user: discord.Member = None):
         user = user or ctx.author
-        embed = discord.Embed(color=discord.Color.dark_green())
+        embed = discord.Embed(color=discord.Color.red())
         embed.add_field(name='**Buffness**', value=f'{user.display_name} is {random.randint(0, 101)}/100 Buff :muscle:')
         await ctx.send(embed=embed)
 
@@ -197,7 +214,7 @@ class fun(commands.Cog):
     async def waifu(self, ctx, user: discord.Member = None):
         user = user or ctx.author
         embed = discord.Embed(
-            color=discord.Color.dark_green()
+            color=discord.Color.red()
         )
         embed.add_field(name='**Waifu**', value=f'{user.display_name} is {random.choice(IMG.Number1)}')
         await ctx.send(embed=embed)
@@ -211,7 +228,7 @@ class fun(commands.Cog):
         embed = discord.Embed(
             color=discord.Color.red()
         )
-        embed.add_field(name='Daddo Machine 9000', value=f'Hello {message}. Im Dad')
+        embed.add_field(name='Daddo Machine 9000', value=f'Hello {message}, Im Dad')
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -219,17 +236,22 @@ class fun(commands.Cog):
     async def gay(self, ctx, user: discord.Member = None):
         user = user or ctx.author
         embed = discord.Embed(
-            color=random.randint(0x000000, 0xFFFFFF)
-        ).description = f'{user.display_name} is {random.randint(1, 101)}% gay :rainbow_flag:'
+            color=random.randint(0x000000, 0xFFFFFF),
+            description=f'{user.display_name} is {random.randint(1, 101)}% gay :rainbow_flag:'
+        )
         await ctx.send(embed=embed)
 
     @commands.command(aliases=['jokes'])
     @cooldown(1, 10, BucketType.user)
     async def joke(self, ctx):
-        embed = discord.Embed(
-            color=discord.Color.gold()
-        )
-        embed.add_field(name='**Joke**', value=f'{random.choice(Jokes.joke)}')
+        async with aiohttp.ClientSession() as session:
+            async with session.get(
+                    'https://sv443.net/jokeapi/v2/joke/Miscellaneous?blacklistFlags=nsfw,religious,political,racist,sexist&type=twopart') as r:
+                r = await r.json()
+        embed = discord.Embed(colour=random.randint(0x000000, 0xFFFFFF), timestamp=datetime.datetime.utcnow())
+        embed.add_field(name='Setup:', value=r['setup'])
+        embed.add_field(name='Delivery:', value=r['delivery'], inline=False)
+        embed.set_footer(text='Prompted by {}'.format(ctx.author), icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
 
     @commands.command(aliases=['fact'])
@@ -249,9 +271,9 @@ class fun(commands.Cog):
         genders = random.choice(gender.gend)
         embed = discord.Embed(
             title=f"**{user.display_name}'s Gender!**",
+            description=genders,
             color=discord.Color.magenta()
         )
-        embed.add_field(name='‏‏‎ ', value=f'{genders}')
         await ctx.send(embed=embed)
 
     @commands.command(aliases=['mk', 'MagicK', 'MKaren'])
@@ -259,7 +281,7 @@ class fun(commands.Cog):
     async def magickaren(self, ctx, *, question=None):
         if question == None:
             ctx.command.reset_cooldown(ctx)
-            return await ctx.send('What are u asking me?')
+            return await ctx.send('Atleast give me a question. Try again!')
         responses = ["It is certain.",
                      "It is decidedly so.",
                      "Without a doubt.",
@@ -280,9 +302,10 @@ class fun(commands.Cog):
                      "My sources say no.",
                      "Outlook not so good.",
                      "Very doubtful."]
-        e = discord.Embed(title="", description="__**MagicKaren:**__", color=0x50C878)
-        e.add_field(name='**Results**', value=f'Question:\t{question}\n\nAnswer:\t{random.choice(responses)}')
-        await ctx.send(embed=e)
+        embed = discord.Embed(title='The Magic Karen',
+                              colour=discord.Colour.red(),
+                              description=random.choice(responses))
+        await ctx.send(embed=embed)
 
     @commands.command(name='IQ')
     @cooldown(1, 10, BucketType.user)
@@ -295,7 +318,9 @@ class fun(commands.Cog):
               '80–89 (Low Average)',
               '70–79 (Borderline)',
               '69 and below	(Extremely Low)']
-        e = discord.Embed(description="__**Mecha Karen:**__", color=0x50C878)
+        e = discord.Embed(color=discord.Colour.red()).set_author(
+            name=self.bot.user,
+            icon_url=self.bot.user.avatar_url)
         e.add_field(name='**IQ Machine 9000**', value=f'{user.display_name} IQ is {random.choice(iq)}')
         await ctx.send(embed=e)
 
@@ -341,9 +366,10 @@ class fun(commands.Cog):
              'Don’t worry about me. Worry about your eyebrows.',
              'there is approximately 1,010,030 words in the language english, but i cannot string enough words together to express how much i want to hit you with a chair']
 
-        e = discord.Embed(title="", description="__**Mecha Karen:**__", color=0x50C878)
-        e.add_field(name='**Roast**', value=f'{random.choice(A)}')
-        await ctx.send(embed=e)
+        await ctx.send(embed=discord.Embed(
+            colour=discord.Colour.red(),
+            description=random.choice(A)
+        ).set_author(name=self.bot.user.display_name, icon_url=self.bot.user.avatar_url))
 
     @commands.command(aliases=['murder'])
     @cooldown(1, 10, BucketType.user)
@@ -367,9 +393,10 @@ class fun(commands.Cog):
                 'tried to react Indiana Jones, died from a snake bite.',
                 'tried to short circuit me, not that easy retard'
                 ]
-        e = discord.Embed(title="", description="", color=0x50C878)
-        e.add_field(name=f'**How did they die**', value=f'{user.display_name} was killed by {random.choice(died)}')
-        await ctx.send(embed=e)
+        await ctx.send(embed=discord.Embed(
+            colour=discord.Colour.red(),
+            description='{} was killed by {}'.format(user.display_name, random.choice(died))
+        ).set_author(name=self.bot.user.display_name, icon_url=self.bot.user.avatar_url))
 
     @commands.command(aliases=['punch'], name='PunchMachine')
     @cooldown(1, 10, BucketType.user)
@@ -386,7 +413,7 @@ class fun(commands.Cog):
             color=discord.Color.red()
         )
         embed.add_field(name='**Punch MACHINE**',
-                        value=f'\n\n*You swing and hit*\n\n**{answer}**\n\n*The crowd around you:*\n\n{random.choice(response)}')
+                        value=f'\n\nYou swing and hit a **{answer}**\n\nThe crowd around you: **{random.choice(response)}**')
         await ctx.send(embed=embed)
         
     @commands.command()
@@ -436,6 +463,6 @@ class fun(commands.Cog):
             if '<@!{}>'.format(user.id) in message.content:
                 counter += 1
         await ctx.send('You have been pinged {} times in the last {} messages'.format(counter, limit))
-        
+
 def setup(bot):
     bot.add_cog(fun(bot))
