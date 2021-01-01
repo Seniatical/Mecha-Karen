@@ -5,6 +5,10 @@ from discord.ext import commands
 from colorama import Fore, init
 import platform
 import sys
+from __logging__ import MOTHER_BOOT
+import datetime
+from Utils import boot
+import json
 
 os = platform.system()
 
@@ -49,9 +53,30 @@ class Boot(commands.Cog):
                 await sleep(10)
                 await self.bot.change_presence(status=discord.Status.do_not_disturb ,activity=discord.Activity(type=discord.ActivityType.playing, name='Use -Source to view the source code!'))
                 await sleep(10)
+        self.bot.dispatch(boot)
         print(Fore.BLUE + 'All Cogs loaded!\n' + Fore.RESET)
         print(Fore.GREEN + f'{sys.version}\n' + Fore.RESET)
         self.bot.loop.create_task(status())
+        
+    @staticmethod
+    @commands.Cog.listener()
+    async def boot():
+        with open('./Utils/configs/setup_settings.json', 'r') as f:
+            settings = json.load(f)
+        MOTHER_BOOT(
+            configs = {
+                BOOT = True
+                LOAD = False
+                STATUS = 'Active',
+                LAUNCHED = datetime.datetime.now(),
+                BRANCHES = (
+                    'MOTHER' ## Main branch
+                    'INTERNAL HELPERS',
+                    'MULTI-EXTENT-BRANCHES -> LEECH INTERNAL HELPERS'   ## Branches can go mad once off the internal helpers branch
+                )
+            },
+            SETTINGS = settings
+        )
 
 def setup(bot):
     bot.add_cog(Boot(bot))
