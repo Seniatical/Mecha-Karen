@@ -23,6 +23,10 @@ Facts :
   
   Fast Responce Times (Most times)
   
+  Configurable commands and Starboard
+  
+  Soon to come warn system
+  
   Useful Tools such as Word Searches | Vid Searches | Image Searches  | + MORE
 ```
 **Join the Server as this is the best way of contacting me.**
