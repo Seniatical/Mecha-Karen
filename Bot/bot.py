@@ -43,9 +43,6 @@ class DATA:
         )
         self.TOKEN = Utils.customs.READ_ENV('./Utils/Sensitive/LOGINS.env').give_obj('TOKEN')
         
-class BASE(Exception):
-    pass
-        
 PATH = Path(__file__).parents
 EXE = PATH[0]
 stringed_exe = str(EXE)
