@@ -1,4 +1,4 @@
-#!/usr/bin/python
+# !/usr/bin/python
 
 """
 
@@ -26,6 +26,8 @@ from mysql.connector import errorcode
 from Utils import UD, __logging__
 import Helpers
 import traceback
+from Utils.help import PING, IMPORTED
+from Utils import db
 
 class DATA:
     def __init__(self):
@@ -52,41 +54,6 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))
 CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
 SECONDARY_DIR = '{}\\Utils'.format(CURRENT_DIR)
 
-def PING(file, dir_):
-    try:
-        try:
-            data = open(dir_+'\\'+file)
-        except NotADirectoryError:
-            raise NotADirectoryError('Directory Given doesnt Exist.')
-    except FileNotFoundError:
-        raise FileNotFoundError('File Given doesnt Exist.')
-        
-    lines = data.readlines()
-    holder = []
-        
-    for line in lines:
-        response=subprocess.Popen(["ping", "-c", "1", line.strip()],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT)
-        stdout, stderr = response.communicate()
-        ## print(stdout)
-        ## print(stderr)
-
-        if (response.returncode == 0):
-            status = line.rstrip() + " is Reachable"
-        else:
-            status = line.rstrip() + " is Not reachable"
-        holder.append(status)
-    return holder
-
-def IMPORTED():
-    loaded = globals()
-    for i in DATA().IMPORTED:
-        if i not in loaded:
-            raise ImportError('{} isnt loaded.'.format(i.title()))
-        continue
-    return True
-
 PERM_COGS = (
     "cogs.Error Handler",
     "cogs.Loadup",
@@ -94,32 +61,6 @@ PERM_COGS = (
     "cogs.Help",
     "cogs.Join_Events",
 )
-
-for file in os.listdir('./cogs/mini_helpers'):
-    try:
-        exec('import %s' % (file))
-    except FileNotFoundError:
-        raise ImportError('Couldnt Import %s From Mini Helpers -> (cogs/mini_helpers)')
-
-for file in os.listdir('./Helpers'):
-    if file == 'Sockets.py':
-        try:
-            exec('''
-                from Helpers.Sockets import get_res
-                try:
-                    x = get_res(ping('socks.txt', '.\\Utils\\sockets'))
-                except socket.error as failure:
-                    raise failure
-                if x == True:
-                    return
-                raise Warning('Results from helper func >> Sockets/get_res returned False\nRerun to prevent any long term errors.')
-            ''')
-        except SyntaxError as error:
-            raise error
-    try:
-        exec('import %s' % (file))
-    except FileNotFoundError:
-        print('Couldnt Import %s From Helpers.')
         
 facts = ('Your server is seen in the support server once you add me!',
          'I automatically report unknown bugs!', 'I am fully tunable!',
@@ -129,13 +70,18 @@ facts = ('Your server is seen in the support server once you add me!',
          'My Code was lost 10 times before! This is why you may loose your data from time to time.',
          'I offer no premium so all commands can be used by anybody, anywhere!')
 
-class NotValid(Exception):
-    pass
-
-def stock():
-    return __file__.globals()
-
-exec('x = True')
+def get_prefix(bot,message):
+    if isinstance(message.channel, discord.DMChannel):
+        return
+    prefix = db.record(
+        'SELECT prefix FROM guild WHERE GuildID = ?', message.guild.id) or None
+    if not prefix:
+        db.execute('INSERT INTO guild (GuildID) VALUES (?)', message.guild.id)
+        db.commit()
+        prefix = '-'
+    else:
+        prefix = prefix[0]
+    return commands.when_mentioned_or(prefix)(bot, message)
 
 class Mecha_Karen(commands.AutoShardedBot):
     def __init__(self):
@@ -151,15 +97,9 @@ class Mecha_Karen(commands.AutoShardedBot):
                 guild_messages=True,
                 reactions=True,
             ),
-        def is_support():
-            async def predicate(ctx):
-                if ctx.guild != Utils.TABLES.CLASS_BUILDS().support_server:
-                    raise NotValid('This server isnt the support server!')
-                return True
-            commands.check(predicate)
-        
+
         super().__init__(
-            command_prefix=PREFIX,case_insensitive=True,
+            command_prefix=get_prefix,case_insensitive=True,
             allowed_mentions=allowed_mentions,intents=intents,
             description='I am Mecha Karen. An open sourced bot inspiring others!',
             help_command=None,owner_id=475357293949485076,heartbeat_timeout=200.0,
