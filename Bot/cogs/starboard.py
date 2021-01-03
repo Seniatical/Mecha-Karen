@@ -1,7 +1,32 @@
 import discord
 from discord.ext import commands
-import aiosqlite
 from Utils import db
+
+'''
+Version Release:
+    Non - Configurable mode has been set
+    Embed + Star changed once it has been reached
+    Need to fix the DB storing the stars
+    Unreliable
+    
+Version Release:
+    Stars are grabbed straight from the message
+        -> More reliable
+        -> No need to write and read DB for them
+    Fixed broken attachements:
+        HTTPException:
+            Gives message link and sets a footer
+    If messaged edits it edits
+        -> Soon to add (Edited) to the footer
+        
+    Some other bs check the update logs - Mark
+    
+Version Release:
+    Configurable:
+        Stars and Channel
+        
+    Fixed the UNIQUE CONSTRAINT issue
+'''
 
 def star(stars):
     if stars in range(0, 6):
@@ -12,7 +37,7 @@ def star(stars):
         star_ = '🌟'
     elif stars in range(10, 16):
         colour = 0xD4FF3E
-        star_ = '💫'
+        star_ = '💫'    ## Last resort
     else:
         colour = 0xC7FF00
         star_ = '☄️'
@@ -24,13 +49,13 @@ def create_embed(message: discord.Message, stars: int):
     embed.set_author(icon_url=message.author.avatar_url, name=message.author)
     if message.content != None:
         embed.add_field(name='Message:', value=message.content)
-    if len(message.attachments) != 0:
+    if len(message.attachments):
         if message.attachments[0].filename.split('.')[-1] not in ['png', 'jpg', 'gif', 'jpeg']:
             embed.add_field(name='Attachments:', value=message.attachments[0].url)
         else:
             embed.set_image(url=message.attachments[0].url)
     pre = 'Stars' if stars != 1 else 'Star'
-    message_ = '{} **{} {}** | {} | **ID:** {}'.format(star_count, stars, pre, message.channel.mention, message.id)
+    message_ = '{} **{} {}** {}'.format(star_count, stars, pre, message.channel.mention)
     return embed, message_
 
 class starboard(commands.Cog):
@@ -79,7 +104,12 @@ class starboard(commands.Cog):
                 db.commit()
             else:
                 star_message = await star_channel.fetch_message(star_message[0])
-                await star_message.edit(content=mes, embed=embed)
+                try:
+                    await star_message.edit(content=mes, embed=embed)
+                except discord.errors.HTTPException:
+                    embed = discord.Embed(description='[Original Message]({})'.format(message.jump_url), colour=discord.Colour.red()).set_author(icon_url=message.author.avatar_url, name=message.author)
+                    embed.set_footer(text='Missing Field, Cannot Load Original Message!', icon_url=self.bot.user.avatar_url)
+                    await star_message.edit(embed=embed, content=mes)
 
     @commands.command()
     @commands.has_guild_permissions(manage_guild=True)
@@ -152,7 +182,7 @@ class starboard(commands.Cog):
             channel_ = self.bot.get_channel(channel[0])
         else:
             channel_ = 'Not Set'
-        status = 'Status: Active' if channel_ != 'Not Set' else 'Status: Inactive'
+        status = 'Status: Active <:4941_online:787764205256310825>' if channel_ != 'Not Set' else 'Status: Inactive <:offline:787764149706031104>'
         colour = discord.Colour.green() if channel_ != 'Not Set' else discord.Colour.red()
         embed = discord.Embed(
             title=status,
