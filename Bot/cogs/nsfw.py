@@ -28,6 +28,10 @@ Disadvantages:
 Version Info:
     Added Caching
 '''
+
+## NSFW bot developed by 1 retard and 2 geniuses
+## Thanks Mark and Joe gl with your degrees
+
 def cache_(reg : __logging__.col, **kwargs):
     y = reg.load_col()
     if y:
