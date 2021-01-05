@@ -28,6 +28,8 @@ Facts :
   Soon to come warn system
   
   Useful Tools such as Word Searches | Vid Searches | Image Searches  | + MORE
+  
+  Ticket System
 ```
 **Join the Server as this is the best way of contacting me.**
 
