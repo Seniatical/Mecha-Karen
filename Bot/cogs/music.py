@@ -1,5 +1,4 @@
 import re
-
 import discord
 import lavalink
 from discord.ext import commands
@@ -28,7 +27,7 @@ class Music(commands.Cog):
     def cog_unload(self) -> None:
         self.bot.lavalink._event_hooks.clear()
 
-    async def cog_before_invoke(self, ctx):
+    async def cog_before_invoke(self, ctx) -> bool:
         guild_check = ctx.guild is not None
         if guild_check:
             await self.ensure_voice(ctx)
@@ -93,7 +92,7 @@ class Music(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 15, commands.BucketType.user)
-    async def join(self, ctx):
+    async def join(self, ctx) -> None:
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         if ctx.author.voice:
             await ctx.message.add_reaction('🎵')
@@ -114,7 +113,7 @@ class Music(commands.Cog):
 
     @commands.command(aliases=['dc'])
     @commands.cooldown(1, 5, commands.BucketType.guild)
-    async def disconnect(self, ctx):
+    async def disconnect(self, ctx) -> None:
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
 
         if not player.is_connected:
@@ -138,7 +137,7 @@ class Music(commands.Cog):
 
     @commands.command(aliases=['p'])
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def play(self, ctx, *, query: str = None):
+    async def play(self, ctx, *, query: str = None) -> None:
         if not query:
             return await ctx.message.reply(embed=discord.Embed(
                 description='<a:nope:787764352387776523> Need to give a song to play!',
@@ -179,7 +178,7 @@ class Music(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
-    async def queue(self, ctx):
+    async def queue(self, ctx) -> None:
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         if not player.queue:
             return await ctx.message.reply(embed=discord.Embed(
@@ -198,7 +197,7 @@ class Music(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 20, commands.BucketType.user)
-    async def loop(self, ctx):
+    async def loop(self, ctx) -> None:
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         if not player.repeat:
             player.repeat = True
@@ -217,7 +216,7 @@ class Music(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 30, commands.BucketType.user)
-    async def shuffle(self, ctx):
+    async def shuffle(self, ctx) -> None:
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         player.shuffle = True
         if not player.queue:
@@ -231,7 +230,7 @@ class Music(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
-    async def skip(self, ctx):
+    async def skip(self, ctx) -> None:
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         if not player.is_playing:
             ctx.command.reset_cooldown(ctx)
@@ -247,7 +246,7 @@ class Music(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
-    async def pause(self, ctx):
+    async def pause(self, ctx) -> None:
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         if not player.is_playing:
             ctx.command.reset_cooldown(ctx)
@@ -272,7 +271,7 @@ class Music(commands.Cog):
 
     @commands.command(aliases=['sv'])
     @commands.cooldown(1, 15, commands.BucketType.user)
-    async def set_volume(self, ctx, vol: str = '15'):
+    async def set_volume(self, ctx, vol: str = '15') -> None:
         try:
             vol = int(vol)
         except ValueError:
@@ -297,7 +296,7 @@ class Music(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
-    async def equalizer(self, ctx, band: str='5', gain: str='5'):
+    async def equalizer(self, ctx, band: str='5', gain: str='5') -> None:
         try:
             band = int(float(band))
         except ValueError:
@@ -335,7 +334,7 @@ class Music(commands.Cog):
 
     @commands.command(aliases=['re'])
     @commands.cooldown(1, 10, commands.BucketType.user)
-    async def reset_equalizer(self, ctx):
+    async def reset_equalizer(self, ctx) -> None:
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         await player.reset_equalizer()
         await ctx.message.reply(embed=discord.Embed(
