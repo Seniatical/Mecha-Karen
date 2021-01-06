@@ -30,6 +30,8 @@ Facts :
   Useful Tools such as Word Searches | Vid Searches | Image Searches  | + MORE
   
   Ticket System
+  
+  Music
 ```
 **Join the Server as this is the best way of contacting me.**
 
