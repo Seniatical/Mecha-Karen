@@ -25,4 +25,6 @@ And also to actually set the directory up there before importing
 '''
 
 print('Starting Up Karen...')
-bot.Mecha_Karen()
+self = bot.Mecha_Karen()
+
+self.run()
