@@ -96,11 +96,16 @@ class Mecha_Karen(commands.AutoShardedBot):
             ),
 
         super().__init__(
-            command_prefix=get_prefix,case_insensitive=True,
-            allowed_mentions=allowed_mentions,intents=intents,
+            command_prefix=get_prefix,
+            case_insensitive=True,
+            allowed_mentions=allowed_mentions,
+            intents=intents,
             description='I am Mecha Karen. An open sourced bot inspiring others!',
-            help_command=None,owner_id=475357293949485076,heartbeat_timeout=200.0,
-            help_attrs=dict(hidden=False),guild_ready_timeout=5.0
+            help_command=None,
+            owner_id=475357293949485076,
+            heartbeat_timeout=200.0,
+            help_attrs=dict(hidden=False),
+            guild_ready_timeout=5.0
             assume_unsync_clock=False ''' <---
                                         Dont Bother Adding this.
                                         Your Code will slowly erode if you dont know much about syncing,
@@ -113,7 +118,7 @@ class Mecha_Karen(commands.AutoShardedBot):
         self.user = Utils.main.USERNAME
         self.password = Utils.main.PASSWORD
         self.logging = Utils.main.__logging__
-        self.MySQL = mysql.connector.connect(
+        self.MySQL = mysql.connector.connect(       ## changing this soon
                      host="127.0.0.1",
                      user=self.user,
                      password=self.password,
@@ -139,6 +144,7 @@ class Mecha_Karen(commands.AutoShardedBot):
         
         @self.before_invoke
         async def before_any_command(ctx):
+            ''' Typing before commands bs'''
             ctx.timer = time()
             try:
                 await ctx.trigger_typing()
@@ -310,6 +316,6 @@ class Mecha_Karen(commands.AutoShardedBot):
     async def ver(self):
         return __import__('version')
     
-    @property
-    async def config(self):
-        return __import__('Utils')
+## You have sucessfully made it to the end!
+## Ping -> random.randint(1, 10) is good
+## Goodbye
