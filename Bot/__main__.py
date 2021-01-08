@@ -1,7 +1,7 @@
 # !/usr/bin/python
 
 import os
-import shutin
+import shutil
 from Utils import __logging__
 from Utils import setup
 from Utils.sensitive import env_reader
@@ -38,6 +38,12 @@ if not start:
 start.start(
     setup.setup()
 )
+
+start.rename_e = 'Mecha Karen'
+mother = start.ROOT = 'MOTHER'
+mother.BRANCHES = __logging__.base_map('BRANCHES',
+                                       ['INTERNAL HELPERS', __logging__.SWARM_BRANCH(None)]
+                                      )
 
 self = bot.Mecha_Karen()
 self.run()
