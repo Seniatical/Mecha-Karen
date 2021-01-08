@@ -44,7 +44,7 @@ class Music(commands.Cog):
         if not ctx.author.voice or not ctx.author.voice.channel:
             ctx.command.reset_cooldown(ctx)
             await ctx.message.reply(embed=discord.Embed(
-                description='<a:nope:787764352387776523> Join a voice channel first!',
+                description='<a:nope:787764352387776523> Must be in a voice channel to use this command!',
                 colour=discord.Colour.red()
             ), mention_author=False)
             raise commands.errors.CommandInvokeError
@@ -54,6 +54,16 @@ class Music(commands.Cog):
                 ctx.command.reset_cooldown(ctx)
                 await ctx.message.reply(embed=discord.Embed(
                     description='<a:nope:787764352387776523> I am not connected to any **VC**.',
+                    colour=discord.Colour.red()
+                ).set_footer(
+                    text='If this is a mistake manually kick the bot.',
+                    icon_url=self.bot.user.avatar_url), mention_author=False)
+                raise commands.errors.CommandInvokeError
+
+        if player.is_connected:
+                ctx.command.reset_cooldown(ctx)
+                await ctx.message.reply(embed=discord.Embed(
+                    description='<a:nope:787764352387776523> I am already connected to a **VC** in your server.',
                     colour=discord.Colour.red()
                 ).set_footer(
                     text='If this is a mistake manually kick the bot.',
