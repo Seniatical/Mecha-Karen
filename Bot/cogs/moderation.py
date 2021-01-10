@@ -10,10 +10,6 @@ import random
 
 from Others import *
 
-class Muted:
-    def __init__(self):
-        self.muted = {}
-
 def convert(time: int, unit):
     unit = unit.lower()
     if unit == 's':
@@ -25,6 +21,14 @@ def convert(time: int, unit):
     elif unit == 'd':
         return ((time*60)*60)*24
 
+'''
+Added alot more error handling
+
+More nicer unban commands
+
+Soon to come logging!
+'''
+    
 class moderation(commands.Cog):
 
     def __init__(self, bot):
@@ -34,7 +38,7 @@ class moderation(commands.Cog):
     @commands.has_permissions(manage_messages=True)
     @commands.bot_has_guild_permissions(manage_messages=True)
     @cooldown(1, 5, BucketType.user)
-    async def clear(self, ctx, amount='5', member: discord.Member = None):
+    async def clear(self, ctx, amount='5', member: discord.Member = None) -> discord.Embed:
         try:
             amount = int(amount)
         except ValueError:
@@ -74,7 +78,8 @@ class moderation(commands.Cog):
     @cooldown(1, 5, BucketType.user)
     @commands.has_permissions(kick_members=True)
     @commands.bot_has_guild_permissions(kick_members=True)
-    async def kick(self, ctx, member: discord.Member = None, *, reason="Wasn't Provided."):
+    async def kick(self, ctx, member: discord.Member = None, *, reason='Wasn\'t Provided.') -> discord.Embed:
+        ## Added the \ for the reason
         if member == None:
             ctx.command.reset_cooldown(ctx)
             return await ctx.send('Please provide a member.')
@@ -103,14 +108,17 @@ class moderation(commands.Cog):
     @commands.has_permissions(ban_members=True)
     @commands.bot_has_guild_permissions(ban_members=True, embed_links=True)
     @cooldown(1, 5, BucketType.user)
-    async def ban(self, ctx, member: discord.User = None, *, reason="Wasn't Provided."):
+    async def ban(self, ctx, member: discord.User = None, *, reason="Wasn't Provided.") -> discord.Embed:
+        ## Ban system works cross guild
+        ## So u can ban a person whos not in your server
+        ## As long as the bot has access to the user
         if member == None:
             ctx.command.reset_cooldown(ctx)
             await ctx.send('Please provide a member.')
             return
         try:
             if ctx.channel.permissions_for(member).kick_members and ctx.author != ctx.guild.owner:
-                return await ctx.send('{} I cannot kick this members as they are a **mod/admin**.'.format(emoji.KAREN_ADDITIONS_ANIMATED['nope']))
+                return await ctx.send('{} I cannot ban this members as they are a **mod/admin**.'.format(emoji.KAREN_ADDITIONS_ANIMATED['nope']))
             if str(ctx.guild.get_member(member.id)) == 'None':
                 pass
             else:
@@ -119,14 +127,16 @@ class moderation(commands.Cog):
             pass
         try:
             await ctx.guild.ban(member, reason=reason, delete_message_days=7)
+            ## Delete after has become a week
+            ## we dont want to see the banned scums messages
         except discord.errors.Forbidden:
             ctx.command.reset_cooldown(ctx)
             return await ctx.send('I cannot **Ban** this member due to role hierarchy.')
+        ## Role hierachy prevents the bot from banning a user with a higher role
+        ## Quick little addition
         await ctx.send(embed=discord.Embed(
             description='{} Successfully banned **{}**.'.format(emoji.KAREN_ADDITIONS_ANIMATED['pass'],member),
-            color=0x008000,
-            )
-        )
+            color=0x008000))
 
     @commands.command()
     @commands.has_permissions(ban_members=True)
@@ -146,9 +156,7 @@ class moderation(commands.Cog):
                         await ctx.guild.unban(user_, reason=reason)
                         return await ctx.send(embed=discord.Embed(
                             description='{} Successfully unbanned **{}**.'.format(emoji.KAREN_ADDITIONS_ANIMATED['pass'],member),
-                            color=0x008000,
-                            )
-                        )
+                            color=0x008000))
                     except discord.errors.Forbidden:
                         return await ctx.send("I cannot **Unban** this member. I either don't have **Permission (s)** or due to role hierarchy.")
             if id_ not in [i.id for i in self.bot.users]:
@@ -168,9 +176,7 @@ class moderation(commands.Cog):
                 return await ctx.send(
                     embed=discord.Embed(
                         description="<a:nope:787764352387776523> Use the correct format! **e.g. **_-*™#7519",
-                        colour=discord.Color.red()
-                    )
-                )
+                        colour=discord.Color.red()))
             for banned_entry in banned_users:
                 user = banned_entry.user
     
@@ -179,21 +185,26 @@ class moderation(commands.Cog):
                     try:
                         return await ctx.send(embed=discord.Embed(
                             description='{} Successfully unbanned **{}**.'.format(emoji.KAREN_ADDITIONS_ANIMATED['pass'],member),
-                            color=0x008000,
-                            )
-                        )
+                            color=0x008000))
                     except discord.errors.Forbidden:
                         return await ctx.send('I cannot **Unban** this member due to role hierarchy.')
             user = [i.name+'#'+i.discriminator for i in self.bot.users if i.name == member_name]
+            ## this will give us a cleaner look with the ID
+            ## so we dont see 2424537658 like dyno
+            ## we see fish#1234
+            ## Much more nicer
             if len(user) == 0:
                 return await ctx.send(embed=discord.Embed(
                     description="<a:nope:787764352387776523> I couldn't find the user with the name matching: **{}**".format(member),
                     colour=discord.Color.red()
                 ))
-            return await ctx.send(embed=discord.Embed(
+            await ctx.send(embed=discord.Embed(
                 description="<a:nope:787764352387776523> The user **{}** isn't banned!".format(user[0]),
                 colour=colours.HEX_RED_SHADES[random.choice(list(colours.HEX_RED_SHADES.keys()))]
-            ))
+            ))  ## If the user is found
+            ## but there not banned
+            ## we see this
+            ## Very much user friendly
 
     @commands.command()
     @commands.bot_has_guild_permissions(manage_channels=True)
@@ -208,9 +219,8 @@ class moderation(commands.Cog):
             await ctx.send('Are you sure!')
             await ctx.send('Type in `yes`. To proceed')
 
-            def check(m):
-                user = ctx.author
-                return m.author.id == user.id and m.content.lower() == 'yes'
+            def check(m):   ## Message object
+                return m.author.id == ctx.author.id and m.content.lower() == 'yes'
 
             await self.bot.wait_for('message', check=check)
             await ctx.channel.send('Theres no going back!\n**Are you sure.**')
@@ -221,7 +231,7 @@ class moderation(commands.Cog):
             except discord.errors.Forbidden:
                 return await ctx.send('**Nuke Failed. I am missing permissions!**')
             await new.send('https://media1.tenor.com/images/6c485efad8b910e5289fc7968ea1d22f/tenor.gif?itemid=5791468')
-            await asyncio.sleep(2)
+            await asyncio.sleep(1)  ## Reduced cooldown, all we wanna see is boom boom.
             await new.send('**Mecha Karen** has nuked this channel!')
                 
     @commands.command(aliases=['nick'])
@@ -234,6 +244,11 @@ class moderation(commands.Cog):
                 description='<a:nope:787764352387776523> Give a member. **-nickname <MEMBER> <NICKNAME>**',
                 colour=discord.Color.red()
             ))
+        '''
+        Alot more error handling
+        
+        And also much more nicer error handling
+        '''
         elif member == ctx.guild.owner:
             ctx.command.reset_cooldown(ctx)
             return await ctx.send(embed=discord.Embed(
