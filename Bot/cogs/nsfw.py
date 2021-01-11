@@ -47,7 +47,20 @@ def load_(reg : __logging__.col):
 class nsfw(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.reload_content.add_exception_type(__logging__.RequestTimeoutError)
+        self.reload_content.start()
 
+    @tasks.loop(minutes=60.0)
+    async def batch_update(self):
+        await __logging__.conv
+        async with __logging__.dumps('NSFW') as cxn:
+            key = __logging__.CALC(cxn)['API_KEY']
+            
+            __logging__.update_cache('NSFW', others = {
+                "APIKEY": key,
+                "TYPE": 'Blob'
+            })
+        
     @commands.command()
     @commands.is_nsfw()
     async def MILF(self, ctx):
