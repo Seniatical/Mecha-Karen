@@ -1,7 +1,8 @@
 import discord
 from discord.ext import commands
 from datetime import timedelta
-from discord.ext.commands import BucketType, cooldown
+from discord.ext.commands import BucketType
+from discord.ext.commands import cooldown
 import datetime
 import time
 import sys
@@ -26,7 +27,7 @@ class checks(commands.Cog):
 
     @commands.command(aliases=['info', 'whois', 'Userinfo'])
     @cooldown(1, 30, BucketType.user)
-    async def user(self, ctx, member: discord.Member=None):
+    async def user(self, ctx, member: discord.Member = None):
         member = ctx.author if not member else member
         roles = [role for role in member.roles]
         roles.pop(0)
@@ -46,7 +47,7 @@ class checks(commands.Cog):
 
     @commands.command(aliases=['avatar'])
     @cooldown(1, 60, BucketType.user)
-    async def av(self, ctx, member: discord.Member=None):
+    async def av(self, ctx, member: discord.Member = None):
         if member == None:
             member = ctx.author
         else:
@@ -222,7 +223,7 @@ class checks(commands.Cog):
             await ctx.send(e)
 
     @commands.command()
-    async def history(self, ctx, channel:discord.TextChannel = None):
+    async def history(self, ctx, channel: discord.TextChannel = None):
         if channel == None:
             channel = ctx.channel
         limit = 2147483646
