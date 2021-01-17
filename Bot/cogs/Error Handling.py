@@ -3,15 +3,17 @@ import asyncio
 from discord.ext import commands
 from asyncio import sleep
 import traceback
-import string, random
-from Utils import __logging__
-from Utils import sub
+import string
+import random
+import prawcore
+from Helpers import emoji, functions
+from cogs.Help import get_prefix
 
-errors = ('ArithmeticError', 'AssertionError', 'AttributeError', 'BaseException', 'BlockingIOError',
+errors = ('ArithmeticError', 'AssertionError', 'BaseException', 'BlockingIOError',
           'BrokenPipeError', 'BufferError', 'BytesWarning', 'ChildProcessError', 'ConnectionAbortedError',
           'ConnectionError', 'ConnectionRefusedError', 'ConnectionResetError', 'DeprecationWarning', 'EOFError',
           'EnvironmentError', 'FileExistsError', 'FileNotFoundError','FloatingPointError', 'FutureWarning',
-          'GeneratorExit', 'IOError', 'ImportError', 'ImportWarning',
+          'GeneratorExit', 'IOError', 'ImportError', 'ImportWarning', 'UnexpectedQuoteError',
           'IndentationError', 'IndexError', 'InterruptedError', 'IsADirectoryError', 'KeyError',
           'KeyboardInterrupt', 'LookupError', 'MemoryError', 'ModuleNotFoundError', 'NameError',
           'NotADirectoryError', 'NotImplemented', 'NotImplementedError', 'OSError', 'OverflowError',
@@ -33,10 +35,10 @@ def convert(time):
     return "%d:%d:%d:%d" % (day, hour, minutes, seconds)
 
 def gen_code():
-    chars = list(string.ascii_lowercase) + list(string.ascii_uppercase) + list(string.punctuation)
+    chars = list(string.hexdigits) + list(string.octdigits)
     num = list(string.digits) + list(string.hexdigits) + list(string.octdigits)
     former = []
-    for i in range(random.randint(10, 20)):
+    for i in range(random.randint(20, 30)):
         x = ('y', 'n')
         if random.choice(x) == 'y':
             if random.choice(x) == 'y':
@@ -50,96 +52,139 @@ def gen_code():
 class Events(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.logging = __logging__
-          
-        def __cache__():
-            return __logging__.cache(mode='json')
-
-        def update_cache():
-            current = __logging__.cache()
-            updating = __logging__.holder(data='Full')
-            for i in updating:
-                for j in current:
-                    if j.category == i.category:
-                        __logging__.replace_cache(j, i)
-                        continue
-                    __logging__.create_category(revert=True, temp=True)
-            return True
-
-        def is_subset(char : sub.RARE):
-            if isinstance(char, tuple):
-                res = sub.get_sub(char[0])
-                if res:
-                    return True
-                return False
-            return False
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.CommandNotFound):
             pass
         elif isinstance(error, commands.CommandOnCooldown):
-            global time, message
             time = error.retry_after
             time = convert(time)
             x = time.split(':')
-            if x[1] != '0' and x[2] != '0':
+            message = '**Your On Cooldown!**'
+            if x[1] != '0':
                 if x[1] == 1:
-                    message = f'Retry this command after **{x[1]}** hour and **{x[2]}** minutes!'
+                    message = 'The command **{}** is still on cooldown! Retry after **1** Hour and **{}** Minutes'.format(ctx.command.name.title(), x[2])
                 else:
-                    message = f'Retry this command after **{x[1]}** hours and **{x[2]}** minutes!'
-            elif x[1] == '0' and x[2] != '0' and x[3] != '0':
-                message = f'Retry this command after **{x[2]}** minutes and **{x[3]}** seconds!'
-            elif x[3] != '0' and x[1] == '0' and x[2] == '0':
-                message = f'Retry this command after **{x[3]}** seconds!'
-            await ctx.send(message)
+                    message = 'The command **{}** is still on cooldown! Retry after **{}** Hour and **{}** Minutes'.format(ctx.command.name.title(), x[1], x[2])
+            elif x[1] == '0' and x[2] != '0':
+                if x[2] == '1':
+                    message = 'The command **{}** is still on cooldown! Retry after **1** Minute and **{}** Seconds.'.format(ctx.command.name.title(), x[3])
+                else:
+                    message = 'The command **{}** is still on cooldown! Retry after **{}** Minutes and **{}** Seconds.'.format(ctx.command.name, x[2], x[3])
+            elif x[1] == '0' and x[2] == '0' and x[3] != '0':
+                message = 'The command **{}** is still on cooldown! Retry after **{}** Seconds.'.format(ctx.command.name.title(), x[3])
+            await ctx.message.reply(message, mention_author=False)
+
         elif isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send('**You have made an error.**\n\n{}'.format(error.param))
-        elif isinstance(error, commands.TooManyArguments):
-            await ctx.send('You have given too many args.\nPlease use the command as directed.')
-        elif isinstance(error, commands.BotMissingPermissions):
-            await ctx.send('I am missing permissions.')
-        elif isinstance(error, commands.ExtensionAlreadyLoaded):
-            await ctx.send('The cog {} is already loaded.'.format(error.args[0]))
+            prefix_ = get_prefix(ctx.guild.id)
+            params = [ctx.command.clean_params[i] for i in ctx.command.clean_params]
+            y = ['```{}{} '.format(prefix_, ctx.command.name), '```']
+            for i in params:
+                y.insert(-1, '<' + i.name + '> ')
+            y.insert(-1, '\n\n' + error.args[0])
+            await ctx.send(''.join(y))
+
         elif isinstance(error, commands.MissingPermissions):
-            await ctx.send('You need **{}** perms to complete this actions.'.format(' '.join(error.missing_perms[0].split('_'))))
-        elif isinstance(error, commands.BotMissingAnyRole):
-            await ctx.send('**Woops!**\n\nLooks like i am missing the {} role.'.format(error.missing_role))
-        elif isinstance(error, commands.CheckAnyFailure):
-            await ctx.send('An unknown error has occured.')
+            await ctx.message.reply(embed=discord.Embed(
+                description='<a:nope:787764352387776523> You need **{}** perms to complete this actions.'.format(' '.join(error.missing_perms[0].split('_'))),
+                colour=discord.Colour.red()
+            ), mention_author=False)
+
+        elif isinstance(error, commands.BotMissingPermissions):
+            if error.missing_perms[0] == 'send_messages':
+                return
+            await ctx.message.reply(
+                embed=discord.Embed(
+                    description='<a:nope:787764352387776523> I am missing **{}** permissions.'.format(' '.join(error.missing_perms[0].split('_'))),
+                    colour=discord.Colour.red()
+                ), mention_author=False)
+
         elif isinstance(error, commands.errors.NSFWChannelRequired):
-            await ctx.send('You must use this command in a channel marked as **NSFW**.')
+            embed = discord.Embed(
+                title='Error 404!',
+                colour=discord.Color.red(),
+                description="You must use this command in a channel marked as **NSFW**.",
+                timestamp=ctx.message.created_at,
+            ).set_footer(text='Invoked by {}'.format(ctx.author), icon_url=ctx.author.avatar_url)
+            embed.set_image(url='https://i.imgur.com/cy9t3XN.gif')
+            await ctx.message.reply(embed=embed)
+
         elif isinstance(error, commands.errors.NotOwner):
-            await ctx.send('Only **_-*™#1234** can use this command.')
-        elif isinstance(error, commands.errors.NoPrivateMessage):
-            await ctx.send("The user has blocked me or has the DM's closed.")
+            await ctx.message.reply('Only **_-*™#1234** can use this command.', mention_author=False)
+
         elif isinstance(error, discord.ext.commands.DisabledCommand):
-            await ctx.send('This command is disabled.')
-        elif isinstance(error, discord.errors.Forbidden):
-            await ctx.send('I do not have permissions for this command!')
+            return await ctx.message.reply(embed=discord.Embed(
+                description='<a:nope:787764352387776523> This command has been disabled. Re-enable it use it again!',
+                colour=discord.Colour.red()
+            ), mention_author=False)
+
         elif isinstance(error, commands.errors.MemberNotFound):
-            await ctx.send('Please give a valid user!')
+            await ctx.message.reply(embed=discord.Embed(
+                description="{} Member named **{}** was not found!".format(emoji.KAREN_ADDITIONS_ANIMATED['nope'], error.argument),
+                colour=discord.Colour.red()
+            ), mention_author=False)
+            ctx.command.reset_cooldown(ctx)
+
+        elif isinstance(error, commands.errors.UserNotFound):
+            await ctx.message.reply(embed=discord.Embed(
+                description="{} Member named **{}** was not found!".format(emoji.KAREN_ADDITIONS_ANIMATED['nope'], error.argument),
+                colour=discord.Colour.red()
+            ), mention_author=False)
+            ctx.command.reset_cooldown(ctx)
+
+        elif isinstance(error, prawcore.NotFound):
+            return await ctx.send('Post Not Found!\nError 404: Give a subreddit with posts.')
+
+        elif isinstance(error, functions.NotGuildOwner):
+            await ctx.message.reply(embed=discord.Embed(
+                description="{} Only **{}** has access to this command!".format(emoji.KAREN_ADDITIONS_ANIMATED['nope'], ctx.guild.owner),
+                colour=discord.Colour.red()
+            ), mention_author=False)
+            ctx.command.reset_cooldown(ctx)
+
+        elif isinstance(error, commands.errors.ChannelNotFound):
+            ctx.command.reset_cooldown(ctx)
+            await ctx.message.reply(embed=discord.Embed(
+                description='<a:nope:787764352387776523> Channel named **{}** cannot be found! Retry with a valid channel.'.format(error.argument),
+                colour=discord.Colour.red()
+            ), mention_author=False)
+
+        elif isinstance(error, commands.errors.RoleNotFound):
+            ctx.command.reset_cooldown(ctx)
+            await ctx.message.reply(embed=discord.Embed(
+                description='<a:nope:787764352387776523> Role named **{}** cannot be found!'.format(error.argument),
+                colour=discord.Colour.red()
+            ), mention_author=False)
+
         else:
+            code = gen_code()
+            error = traceback.format_exception(etype=type(error), value=error, tb=error.__traceback__)
+            channel = self.bot.get_channel(800315954008948747)
             try:
-                code = gen_code()
-                error = traceback.format_exception(etype=type(error), value=error, tb=error.__traceback__)
-                channel = self.bot.get_channel(779051230373740546)
                 await channel.send('**Error in the command {}**\n```\n'.format(ctx.command.name) + ''.join(map(str, error)) + '\n```')
-                await ctx.send('**An unknown error has occurred. It has been reported automatically!**\n**Your error code:** `{}`'.format(code))
-                errortype = 'Unspecified'
-                for i in range(len(error)):
-                    for j in errors:
-                        if j in error[i]:
-                            errortype = j
-                            break
-                data = self.logging.get('error_code.log', 'msfw').json()
-                data[code] = {}
-                data[code]['Command'] = ctx.command.name.title()
-                data[code]['Error Type'] = errortype
-                data[code]['Shortened Error'] = error[-1][:-1]
-                self.logging.update(data)
             except discord.errors.HTTPException:
-                print(error)
+                with open('./Helpers/error.txt', 'w') as f:
+                    f.writelines(error)
+                    print('Error was too long.')
+            try:
+                await ctx.send('**An unknown error has occurred. It has been reported automatically!**\n**Your error code:** `{}`'.format(code))
+            except discord.errors.Forbidden:
+                pass
+            error_type = 'Unspecified'
+            for i in range(len(error)):
+                for j in errors:
+                    if j in error[i]:
+                        error_type = j
+                        break
+            with open('./Bot/JSON/errors.json', 'r') as f:
+                data = json.load(f)
+            data[code] = {}
+            data[code]['Command'] = ctx.command.name.title()
+            data[code]['Error Type'] = error_type
+            data[code]['Shortened Error'] = error[-1][:-1]
+            with open('./Bot/JSON/errors.json', 'w') as f:
+                json.dump(data, f, indent=4)
 
 def setup(bot):
     bot.add_cog(Events(bot))
