@@ -27,7 +27,7 @@ from Utils import UD, __logging__
 import Helpers
 import traceback
 from Utils.help import PING, IMPORTED
-from Utils import db
+from Utils import db, events
 
 class DATA:
     def __init__(self):
@@ -287,7 +287,7 @@ class Mecha_Karen(commands.AutoShardedBot):
             await self.process_commands(message=msg)
         except Exception:
             pass
-
+        
     @staticmethod
     async def on_socket_raw_receive(message):
         y = self.logging.call('./Logs/recieved.log')
@@ -319,3 +319,10 @@ class Mecha_Karen(commands.AutoShardedBot):
 ## You have sucessfully made it to the end!
 ## Ping -> random.randint(1, 10) is good
 ## Goodbye
+
+if __name__ == '__main__':
+    import sys
+    from shutil import Error
+    
+    raise Error('Run __main__.py not bot.py')
+    sys.exit(0)
