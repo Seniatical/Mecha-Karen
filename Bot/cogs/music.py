@@ -61,14 +61,14 @@ class Music(commands.Cog):
                 raise commands.errors.CommandInvokeError
 
         if player.is_connected:
-                ctx.command.reset_cooldown(ctx)
-                await ctx.message.reply(embed=discord.Embed(
-                    description='<a:nope:787764352387776523> I am already connected to a **VC** in your server.',
-                    colour=discord.Colour.red()
-                ).set_footer(
-                    text='If this is a mistake manually kick the bot.',
-                    icon_url=self.bot.user.avatar_url), mention_author=False)
-                raise commands.errors.CommandInvokeError
+            ctx.command.reset_cooldown(ctx)
+            await ctx.message.reply(embed=discord.Embed(
+               description='<a:nope:787764352387776523> I am already connected to a **VC** in your server.',
+               colour=discord.Colour.red()
+            ).set_footer(
+               text='If this is a mistake manually kick the bot.',
+               icon_url=self.bot.user.avatar_url), mention_author=False)
+            raise commands.errors.CommandInvokeError
 
             permissions = ctx.author.voice.channel.permissions_for(ctx.me)
 
