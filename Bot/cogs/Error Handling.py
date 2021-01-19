@@ -74,6 +74,8 @@ class Events(commands.Cog):
                     message = 'The command **{}** is still on cooldown! Retry after **{}** Minutes and **{}** Seconds.'.format(ctx.command.name, x[2], x[3])
             elif x[1] == '0' and x[2] == '0' and x[3] != '0':
                 message = 'The command **{}** is still on cooldown! Retry after **{}** Seconds.'.format(ctx.command.name.title(), x[3])
+            else:
+                message = 'The command **{}** is still on cooldown! Retry after **1** Seconds.'
             await ctx.message.reply(message, mention_author=False)
 
         elif isinstance(error, commands.MissingRequiredArgument):
@@ -166,7 +168,7 @@ class Events(commands.Cog):
             except discord.errors.HTTPException:
                 with open('./Helpers/error.txt', 'w') as f:
                     f.writelines(error)
-                    print('Error was too long.')
+                    await channel.send('Error code in ./Bot/Helpers/error.txt')
             try:
                 await ctx.send('**An unknown error has occurred. It has been reported automatically!**\n**Your error code:** `{}`'.format(code))
             except discord.errors.Forbidden:
@@ -177,14 +179,13 @@ class Events(commands.Cog):
                     if j in error[i]:
                         error_type = j
                         break
-            with open('./Bot/JSON/errors.json', 'r') as f:
-                data = json.load(f)
+            data = self.bot.logging.load('errors.log')
+            data = data.json()
             data[code] = {}
             data[code]['Command'] = ctx.command.name.title()
             data[code]['Error Type'] = error_type
             data[code]['Shortened Error'] = error[-1][:-1]
-            with open('./Bot/JSON/errors.json', 'w') as f:
-                json.dump(data, f, indent=4)
+            self.bot.logging.update('errors.log', mode='logs', cm='json')
 
 def setup(bot):
     bot.add_cog(Events(bot))
