@@ -57,6 +57,8 @@ Click the button below to report an issue
 # Other info :
 **>** Utils folder will no longer be updated as new files contain sensitive data.
 
+**>** You can use and modify parts of this repository, it servers a recourse to learn how the discord.py API wrapper works and how you can use it to make your ideas become reality. Please dont steal / claim code's which you haven't created (the copyright world is a deadly place). If want to know your limits and how to use my works read the limitions stated in the `LICENSE` file.
+
 **>** Follow me to keep updated with other stuff <!-- Place this tag where you want the button to render. -->
 <a class="github-button" href="https://github.com/Seniatical" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" data-show-count="true" aria-label="Follow @Seniatical on GitHub">Follow @Seniatical</a>
 
