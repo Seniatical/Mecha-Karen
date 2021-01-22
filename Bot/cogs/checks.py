@@ -10,7 +10,6 @@ import asyncio
 import math
 
 from Utils import main
-
 class Pagation(menus.Menu):
     async def send_initial_message(self, ctx, channel):
         embed = discord.Embed(
@@ -170,6 +169,7 @@ class Pagation(menus.Menu):
         embed.add_field(name='Large?', value=f'{ctx.guild.large}')
         embed.add_field(name='Server Level!', value=f'{level}', inline=False)
         embed.set_footer(text=f'Prompted by {ctx.author}', icon_url=ctx.author.avatar_url)
+        await self.message.remove_reaction(payload.emoji, payload.member)
         await self.message.edit(embed = embed)
 
     @menus.button('➡️')
@@ -241,6 +241,7 @@ class Pagation(menus.Menu):
         else:
             embed.add_field(name='Welcome Screen?', value='<:Nope:757666131854098726> Nope!')
         embed.set_footer(text=f'Prompted by {ctx.author}', icon_url=ctx.author.avatar_url)
+        await self.message.remove_reaction(payload.emoji, payload.member)
         await self.message.edit(embed=embed)
 
     @menus.button('\N{BLACK SQUARE FOR STOP}\ufe0f')
