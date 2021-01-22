@@ -91,80 +91,8 @@ class Pagation(menus.Menu):
         embed.set_footer(text=f'Prompted by {ctx.author}', icon_url=ctx.author.avatar_url)
         return await channel.send(embed=embed)
 
-    @menus.button('\N{THUMBS UP SIGN}')
-    async def on_page_forward(self, payload):
-        ctx = self.message
-        embed = discord.Embed(
-            title=f'{ctx.guild.name} Features!',
-            color=ctx.author.colour, timestamp=datetime.datetime.utcnow()
-        )
-        embed.set_thumbnail(url=ctx.guild.icon_url)
-        if 'VIP_REGIONS' in ctx.guild.features:
-            embed.add_field(name='VIP Region?', value='<a:Passed:757652583392215201> Yes!')
-        else:
-            embed.add_field(name='VIP Region?', value='<:Nope:757666131854098726> Nope!')
-        if 'VANITY_URL' in ctx.guild.features:
-            embed.add_field(name='Vanity URL?', value='<a:Passed:757652583392215201> Yes!')
-        else:
-            embed.add_field(name='Vanity URL?', value='<:Nope:757666131854098726> Nope!')
-        if 'INVITE_SPLASH' in ctx.guild.features:
-            embed.add_field(name='Invite Splash?', value='<a:Passed:757652583392215201> Yes!')
-        else:
-            embed.add_field(name='Invite Splash?', value='<:Nope:757666131854098726> Nope!')
-        if 'VERIFIED' in ctx.guild.features:
-            embed.add_field(name='Verified?', value='<a:Passed:757652583392215201> Yes!')
-        else:
-            embed.add_field(name='Verified?', value='<:Nope:757666131854098726> Nope!')
-        if 'PARTENERED' in ctx.guild.features:
-            embed.add_field(name='Partner?', value='<a:Passed:757652583392215201> Yes!')
-        else:
-            embed.add_field(name='Partner?', value='<:Nope:757666131854098726> Nope!')
-        if 'MORE_EMOJI' in ctx.guild.features:
-            embed.add_field(name="50+ Emoji Allowance?", value=f'<a:Passed:757652583392215201> Yes!')
-        else:
-            embed.add_field(name='50+ Emoji Allowance?', value='<:Nope:757666131854098726> Nope!')
-        if 'DISCOVERABLE' in ctx.guild.features:
-            embed.add_field(name='Discoverable?', value='<a:Passed:757652583392215201> Yes!')
-        else:
-            embed.add_field(name='Discoverable?', value='<:Nope:757666131854098726> Nope!')
-        if 'FEATURABLE' in ctx.guild.features:
-            embed.add_field(name='Featured?', value='<a:Passed:757652583392215201> Yes!')
-        else:
-            embed.add_field(name='Featured?', value='<:Nope:757666131854098726> Nope!')
-        if 'COMMUNITY' in ctx.guild.features:
-            embed.add_field(name='Community?', value='<a:Passed:757652583392215201> Yes!')
-        else:
-            embed.add_field(name='Community?', value='<:Nope:757666131854098726> Nope!')
-        if 'COMMERCE' in ctx.guild.features:
-            embed.add_field(name='Commerce?', value='<a:Passed:757652583392215201> Yes!')
-        else:
-            embed.add_field(name='Commerce?', value='<:Nope:757666131854098726> Nope!')
-        if 'PUBLIC' in ctx.guild.features:
-            embed.add_field(name='Public?', value='<a:Passed:757652583392215201> Yes!')
-        else:
-            embed.add_field(name='Public?', value='<:Nope:757666131854098726> Nope!')
-        if 'NEWS' in ctx.guild.features:
-            embed.add_field(name='Announcements?', value='<a:Passed:757652583392215201> Yes!')
-        else:
-            embed.add_field(name='Announcements?', value='<:Nope:757666131854098726> Nope!')
-        if 'BANNER' in ctx.guild.features:
-            embed.add_field(name='Banners?', value='<a:Passed:757652583392215201> Yes!')
-        else:
-            embed.add_field(name='Banners?', value='<:Nope:757666131854098726> Nope!')
-        if 'ANIMATED_ICON' in ctx.guild.features:
-            embed.add_field(name='Animated Icon?', value='<a:Passed:757652583392215201> Yes!')
-        else:
-            embed.add_field(name='Animated Icon?', value='<:Nope:757666131854098726> Nope!')
-        if 'WELCOME_SCREEN_ENABLED' in ctx.guild.features:
-            embed.add_field(name='Welcome Screen?', value='<a:Passed:757652583392215201> Yes!')
-        else:
-            embed.add_field(name='Welcome Screen?', value='<:Nope:757666131854098726> Nope!')
-        embed.set_footer(text=f'Prompted by {ctx.author}', icon_url=ctx.author.avatar_url)
-        await self.message.edit(embed = embed)
-        await self.message.clear_reactions()
-
-    @menus.button('\N{THUMBS DOWN SIGN}')
-    async def on_thumbs_down(self, payload):
+    @menus.button('⬅️')
+    async def on_go_back(self, payload):
         ctx = self.message
         embed = discord.Embed(
             title=f'{ctx.guild.name}',
@@ -243,7 +171,77 @@ class Pagation(menus.Menu):
         embed.add_field(name='Server Level!', value=f'{level}', inline=False)
         embed.set_footer(text=f'Prompted by {ctx.author}', icon_url=ctx.author.avatar_url)
         await self.message.edit(embed = embed)
-        await self.message.clear_reactions()
+
+    @menus.button('➡️')
+    async def on_page_forward(self, payload):
+        ctx = self.message
+        embed = discord.Embed(
+            title=f'{ctx.guild.name} Features!',
+            color=ctx.author.colour, timestamp=datetime.datetime.utcnow()
+        )
+        embed.set_thumbnail(url=ctx.guild.icon_url)
+        if 'VIP_REGIONS' in ctx.guild.features:
+            embed.add_field(name='VIP Region?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='VIP Region?', value='<:Nope:757666131854098726> Nope!')
+        if 'VANITY_URL' in ctx.guild.features:
+            embed.add_field(name='Vanity URL?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Vanity URL?', value='<:Nope:757666131854098726> Nope!')
+        if 'INVITE_SPLASH' in ctx.guild.features:
+            embed.add_field(name='Invite Splash?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Invite Splash?', value='<:Nope:757666131854098726> Nope!')
+        if 'VERIFIED' in ctx.guild.features:
+            embed.add_field(name='Verified?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Verified?', value='<:Nope:757666131854098726> Nope!')
+        if 'PARTENERED' in ctx.guild.features:
+            embed.add_field(name='Partner?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Partner?', value='<:Nope:757666131854098726> Nope!')
+        if 'MORE_EMOJI' in ctx.guild.features:
+            embed.add_field(name="50+ Emoji Allowance?", value=f'<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='50+ Emoji Allowance?', value='<:Nope:757666131854098726> Nope!')
+        if 'DISCOVERABLE' in ctx.guild.features:
+            embed.add_field(name='Discoverable?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Discoverable?', value='<:Nope:757666131854098726> Nope!')
+        if 'FEATURABLE' in ctx.guild.features:
+            embed.add_field(name='Featured?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Featured?', value='<:Nope:757666131854098726> Nope!')
+        if 'COMMUNITY' in ctx.guild.features:
+            embed.add_field(name='Community?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Community?', value='<:Nope:757666131854098726> Nope!')
+        if 'COMMERCE' in ctx.guild.features:
+            embed.add_field(name='Commerce?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Commerce?', value='<:Nope:757666131854098726> Nope!')
+        if 'PUBLIC' in ctx.guild.features:
+            embed.add_field(name='Public?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Public?', value='<:Nope:757666131854098726> Nope!')
+        if 'NEWS' in ctx.guild.features:
+            embed.add_field(name='Announcements?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Announcements?', value='<:Nope:757666131854098726> Nope!')
+        if 'BANNER' in ctx.guild.features:
+            embed.add_field(name='Banners?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Banners?', value='<:Nope:757666131854098726> Nope!')
+        if 'ANIMATED_ICON' in ctx.guild.features:
+            embed.add_field(name='Animated Icon?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Animated Icon?', value='<:Nope:757666131854098726> Nope!')
+        if 'WELCOME_SCREEN_ENABLED' in ctx.guild.features:
+            embed.add_field(name='Welcome Screen?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Welcome Screen?', value='<:Nope:757666131854098726> Nope!')
+        embed.set_footer(text=f'Prompted by {ctx.author}', icon_url=ctx.author.avatar_url)
+        await self.message.edit(embed=embed)
 
     @menus.button('\N{BLACK SQUARE FOR STOP}\ufe0f')
     async def on_stop(self, payload):
