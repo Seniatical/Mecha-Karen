@@ -1,5 +1,5 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, menus
 from datetime import timedelta
 from discord.ext.commands import BucketType
 from discord.ext.commands import cooldown
@@ -10,6 +10,245 @@ import asyncio
 import math
 
 from Utils import main
+
+class Pagation(menus.Menu):
+    async def send_initial_message(self, ctx, channel):
+        embed = discord.Embed(
+            title=f'{ctx.guild.name}',
+            color=discord.Color.red(),
+            timestamp=datetime.datetime.utcnow()
+        )
+        embed.set_thumbnail(url=ctx.guild.icon_url)
+        embed.add_field(name='Owner?', value=f'{ctx.guild.owner}')
+        embed.add_field(name='Owner ID?', value=f'`{ctx.guild.owner.id}`')
+        embed.add_field(name='Owner Created at?',
+                        value=f"{ctx.guild.owner.created_at.strftime('%a, %#d %B %Y, %I:%M %p')}", inline=False)
+        embed.add_field(name='Server Name?', value=f'{ctx.guild.name}')
+        embed.add_field(name='Server ID?', value=f'`{ctx.guild.id}`')
+        banner = ctx.guild.region[0]
+        banner = list(banner)
+        x = banner[0].upper()
+        banner.pop(0)
+        banner.insert(0, x)
+        banner = ''.join(map(str, banner))
+        embed.add_field(name='Region?', value=f'{banner}')
+        embed.add_field(name=f'Created at?', value=f"{ctx.guild.created_at.strftime('%a, %#d %B %Y, %I:%M %p')}",
+                        inline=False)
+        embed.add_field(name="Emoji's?", value=f'{len(ctx.guild.emojis)}')
+        embed.add_field(name=f'Members?', value=f'{len(ctx.guild.members)}')
+        verif = ctx.guild.verification_level[0]
+        verif = list(verif)
+        x = verif[0].upper()
+        verif.pop(0)
+        verif.insert(0, x)
+        verif = ''.join(map(str, verif))
+        embed.add_field(name=f'Verification Level?', value=f'{verif}')
+        if ctx.guild.afk_channel == True:
+            embed.add_field(name='AFK Channel?', value=f'{ctx.guild.afk_channel.name}', inline=False)
+            embed.add_field(name='AFK Timeout?', value=f'{ctx.guild.afk_timeout}')
+        else:
+            pass
+
+        true = ctx.guild.mfa_level
+        if true == 1:
+            true = 'Yes!'
+        else:
+            true = 'No!'
+        embed.add_field(name='Admin 2FA?', value=f'{true}')
+        boost = ctx.guild.premium_subscription_count
+        if boost == 0:
+            boost = 'None 😭'
+        else:
+            pass
+        embed.add_field(name='Boosts!', value=f'{boost}')
+        level = ctx.guild.premium_tier
+        if level == 0:
+            count = 2 - ctx.guild.premium_subscription_count
+            level = 'Level 0. You need {} more boosts for level 1!'.format(count)
+        elif level == 1:
+            count = 15 - ctx.guild.premium_subscription_count
+            level = 'Level 1. You need {} more boosts for level 2'.format(count)
+        elif level == 2:
+            count = 30 - ctx.guild.premium_subscription_count
+            level = 'Level 2. You need {} more boosts for level 3'.format(count)
+        elif level == 3:
+            count = ctx.guild.premium_subscription_count
+            level = 'Level 3. Max level with a whopping {} boosts!!!'.format(count)
+        embed.add_field(name='Channels?', value=f'{len(ctx.guild.channels)}')
+        bots = 0
+        for member in ctx.guild.members:
+            if member.bot == True:
+                bots += 1
+            else:
+                pass
+        embed.add_field(name=f'Bots?', value=f'{bots}')
+        embed.add_field(name=f'Main Lang?', value=f'{ctx.guild.preferred_locale}')
+        embed.add_field(name=f'Emoji Limit?', value=f'{ctx.guild.emoji_limit}')
+        embed.add_field(name=f'Bitrate Limit?', value=f'{convert_size(ctx.guild.bitrate_limit)}')
+        embed.add_field(name='Filesize Limit?', value=f'{convert_size(ctx.guild.filesize_limit)}')
+        embed.add_field(name='Large?', value=f'{ctx.guild.large}')
+        embed.add_field(name='Server Level!', value=f'{level}', inline=False)
+        embed.set_footer(text=f'Prompted by {ctx.author}', icon_url=ctx.author.avatar_url)
+        return await channel.send(embed=embed)
+
+    @menus.button('\N{THUMBS UP SIGN}')
+    async def on_page_forward(self, payload):
+        ctx = self.message
+        embed = discord.Embed(
+            title=f'{ctx.guild.name} Features!',
+            color=ctx.author.colour, timestamp=datetime.datetime.utcnow()
+        )
+        embed.set_thumbnail(url=ctx.guild.icon_url)
+        if 'VIP_REGIONS' in ctx.guild.features:
+            embed.add_field(name='VIP Region?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='VIP Region?', value='<:Nope:757666131854098726> Nope!')
+        if 'VANITY_URL' in ctx.guild.features:
+            embed.add_field(name='Vanity URL?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Vanity URL?', value='<:Nope:757666131854098726> Nope!')
+        if 'INVITE_SPLASH' in ctx.guild.features:
+            embed.add_field(name='Invite Splash?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Invite Splash?', value='<:Nope:757666131854098726> Nope!')
+        if 'VERIFIED' in ctx.guild.features:
+            embed.add_field(name='Verified?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Verified?', value='<:Nope:757666131854098726> Nope!')
+        if 'PARTENERED' in ctx.guild.features:
+            embed.add_field(name='Partner?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Partner?', value='<:Nope:757666131854098726> Nope!')
+        if 'MORE_EMOJI' in ctx.guild.features:
+            embed.add_field(name="50+ Emoji Allowance?", value=f'<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='50+ Emoji Allowance?', value='<:Nope:757666131854098726> Nope!')
+        if 'DISCOVERABLE' in ctx.guild.features:
+            embed.add_field(name='Discoverable?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Discoverable?', value='<:Nope:757666131854098726> Nope!')
+        if 'FEATURABLE' in ctx.guild.features:
+            embed.add_field(name='Featured?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Featured?', value='<:Nope:757666131854098726> Nope!')
+        if 'COMMUNITY' in ctx.guild.features:
+            embed.add_field(name='Community?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Community?', value='<:Nope:757666131854098726> Nope!')
+        if 'COMMERCE' in ctx.guild.features:
+            embed.add_field(name='Commerce?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Commerce?', value='<:Nope:757666131854098726> Nope!')
+        if 'PUBLIC' in ctx.guild.features:
+            embed.add_field(name='Public?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Public?', value='<:Nope:757666131854098726> Nope!')
+        if 'NEWS' in ctx.guild.features:
+            embed.add_field(name='Announcements?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Announcements?', value='<:Nope:757666131854098726> Nope!')
+        if 'BANNER' in ctx.guild.features:
+            embed.add_field(name='Banners?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Banners?', value='<:Nope:757666131854098726> Nope!')
+        if 'ANIMATED_ICON' in ctx.guild.features:
+            embed.add_field(name='Animated Icon?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Animated Icon?', value='<:Nope:757666131854098726> Nope!')
+        if 'WELCOME_SCREEN_ENABLED' in ctx.guild.features:
+            embed.add_field(name='Welcome Screen?', value='<a:Passed:757652583392215201> Yes!')
+        else:
+            embed.add_field(name='Welcome Screen?', value='<:Nope:757666131854098726> Nope!')
+        embed.set_footer(text=f'Prompted by {ctx.author}', icon_url=ctx.author.avatar_url)
+        await self.message.edit(embed = embed)
+        await self.message.clear_reactions()
+
+    @menus.button('\N{THUMBS DOWN SIGN}')
+    async def on_thumbs_down(self, payload):
+        ctx = self.message
+        embed = discord.Embed(
+            title=f'{ctx.guild.name}',
+            color=discord.Color.red(),
+            timestamp=datetime.datetime.utcnow()
+        )
+        embed.set_thumbnail(url=ctx.guild.icon_url)
+        embed.add_field(name='Owner?', value=f'{ctx.guild.owner}')
+        embed.add_field(name='Owner ID?', value=f'`{ctx.guild.owner.id}`')
+        embed.add_field(name='Owner Created at?',
+                        value=f"{ctx.guild.owner.created_at.strftime('%a, %#d %B %Y, %I:%M %p')}", inline=False)
+        embed.add_field(name='Server Name?', value=f'{ctx.guild.name}')
+        embed.add_field(name='Server ID?', value=f'`{ctx.guild.id}`')
+        banner = ctx.guild.region[0]
+        banner = list(banner)
+        x = banner[0].upper()
+        banner.pop(0)
+        banner.insert(0, x)
+        banner = ''.join(map(str, banner))
+        embed.add_field(name='Region?', value=f'{banner}')
+        embed.add_field(name=f'Created at?', value=f"{ctx.guild.created_at.strftime('%a, %#d %B %Y, %I:%M %p')}",
+                        inline=False)
+        embed.add_field(name="Emoji's?", value=f'{len(ctx.guild.emojis)}')
+        embed.add_field(name=f'Members?', value=f'{len(ctx.guild.members)}')
+        verif = ctx.guild.verification_level[0]
+        verif = list(verif)
+        x = verif[0].upper()
+        verif.pop(0)
+        verif.insert(0, x)
+        verif = ''.join(map(str, verif))
+        embed.add_field(name=f'Verification Level?', value=f'{verif}')
+        if ctx.guild.afk_channel == True:
+            embed.add_field(name='AFK Channel?', value=f'{ctx.guild.afk_channel.name}', inline=False)
+            embed.add_field(name='AFK Timeout?', value=f'{ctx.guild.afk_timeout}')
+        else:
+            pass
+
+        true = ctx.guild.mfa_level
+        if true == 1:
+            true = 'Yes!'
+        else:
+            true = 'No!'
+        embed.add_field(name='Admin 2FA?', value=f'{true}')
+        boost = ctx.guild.premium_subscription_count
+        if boost == 0:
+            boost = 'None 😭'
+        else:
+            pass
+        embed.add_field(name='Boosts!', value=f'{boost}')
+        level = ctx.guild.premium_tier
+        if level == 0:
+            count = 2 - ctx.guild.premium_subscription_count
+            level = 'Level 0. You need {} more boosts for level 1!'.format(count)
+        elif level == 1:
+            count = 15 - ctx.guild.premium_subscription_count
+            level = 'Level 1. You need {} more boosts for level 2'.format(count)
+        elif level == 2:
+            count = 30 - ctx.guild.premium_subscription_count
+            level = 'Level 2. You need {} more boosts for level 3'.format(count)
+        elif level == 3:
+            count = ctx.guild.premium_subscription_count
+            level = 'Level 3. Max level with a whopping {} boosts!!!'.format(count)
+        embed.add_field(name='Channels?', value=f'{len(ctx.guild.channels)}')
+        bots = 0
+        for member in ctx.guild.members:
+            if member.bot == True:
+                bots += 1
+            else:
+                pass
+        embed.add_field(name=f'Bots?', value=f'{bots}')
+        embed.add_field(name=f'Main Lang?', value=f'{ctx.guild.preferred_locale}')
+        embed.add_field(name=f'Emoji Limit?', value=f'{ctx.guild.emoji_limit}')
+        embed.add_field(name=f'Bitrate Limit?', value=f'{convert_size(ctx.guild.bitrate_limit)}')
+        embed.add_field(name='Filesize Limit?', value=f'{convert_size(ctx.guild.filesize_limit)}')
+        embed.add_field(name='Large?', value=f'{ctx.guild.large}')
+        embed.add_field(name='Server Level!', value=f'{level}', inline=False)
+        embed.set_footer(text=f'Prompted by {ctx.author}', icon_url=ctx.author.avatar_url)
+        await self.message.edit(embed = embed)
+        await self.message.clear_reactions()
+
+    @menus.button('\N{BLACK SQUARE FOR STOP}\ufe0f')
+    async def on_stop(self, payload):
+        await self.message.clear_reactions()
+        self.stop()
 
 def convert_size(bytes):
    if bytes == 0:
@@ -65,160 +304,8 @@ class checks(commands.Cog):
     @commands.cooldown(1, 5, BucketType.guild)
     async def server(self, ctx):
         try:
-            embed = discord.Embed(
-                title=f'{ctx.guild.name}',
-                color=discord.Color.red(),
-                timestamp=datetime.datetime.utcnow()
-            )
-            embed.set_thumbnail(url=ctx.guild.icon_url)
-            embed.add_field(name='Owner?', value=f'{ctx.guild.owner}')
-            embed.add_field(name='Owner ID?', value=f'`{ctx.guild.owner.id}`')
-            embed.add_field(name='Owner Created at?', value=f"{ctx.guild.owner.created_at.strftime('%a, %#d %B %Y, %I:%M %p')}", inline=False)
-            embed.add_field(name='Server Name?', value=f'{ctx.guild.name}')
-            embed.add_field(name='Server ID?', value=f'`{ctx.guild.id}`')
-            banner = ctx.guild.region[0]
-            banner = list(banner)
-            x = banner[0].upper()
-            banner.pop(0)
-            banner.insert(0, x)
-            banner = ''.join(map(str, banner))
-            embed.add_field(name='Region?', value=f'{banner}')
-            embed.add_field(name=f'Created at?', value=f"{ctx.guild.created_at.strftime('%a, %#d %B %Y, %I:%M %p')}", inline=False)
-            embed.add_field(name="Emoji's?", value=f'{len(ctx.guild.emojis)}')
-            embed.add_field(name=f'Members?', value=f'{len(ctx.guild.members)}')
-            verif = ctx.guild.verification_level[0]
-            verif = list(verif)
-            x = verif[0].upper()
-            verif.pop(0)
-            verif.insert(0, x)
-            verif = ''.join(map(str, verif))
-            embed.add_field(name=f'Verification Level?', value=f'{verif}')
-            if ctx.guild.afk_channel == True:
-                embed.add_field(name='AFK Channel?', value=f'{ctx.guild.afk_channel.name}', inline=False)
-                embed.add_field(name='AFK Timeout?', value=f'{ctx.guild.afk_timeout}')
-            else:
-                pass
-            
-            true = ctx.guild.mfa_level
-            if true == 1:
-                true = 'Yes!'
-            else:
-                true = 'No!'
-            embed.add_field(name='Admin 2FA?', value=f'{true}')
-            boost = ctx.guild.premium_subscription_count
-            if boost == 0:
-                boost = 'None 😭'
-            else:
-                pass
-            embed.add_field(name='Boosts!', value=f'{boost}')
-            level = ctx.guild.premium_tier
-            if level == 0:
-                count = 2 - ctx.guild.premium_subscription_count
-                level = 'Level 0. You need {} more boosts for level 1!'.format(count)
-            elif level == 1:
-                count = 15 - ctx.guild.premium_subscription_count
-                level = 'Level 1. You need {} more boosts for level 2'.format(count)
-            elif level == 2:
-                count = 30 - ctx.guild.premium_subscription_count
-                level = 'Level 2. You need {} more boosts for level 3'.format(count)
-            elif level == 3:
-                count = ctx.guild.premium_subscription_count
-                level = 'Level 3. Max level with a whopping {} boosts!!!'.format(count)
-            embed.add_field(name='Channels?', value=f'{len(ctx.guild.channels)}')
-            bots = 0
-            for member in ctx.guild.members:
-                if member.bot == True:
-                    bots += 1
-                else:
-                    pass
-            embed.add_field(name=f'Bots?', value=f'{bots}')
-            embed.add_field(name=f'Main Lang?', value=f'{ctx.guild.preferred_locale}')
-            embed.add_field(name=f'Emoji Limit?', value=f'{ctx.guild.emoji_limit}')
-            embed.add_field(name=f'Bitrate Limit?', value=f'{convert_size(ctx.guild.bitrate_limit)}')
-            embed.add_field(name='Filesize Limit?', value=f'{convert_size(ctx.guild.filesize_limit)}')
-            embed.add_field(name='Large?', value=f'{ctx.guild.large}')
-            embed.add_field(name='Server Level!', value=f'{level}', inline=False)
-            embed.set_footer(text=f'Prompted by {ctx.author}', icon_url=ctx.author.avatar_url)
-            msg = await ctx.send(embed=embed)
-            def reaction_check(m):
-                user = ctx.author
-                if m.message_id == msg.id and m.user_id == user.id and str(m.emoji) == "▶️":
-                    return True
-                return False
-            try:
-                await msg.add_reaction('▶️')
-                await self.bot.wait_for('raw_reaction_add', timeout=10.0, check=reaction_check)
-                embed = discord.Embed(
-                    title=f'{ctx.guild.name} Features!',
-                    color=ctx.author.colour, timestamp=datetime.datetime.utcnow()
-                )
-                embed.set_thumbnail(url=ctx.guild.icon_url)
-                if 'VIP_REGIONS' in ctx.guild.features:
-                    embed.add_field(name='VIP Region?', value='<a:Passed:757652583392215201> Yes!')
-                else:
-                    embed.add_field(name='VIP Region?', value='<:Nope:757666131854098726> Nope!')
-                if 'VANITY_URL' in ctx.guild.features:
-                    embed.add_field(name='Vanity URL?', value='<a:Passed:757652583392215201> Yes!')
-                else:
-                    embed.add_field(name='Vanity URL?', value='<:Nope:757666131854098726> Nope!')
-                if 'INVITE_SPLASH' in ctx.guild.features:
-                    embed.add_field(name='Invite Splash?', value='<a:Passed:757652583392215201> Yes!')
-                else:
-                    embed.add_field(name='Invite Splash?', value='<:Nope:757666131854098726> Nope!')
-                if 'VERIFIED' in ctx.guild.features:
-                    embed.add_field(name='Verified?', value='<a:Passed:757652583392215201> Yes!')
-                else:
-                    embed.add_field(name='Verified?', value='<:Nope:757666131854098726> Nope!')
-                if 'PARTENERED' in ctx.guild.features:
-                    embed.add_field(name='Partner?', value='<a:Passed:757652583392215201> Yes!')
-                else:
-                    embed.add_field(name='Partner?', value='<:Nope:757666131854098726> Nope!')
-                if 'MORE_EMOJI' in ctx.guild.features:
-                    embed.add_field(name="50+ Emoji Allowance?", value=f'<a:Passed:757652583392215201> Yes!')
-                else:
-                    embed.add_field(name='50+ Emoji Allowance?', value='<:Nope:757666131854098726> Nope!')
-                if 'DISCOVERABLE' in ctx.guild.features:
-                    embed.add_field(name='Discoverable?', value='<a:Passed:757652583392215201> Yes!')
-                else:
-                    embed.add_field(name='Discoverable?', value='<:Nope:757666131854098726> Nope!')
-                if 'FEATURABLE' in ctx.guild.features:
-                    embed.add_field(name='Featured?', value='<a:Passed:757652583392215201> Yes!')
-                else:
-                    embed.add_field(name='Featured?', value='<:Nope:757666131854098726> Nope!')
-                if 'COMMUNITY' in ctx.guild.features:
-                    embed.add_field(name='Community?', value='<a:Passed:757652583392215201> Yes!')
-                else:
-                    embed.add_field(name='Community?', value='<:Nope:757666131854098726> Nope!')
-                if 'COMMERCE' in ctx.guild.features:
-                    embed.add_field(name='Commerce?', value='<a:Passed:757652583392215201> Yes!')
-                else:
-                    embed.add_field(name='Commerce?', value='<:Nope:757666131854098726> Nope!')
-                if 'PUBLIC' in ctx.guild.features:
-                    embed.add_field(name='Public?', value='<a:Passed:757652583392215201> Yes!')
-                else:
-                    embed.add_field(name='Public?', value='<:Nope:757666131854098726> Nope!')
-                if 'NEWS' in ctx.guild.features:
-                    embed.add_field(name='Announcements?', value='<a:Passed:757652583392215201> Yes!')
-                else:
-                    embed.add_field(name='Announcements?', value='<:Nope:757666131854098726> Nope!')
-                if 'BANNER' in ctx.guild.features:
-                    embed.add_field(name='Banners?', value='<a:Passed:757652583392215201> Yes!')
-                else:
-                    embed.add_field(name='Banners?', value='<:Nope:757666131854098726> Nope!')
-                if 'ANIMATED_ICON' in ctx.guild.features:
-                    embed.add_field(name='Animated Icon?', value='<a:Passed:757652583392215201> Yes!')
-                else:
-                    embed.add_field(name='Animated Icon?', value='<:Nope:757666131854098726> Nope!')
-                if 'WELCOME_SCREEN_ENABLED' in ctx.guild.features:
-                    embed.add_field(name='Welcome Screen?', value='<a:Passed:757652583392215201> Yes!')
-                else:
-                    embed.add_field(name='Welcome Screen?', value='<:Nope:757666131854098726> Nope!')
-                embed.set_footer(text=f'Prompted by {ctx.author}', icon_url=ctx.author.avatar_url)
-                await msg.clear_reactions()
-                await msg.edit(embed=embed)
-            except asyncio.TimeoutError:
-                await msg.delete()
-                await ctx.send('You never reacted in time!')
+            pages = Pagation()
+            await pages.start(ctx)
         except Exception as e:
             await ctx.send(e)
 
