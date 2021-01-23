@@ -321,8 +321,4 @@ class Mecha_Karen(commands.AutoShardedBot):
 ## Goodbye
 
 if __name__ == '__main__':
-    import sys
-    from shutil import Error
-    
-    raise Error('Run __main__.py not bot.py')
-    sys.exit(0)
+    exec(open("__main__.py").read())
