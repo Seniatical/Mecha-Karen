@@ -29,6 +29,7 @@ import Helpers
 import traceback
 from Utils.help import PING, IMPORTED
 from Utils import db, events
+from typing import Any
 
 class DATA:
     def __init__(self):
@@ -140,7 +141,7 @@ class Mecha_Karen(commands.AutoShardedBot):
             if filename.endswith('.py'):
                 try:
                     self.load_extension(f'cogs.{filename[:-3]}')
-                except Exception as e:
+                except Exception as error:
                     traceback.print_exception(etype=type(error), value=error, tb=error.__traceback__)
         
         @self.before_invoke
@@ -152,13 +153,13 @@ class Mecha_Karen(commands.AutoShardedBot):
             except discord.errors.Forbidden:
                 pass
             
-        async def search(QUERY : str=None):
+        async def search(QUERY: str = None) -> dict:
             data = UD.Search(QUERY)
             return {
                 'PREV' : data
             }
         
-    async def on_connect(self):
+    async def on_connect(self) -> None:
         if self.ENDPOINT1.connected() != True:
             print('Endpoint 1 has failed to load.')
         elif not self.SOCKET1.connected():
@@ -183,7 +184,7 @@ class Mecha_Karen(commands.AutoShardedBot):
             
         print('Bot Connected')
         
-    async def on_disconnect(self):
+    async def on_disconnect(self) -> None:
         for x in self.guilds:
             if not Utils.main.ISTABLELOADED(x):
                 Utils.main.CLOSE(x, self.SHUTDOWN)
@@ -198,7 +199,7 @@ class Mecha_Karen(commands.AutoShardedBot):
         except mysql.connector.Error as err:
             raise err
         
-    async def on_message_delete(self, message):
+    async def on_message_delete(self, message) -> [Any]:
         if message.author.bot == True:
             pass
         else:
