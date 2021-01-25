@@ -1,3 +1,19 @@
+# !/usr/bin/python
+
+"""
+Copyright ©️: 2020 Seniatical / _-*™#7519
+License: Apache 2.0
+
+A permissive license whose main conditions require preservation of copyright and license notices.
+Contributors provide an express grant of patent rights.
+Licensed works, modifications, and larger works may be distributed under different terms and without source code.
+
+FULL LISENCE CAN BE FOUND:
+    https://www.apache.org/licenses/LICENSE-2.0.html
+
+Any voilations to the lisence, will result in moderate action
+"""
+
 import discord, datetime
 import os
 import sys
@@ -9,18 +25,6 @@ from os.path import isfile
 from subprocess import call
 from urllib.request import urlopen
 from time import strftime,localtime
-
-class BASE(Exception):
-	pass
-
-class NotGuildOwner(BASE):
-	pass
-
-class NotMember(BASE):
-	pass
-
-class CopyDetected(BASE):
-	pass
 
 async def is_guild_owner(ctx):
     if ctx.author != ctx.guild.owner:
