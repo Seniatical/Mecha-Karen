@@ -22,7 +22,6 @@ import discord
 from discord import PermissionOverwrite
 from discord.ext import commands
 from Utils import db
-import sqlite3
 
 def over(member, role):
     overwrites: Dict[Any, PermissionOverwrite] = {
@@ -99,7 +98,7 @@ class tickets(commands.Cog):
                          channel: discord.TextChannel = None,
                          helper: discord.Role = None,
                          category: discord.CategoryChannel = None,
-                         *, notes: str = None) -> None:
+                         *, notes: str = None) -> discord.Embed:
         if not channel:
             return await ctx.send(embed=discord.Embed(
                 description='<a:nope:787764352387776523> Provide the channel were the Tickets will be created at!',
