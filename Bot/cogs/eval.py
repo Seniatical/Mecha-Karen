@@ -1,32 +1,24 @@
 """
 Copyright ©️: 2020 Seniatical / _-*™#7519
 License: Apache 2.0
-
 A permissive license whose main conditions require preservation of copyright and license notices.
 Contributors provide an express grant of patent rights.
 Licensed works, modifications, and larger works may be distributed under different terms and without source code.
-
 FULL LISENCE CAN BE FOUND:
     https://www.apache.org/licenses/LICENSE-2.0.html
-
 Any voilations to the lisence, will result in moderate action
-
 Your required to mention (original author, lisence, source, any changes made)
 """
 
-import requests
-import time
+
 import discord
 import re
-import asyncio
 import textwrap
-from discord.ext import commands, tasks
-import os
+from discord.ext import commands
+import aiohttp
 
 
-class DATA:
-    username = os.environ.get("eval_name")
-    token = os.environ.get("eval_token")
+
 ## so we dont have to call it everytime we need it
 
 ESCAPE_REGEX = re.compile("[`\u202E\u200B]{3,}")
@@ -46,111 +38,58 @@ RAW_CODE_REGEX = re.compile(
     re.DOTALL
 )
 
-def prepare_input(code: str) -> str:
-    if match := list(FORMATTED_CODE_REGEX.finditer(code)):
-        blocks = [block for block in match if block.group("block")]
 
-        if len(blocks) > 1:
-            code = '\n'.join(block.group("code") for block in blocks)
-        else:
-            match = match[0] if len(blocks) == 0 else blocks[0]
-            code, block, lang, delim = match.group(
-                "code", "block", "lang", "delim")
-            if block:
-                info = (
-                    f"'{lang}' highlighted" if lang else "plain") + " code block"
+def format_code(code: str):
+    try:
+        if match := list(FORMATTED_CODE_REGEX.finditer(code)):
+            blocks = [block for block in match if block.group("block")]
+            if len(blocks) > 1:
+                code = '\n'.join(block.group("code") for block in blocks)
             else:
-                info = f"{delim}-enclosed inline code"
-    else:
-        code = RAW_CODE_REGEX.fullmatch(code).group("code")
-        info = "unformatted or badly formatted code"
-
-    code = textwrap.dedent(code)
-    return code
+                match = match[0] if len(blocks) == 0 else blocks[0]
+                code, block = match.group("code", "block")
+        else:
+            code = RAW_CODE_REGEX.fullmatch(code).group("code")
+        code = textwrap.dedent(code)
+        return code
+    except Exception as e:
+        print(e)
 
 
 class Eval(commands.Cog):
     """
-    + go to website --> 
-        https://www.pythonanywhere.com/
-
-    + make an accout
-    + make a new bash console
-    + then get api token
-    + to get api token --> 
-        https://www.pythonanywhere.com/user/User_Name/account/#api_token
-
-    + replace 
-        self.username = os.environ.get("eval_name") (line 14)
-        self.token = os.environ.get("eval_token")      (line 17)
-
-    with your username and token
+    THIS EVAL IS DEPENDENT ON DOCKER
+    This is a better alternative to pythonanywhere becuase it's safe, and faster by alot.
+    + IF ON LINUX -->
+        curl -sSL https://get.docker.com/ | CHANNEL=stable bash
+    + Once you do that run this -->
+        docker run --ipc=none --privileged -p 8060:8060 ghcr.io/python-discord/snekbox
+    This installs snekbox if not already installed and runs it
+    From there, you can start making requests to localhost:8060
     """
 
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.Cog.listener()
-    async def on_ready(self):
-        await self.keep_alive.start()
-
-    @tasks.loop(minutes=30)
-    async def keep_alive(self):
-        console_id = await self.get_console()
-
-        requests.post('https://www.pythonanywhere.com/api/v0/user/{username}/consoles/{console_id}/send_input/'.format(username=DATA.username, console_id=console_id),
-                      data={"input": "ls\n"}, headers={'Authorization': 'Token {token}'.format(token=DATA.token)})
-
-    async def get_console(self):
-        consoles = requests.get('https://www.pythonanywhere.com/api/v0/user/{username}/consoles/'.format(
-            username=DATA().username), headers={'Authorization': 'Token {token}'.format(token=DATA.token)})
-
-        for x in consoles.json():
-            if x['executable'] == 'bash':
-                console_id = x['id']
-                return console_id
-
-    async def result(self, code):
-        console_id = await self.get_console()
-        requests.post('https://www.pythonanywhere.com/api/v0/user/{username}/files/path/home/{username}/main.py/'.format(username=DATA().username),
-                      files={"content": code}, headers={'Authorization': 'Token {token}'.format(token=DATA.token)})
-
-        requests.post('https://www.pythonanywhere.com/api/v0/user/{username}/consoles/{console_id}/send_input/'.format(username=DATA.username, console_id=console_id),
-                      data={"input": "python3 main.py &> output.txt\n"}, headers={'Authorization': 'Token {token}'.format(token=DATA.token)})
-
-        await asyncio.sleep(3)
-
-        response = requests.get(
-            'https://www.pythonanywhere.com/api/v0/user/{username}/files/path/home/{username}/output.txt/'.format(
-                username=DATA.username
-            ),
-            headers={'Authorization': 'Token {token}'.format(
-                token=DATA.token)}
-        )
-        
-        if response.status_code == 200:
-            return response.content.decode('ascii')
-        else:
-            return False
-
-    @commands.command()	
-    async def eval(self,ctx, *, code) -> disord.Embed:	
-        try:	
-            embed = discord.Embed(title = "Evaluating Code...", color = discord.Colour.green())	
-            msg = await ctx.send(embed = embed)	
-            code = prepare_input(code)	
-            data = await self.result(code)	
-            if data == False:	
-                embed = discord.Embed(title = "Something went wrong with the Internals.", color = discord.Colour.red())	
-                return await msg.edit(embed = embed)	
-            elif data == '':	
-                data = "Bent Code Inserted..."	
-            embed = discord.Embed(title = "Eval Complete!", color = discord.Colour.green())	
-            embed.add_field(name = "**Results:** ", value = f"```{data}```")	
-            await msg.edit(embed = embed)	
-        except discord.HTTPException:	
-            embed = discord.Embed(title = "The Results of the Eval was too large to send!", color = discord.Colour.red())	
-            await msg.edit(embed = embed)
+    @commands.command()
+    async def eval(self, ctx, *, code) -> discord.Embed:
+        try:
+            embed = discord.Embed(title="Evaluating Code...", color=discord.Colour.green())
+            msg = await ctx.send(embed=embed)
+            code = format_code(code)
+            async with aiohttp.ClientSession() as session:
+                async with session.post('http://localhost:8060/eval', json={'input': code}) as resp: # Making the request
+                    response = await resp.json()
+            if response['stdout'] == '':
+                response['stdout'] = "[No Result]"  # If no return value was given
+            embed = discord.Embed(title="Eval Complete!", color=discord.Colour.green())
+            embed.add_field(name="**Results:** ", value=f"```\n{response['stdout']}```")
+            await msg.edit(embed=embed)
+        except discord.HTTPException:
+            embed = discord.Embed(title="The Results of the Eval was too large to send!", color=discord.Colour.red())
+            await msg.edit(embed=embed)
+        except Exception as e:
+            print(e)
 
 
 def setup(bot):
