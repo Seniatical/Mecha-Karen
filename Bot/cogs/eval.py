@@ -14,16 +14,11 @@ Any violation to the lisence, will result in moderate action
 You are legally required to mention (original author, license, source and any changes made)
 """
 
-
 import discord
 import re
 import textwrap
 from discord.ext import commands
 import aiohttp
-
-
-
-## so we dont have to call it everytime we need it
 
 ESCAPE_REGEX = re.compile("[`\u202E\u200B]{3,}")
 FORMATTED_CODE_REGEX = re.compile(
@@ -42,8 +37,7 @@ RAW_CODE_REGEX = re.compile(
     re.DOTALL
 )
 
-
-def format_code(code: str):
+async def format_code(code: str) -> str:       ## Better with async...
     try:
         if match := list(FORMATTED_CODE_REGEX.finditer(code)):
             blocks = [block for block in match if block.group("block")]
@@ -77,10 +71,21 @@ class Eval(commands.Cog):
 
     @commands.command()
     async def eval(self, ctx, *, code) -> discord.Embed:
+        code = code.strip('` ')
+        """
+        Allows us to add ``` to our code without getting any errors
+        
+        ```
+        print('Hello')
+        ```
+        print('World')
+        
+        That wont work so dont try...
+        """
         try:
             embed = discord.Embed(title="Evaluating Code...", color=discord.Colour.green())
             msg = await ctx.send(embed=embed)
-            code = format_code(code)
+            code = await format_code(code)
             async with aiohttp.ClientSession() as session:
                 async with session.post('http://localhost:8060/eval', json={'input': code}) as resp: # Making the request
                     response = await resp.json()
@@ -94,7 +99,6 @@ class Eval(commands.Cog):
             await msg.edit(embed=embed)
         except Exception as e:
             print(e)
-
 
 def setup(bot):
     bot.add_cog(Eval(bot))
