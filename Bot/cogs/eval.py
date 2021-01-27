@@ -1,5 +1,5 @@
 """
-Copyright ©️: 2021 Seniatical / _-*™#7519
+Copyright ©️: 2020 Seniatical / _-*™#7519
 License: Apache 2.0
 
 A permissive license whose main conditions require preservation of copyright and license notices.
