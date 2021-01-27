@@ -25,13 +25,9 @@ import os
 
 
 class DATA:
-    def __init__(self):
-        #       replace it with your pythonanywhere user name
-        self.username = os.environ.get("eval_name")
-        
-        #       replace it with your pythonanywhere user token
-        self.token = os.environ.get("eval_token")
-
+    username = os.environ.get("eval_name")
+    token = os.environ.get("eval_token")
+## so we dont have to call it everytime we need it
 
 ESCAPE_REGEX = re.compile("[`\u202E\u200B]{3,}")
 FORMATTED_CODE_REGEX = re.compile(
@@ -79,7 +75,7 @@ class Eval(commands.Cog):
         https://www.pythonanywhere.com/
 
     + make an accout
-    + make a new bash
+    + make a new bash console
     + then get api token
     + to get api token --> 
         https://www.pythonanywhere.com/user/User_Name/account/#api_token
@@ -102,12 +98,12 @@ class Eval(commands.Cog):
     async def keep_alive(self):
         console_id = await self.get_console()
 
-        requests.post('https://www.pythonanywhere.com/api/v0/user/{username}/consoles/{console_id}/send_input/'.format(username=DATA().username, console_id=console_id),
-                      data={"input": "ls\n"}, headers={'Authorization': 'Token {token}'.format(token=DATA().token)})
+        requests.post('https://www.pythonanywhere.com/api/v0/user/{username}/consoles/{console_id}/send_input/'.format(username=DATA.username, console_id=console_id),
+                      data={"input": "ls\n"}, headers={'Authorization': 'Token {token}'.format(token=DATA.token)})
 
     async def get_console(self):
         consoles = requests.get('https://www.pythonanywhere.com/api/v0/user/{username}/consoles/'.format(
-            username=DATA().username), headers={'Authorization': 'Token {token}'.format(token=DATA().token)})
+            username=DATA().username), headers={'Authorization': 'Token {token}'.format(token=DATA.token)})
 
         for x in consoles.json():
             if x['executable'] == 'bash':
@@ -117,37 +113,44 @@ class Eval(commands.Cog):
     async def result(self, code):
         console_id = await self.get_console()
         requests.post('https://www.pythonanywhere.com/api/v0/user/{username}/files/path/home/{username}/main.py/'.format(username=DATA().username),
-                      files={"content": code}, headers={'Authorization': 'Token {token}'.format(token=DATA().token)})
+                      files={"content": code}, headers={'Authorization': 'Token {token}'.format(token=DATA.token)})
 
-        requests.post('https://www.pythonanywhere.com/api/v0/user/{username}/consoles/{console_id}/send_input/'.format(username=DATA().username, console_id=console_id),
-                      data={"input": "python3 main.py &> output.txt\n"}, headers={'Authorization': 'Token {token}'.format(token=DATA().token)})
+        requests.post('https://www.pythonanywhere.com/api/v0/user/{username}/consoles/{console_id}/send_input/'.format(username=DATA.username, console_id=console_id),
+                      data={"input": "python3 main.py &> output.txt\n"}, headers={'Authorization': 'Token {token}'.format(token=DATA.token)})
 
         await asyncio.sleep(3)
 
         response = requests.get(
             'https://www.pythonanywhere.com/api/v0/user/{username}/files/path/home/{username}/output.txt/'.format(
-                username=DATA().username
+                username=DATA.username
             ),
             headers={'Authorization': 'Token {token}'.format(
-                token=DATA().token)}
+                token=DATA.token)}
         )
-
+        
         if response.status_code == 200:
             return response.content.decode('ascii')
-
         else:
             return False
 
-    @commands.command(aliases=["e"])
-    async def eval(self, ctx, *, code=None):
-        embed = discord.Embed(
-            title=f"Eval command",
-            description=eval_command,
-            color=discord.Color.random()
-        )
-        embed.set_footer(
-        text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
-        await ctx.send(embed=embed)
+    @commands.command()	
+    async def eval(self,ctx, *, code) -> disord.Embed:	
+        try:	
+            embed = discord.Embed(title = "Evaluating Code...", color = discord.Colour.green())	
+            msg = await ctx.send(embed = embed)	
+            code = prepare_input(code)	
+            data = await self.result(code)	
+            if data == False:	
+                embed = discord.Embed(title = "Something went wrong with the Internals.", color = discord.Colour.red())	
+                return await msg.edit(embed = embed)	
+            elif data == '':	
+                data = "Bent Code Inserted..."	
+            embed = discord.Embed(title = "Eval Complete!", color = discord.Colour.green())	
+            embed.add_field(name = "**Results:** ", value = f"```{data}```")	
+            await msg.edit(embed = embed)	
+        except discord.HTTPException:	
+            embed = discord.Embed(title = "The Results of the Eval was too large to send!", color = discord.Colour.red())	
+            await msg.edit(embed = embed)
 
 
 def setup(bot):
