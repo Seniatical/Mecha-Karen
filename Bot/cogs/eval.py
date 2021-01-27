@@ -6,11 +6,12 @@ A permissive license whose main conditions require preservation of copyright and
 Contributors provide an express grant of patent rights.
 
 Licensed works, modifications, and larger works may be distributed under different terms and without source code.
+
 FULL LICENSE CAN BE FOUND AT:
     https://www.apache.org/licenses/LICENSE-2.0.html
     
 Any violation to the lisence, will result in moderate action
-You are required to mention (original author, lisence, source, any changes made)
+You are legally required to mention (original author, license, source and any changes made)
 """
 
 
