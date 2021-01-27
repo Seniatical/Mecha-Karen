@@ -391,7 +391,7 @@ class fun(commands.Cog):
 
     @commands.command(aliases=['murder'])
     @cooldown(1, 10, BucketType.user)
-    async def kill(self, ctx, *, user: discord.Member = None):
+    async def kill(self, ctx, user: discord.Member = None, *, reason = None):
         user = user or ctx.author
         died = ['rolling out of the bed and the demon under the bed ate them.',
                 'getting impaled on the bill of a swordfish.',
@@ -413,7 +413,7 @@ class fun(commands.Cog):
                 ]
         await ctx.send(embed=discord.Embed(
             colour=discord.Colour.red(),
-            description='{} was killed by {}'.format(user.display_name, random.choice(died))
+            description='{} was killed by {}'.format(user.display_name, reason if reason else random.choice(died))
         ).set_author(name=self.bot.user.display_name, icon_url=self.bot.user.avatar_url))
 
     @commands.command(aliases=['punch'], name='PunchMachine')
