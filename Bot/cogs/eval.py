@@ -10,7 +10,7 @@ Licensed works, modifications, and larger works may be distributed under differe
 FULL LICENSE CAN BE FOUND AT:
     https://www.apache.org/licenses/LICENSE-2.0.html
     
-Any violation to the lisence, will result in moderate action
+Any violation to the licence, will result in moderate action
 You are legally required to mention (original author, license, source and any changes made)
 """
 
