@@ -183,7 +183,7 @@ class Mecha_Karen(commands.AutoShardedBot):
                 warnings.warn('Failed to complete issue. Currently sitting at: {}'.format(str(cond.status)))
         
     async def on_message_delete(self, message) -> [Any]:
-        if message.author.bot == True:
+        if message.author.bot:
             pass
         else:
             Utils.main.handle_snipe(message)
@@ -216,7 +216,7 @@ class Mecha_Karen(commands.AutoShardedBot):
         else:
             self.cursor.execute('FROM {} SELECT {} WHERE count = {}'.format(self.TABLES[0], msg.author.id, self.Utils.get_count(msg.author)))
         if isinstance(msg.channel, discord.DMChannel):
-            if msg.author.bot == True and self.blacklistedusers.find_one({'_id': ctx.author.id}) is not None:
+            if msg.author.bot and self.blacklistedusers.find_one({'_id': ctx.author.id}) is not None:
                 return
             embed = discord.Embed(
                 title='Hello {}!'.format(msg.author),
@@ -236,7 +236,7 @@ class Mecha_Karen(commands.AutoShardedBot):
             await msg.channel.send(embed=embed)
         try:
             if '👀' in msg.content:
-                if msg.author.bot == True:
+                if msg.author.bot:
                     pass
                 else:
                     channel = discord.utils.get(msg.guild.channels, name=channels['tracking'])
