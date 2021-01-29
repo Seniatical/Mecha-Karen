@@ -103,7 +103,7 @@ class Mecha_Karen(commands.AutoShardedBot):
             owner_id=475357293949485076,
             heartbeat_timeout=200.0,
             help_attrs=dict(hidden=False),
-            guild_ready_timeout=5.0
+            guild_ready_timeout=5.0,
             assume_unsync_clock=False ''' <---
                                         Dont Bother Adding this.
                                         Your Code will slowly erode if you dont know much about syncing,
