@@ -216,7 +216,7 @@ class Mecha_Karen(commands.AutoShardedBot):
         else:
             self.cursor.execute('FROM {} SELECT {} WHERE count = {}'.format(self.TABLES[0], msg.author.id, self.Utils.get_count(msg.author)))
         if isinstance(msg.channel, discord.DMChannel):
-            if msg.author.bot == True:
+            if msg.author.bot == True and self.blacklistedusers.find_one({'_id': ctx.author.id}) is not None:
                 return
             embed = discord.Embed(
                 title='Hello {}!'.format(msg.author),
