@@ -6,14 +6,14 @@ License: Apache 2.0
 
 A permissive license whose main conditions require preservation of copyright and license notices.
 Contributors provide an express grant of patent rights.
+
 Licensed works, modifications, and larger works may be distributed under different terms and without source code.
 
-FULL LISENCE CAN BE FOUND:
+FULL LICENSE CAN BE FOUND AT:
     https://www.apache.org/licenses/LICENSE-2.0.html
 
-Any voilations to the lisence, will result in moderate action
-
-Your required to mention (original author, lisence, source, any changes made)
+Any violation to the license, will result in moderate action
+You are legally required to mention (original author, license, source and any changes made)
 """
 
 import discord
