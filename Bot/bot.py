@@ -211,8 +211,8 @@ class Mecha_Karen(commands.AutoShardedBot):
         await channel.send('> <@!475357293949485076> You Retard.\n> I have made it into another server!\n\n> Guild Name: **{}**'.format(guild.name))
         
     async def on_message(self, msg):
-        data = column.find_one({'_id': ctx.guild.id})
-        blacklisted = self.blacklistedusers.find_one({'_id': ctx.author.id})
+        data = column.find_one({'_id': msg.guild.id})
+        blacklisted = self.blacklistedusers.find_one({'_id': msg.author.id})
         if not blacklisted:
             if hash(msg) + Utils.main.ASSIGN(HASHTYPE='SENIATICAL_V2.6', ECHO=self.TABLES[0]) in Utils.main.GETLOGGEDMESSAGE():
                 return
