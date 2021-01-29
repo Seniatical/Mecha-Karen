@@ -22,8 +22,8 @@ from discord.ext.commands import BucketType, cooldown
 from time import time
 from pathlib import Path
 from Utils.main import *
-from Utils.SQL import NEWGUILDTABLE
-import mysql.connector
+import sys
+
 from __future__ import print_function
 from mysql.connector import errorcode
 from Utils import UD, __logging__
@@ -31,25 +31,21 @@ import Helpers
 import traceback
 from Utils.help import PING, IMPORTED
 from Utils import db, events
-from typing import Any
+from typing import *
 
 class DATA:
-    def __init__(self):
-        self.cache_limit = 500
-        self.concurrent = False
-        self.CACHE = {}
-        self.CACHE_ = tuple(Utils.main.PRELOADED().cache)
-        self.IMPORTED = (
-            'datetime', 'asyncion', 'os',
-            'json', 'discord', 'version', 'subprocess',
-            'sys', 'time', 'pathlib', 'Utils', 'mysql',
-            '__future__'
-        )
-        self.TOKEN = Utils.customs.READ_ENV('./Utils/Sensitive/LOGINS.env').give_obj('TOKEN')
+    self.cache_limit = 500
+    self.concurrent = False
+    self.CACHE = {}
+    self.CACHE_ = tuple(Utils.main.PRELOADED().cache)
+    self.IMPORTED = globals()
+    self.TOKEN = Utils.customs.READ_ENV('./Utils/Sensitive/LOGINS.env').give_obj('TOKEN')
         
 PATH = Path(__file__).parents
 EXE = PATH[0]
 stringed_exe = str(EXE)
+table = client['Bot']
+column = table['Guilds']
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -68,20 +64,18 @@ facts = ('Your server is seen in the support server once you add me!',
          'I was made for fun!', 'I am still expanding with new features',
          'You can contribute to Karen by opening a pull request on the repo',
          'Show me an error code in the support server for a special role!',
-         'My Code was lost 10 times before! This is why you may loose your data from time to time.',
-         'I offer no premium so all commands can be used by anybody, anywhere!')
+         'My Code was lost 10 times before! This is why you may loose your data from time to time.')
 
 def get_prefix(bot,message):
     if isinstance(message.channel, discord.DMChannel):
         return
-    prefix = db.record(
-        'SELECT prefix FROM guild WHERE GuildID = ?', message.guild.id) or None
-    if not prefix:
-        db.execute('INSERT INTO guild (GuildID) VALUES (?)', message.guild.id)
-        db.commit()
+    res = column.find_one({'_id': message.guild.id})
+    if not res:
+        data = {'_id': message.guild.id, 'prefix': '-', 'Disabled': [], 'StarChannel': int(), 'StarCount': 0}
+        column.insert_one(data)
         prefix = '-'
     else:
-        prefix = prefix[0]
+        prefix = res['prefix']
     return commands.when_mentioned_or(prefix)(bot, message)
 
 class Mecha_Karen(commands.AutoShardedBot):
@@ -122,22 +116,18 @@ class Mecha_Karen(commands.AutoShardedBot):
         self.user = Utils.main.USERNAME
         self.password = Utils.main.PASSWORD
         self.logging = Utils.main.__logging__
-        self.MySQL = mysql.connector.connect(       ## changing this soon
-                     host="127.0.0.1",
-                     user=self.user,
-                     password=self.password,
-                     database='Mecha_Karen',
-                     raise_on_warnings=True
-        )
-        self.cursor = self.MySQL.cursor()
-        self.TABLES = self.cursor.execute("SHOW TABLES")
-        self.STEPRISE = Utils.main.GETBOTSTEP(self).launch(True).giveres()
-        self.ISRUNNING = Utils.main.RUNTESTCHECK(self).FULL(True)
-        self.ENDPOINT1 = Utils.ENDPOINTSYS.load(CONFIG=1, RAISEALL=True)
-        self.SOCKET1 = Utils.SOCKET.connect(self.ENDPOINT1().parent(getatr=True, FULL=True, LOGGING=True))
-        self.RECONNECT = Utils.SOCKET.reconnect(self.ENDPOINT1().parent(LOAD_PREV_ATR=True, KEEP_ATR=True, LORD=True))
-        self.SHUTDOWN = Utils.ORMs.DELETE_CLASS_TABLE(main)
+        
+        self.client = client
+        black = self.client['Blacklisted']
+        self.blacklistedusers = black['Users']
+        self.blacklistedguilds = black['Guilds']
+        
         self.CLOSE_CONNECTION = Utils.main.CLOSE_CURRENT_SOCKET_CONNECTION(True)
+        self.threads = main.THREADS()
+        self.alpha = True
+        self._str = main.cls(main.conv_to_work(self.threads))
+        self.connected = True if self.threads is not None and not self.client == False else False
+        self.__xxx__ = True if self.threads < 4 and self.logging.grab_logs('threads').errors is not None
         
         for filename in os.listdir('./cogs'):
             if filename.endswith('.py'):
@@ -148,91 +138,74 @@ class Mecha_Karen(commands.AutoShardedBot):
         
         @self.before_invoke
         async def before_any_command(ctx):
-            ''' Typing before commands bs'''
+            data = column.find_one({'_id': ctx.guild.id})
+            blacklisted = self.blacklistedusers.find_one({'_id': ctx.author.id})
+
+            if blacklisted:
+                raise commands.errors.Blacklisted('You have been blacklisted from MechaKaren...')
+            
+            disabled = data['Disabled']
+            if ctx.command.name.lower() in disabled:
+                raise commands.errors.DisabledCommand
+            
             ctx.timer = time()
             try:
                 await ctx.trigger_typing()
             except discord.errors.Forbidden:
                 pass
-            
-        async def search(QUERY: str = None) -> dict:
-            data = UD.Search(QUERY)
-            return {
-                'PREV' : data
-            }
         
     async def on_connect(self) -> None:
-        if self.ENDPOINT1.connected() != True:
-            print('Endpoint 1 has failed to load.')
-        elif not self.SOCKET1.connected():
-            self.CLOSE_CONNECTION
-            raise Utils.ERRORS.SOCKETFAILURE('Check if the socket is actually on.')
-        if self.ISRUNNING != 'RUNNING':
-            exit()
-        try:
-            async self.logging with self.MySQL as logging:
-                start = "UPDATE logging SET start = main WHERE started = True"
-                self.cursor.execute(start)
-        except mysql.connector.Error as err:
-            raise err
-        try:
-            x = self.STEPRISE
-            if bool(x.connected()) != False and x.connected().latency() <= 100:
-                raise "The API's latency is too high!"
-            elif bool(x.connect()) != True and x.downtime().returnnum().convert(form=FACTOR) != 'CONNECTED':
-                raise ConnectionRefusedError("The API refused to connected")
-        except Utils.ERRORS.CREDENTIALS_WRONG as failure:
-            raise failure
-            
+        if self.__xxx__:
+            sys.exit('Error via booting up multi threading')
+        if not self.connected:
+            sys.exit('Threads failed to setup...')
+        self.logging.environ['CLIENT_KEY'] = client.connection()
+        
+        self.logging.ROOT_CONNECTION = 'None' if not self.logging.status is self.logging.statuses.Connected
+        
         print('Bot Connected')
         
     async def on_disconnect(self) -> None:
-        for x in self.guilds:
-            if not Utils.main.ISTABLELOADED(x):
-                Utils.main.CLOSE(x, self.SHUTDOWN)
-        try:
-            x = self.RECONNECT
-            if not x:
-                raise Utils.ERRORS.MASACRE
-            elif x.DISASTER_LVL_10_MAJOR != False:
-                raise Utils.ERRORS.LORD_RECONNECT
-            elif x.GUILDTABLELOADED != True:
-                raise Utils.ERRORS.GUILD_ATR
-        except mysql.connector.Error as err:
-            raise err
+        '''
+        :Automatic handling of __logging__ dual instancing:
+        
+        Asynced it so it doesnt stop the bot whilst waiting
+        '''
+        if self.logging.instances > 1:
+            __logging__.handle_instances(self.logging)
+            import warnings ## we dont need it by default :p
+            
+            warnings.warn('Attempting to fix dual instancing of __main__.py', category=DeprecationWarning)
+            
+            cond = await __logging__.wait_until_completion(__logging__.queue[-1])  ## latest addition of tasks
+            
+            if str(cond.status) != 'Green':
+                warnings.warn('Failed to complete issue. Currently sitting at: {}'.format(str(cond.status)))
         
     async def on_message_delete(self, message) -> [Any]:
         if message.author.bot == True:
             pass
         else:
-            db = self.TABLES[self.TABLES.index('SNIPETABLE', 0, -1)]
-            sql = "INSERT INTO db (channel_id) VALUES (%s)"
-            val = ('{message.channel.id : {"author" : message.author.name + "#" + message.author.discriminator, "user" : str(message.author.id), "content" : message.content, "created_at" : message.created_at.strftime('%I:%M %p')}}')
-            db.cursor().execute(sql, val)
+            Utils.main.handle_snipe(message)
                 
     async def on_guild_remove(self, guild):
-        delete = "DROP TABLE {}".format(guild.id)
-        self.cursor.execute(delete)
+        column.delete_one({'_id': guild.id})
+        warns = table['Warns']
+        warns.delete_many({'_id': {'$regex': '^{}'.format(guild.id)}})
+        tags = table['Tags']
+        tags.delete_many({'_id': {'$regex': '^{}'.format(guild.id)}})
             
     async def on_guild_join(self, guild):
-        x = NEWGUILDTABLE(self.cursor, guild.id, '-')
-        if x == 'FAILED':
-            for channel in guild.TextChannels:
-                await channel.send('There was an error creating a table for your server. Please re-add me!')
-                await asyncio.sleep(1)
-            await guild.leave()
-        elif x == 'WARNING':
-            delete = "DROP TABLE {}".format(guild.id)
-            self.cursor.execute(delete)
+        main.add_to_stack(guild.id)
+        
+        res = self.blacklistedguilds.find_one({'_id': guild.id})
+        
+        if res is not None:
             try:
-                x = NEWGUILDTABLE(self.cursor, guild.id, '-')
-                if x == 'WARNING' or x == 'FAILED':
-                    for channel in guild.TextChannels:
-                        await channel.send('There was an error creating a table for your server. Please re-add me!')
-                        await asyncio.sleep(1)
-                    await guild.leave()
-            except mysql.connector.Error:
-                await guild.leave()
+                await guild.owner.send(Helpers.Blacklisted.Messages['server'])
+            except discord.errors.Forbidden:
+                pass
+            return await guild.leave()
 
         channel = self.get_channel(753311458171027547)
         await channel.send('> <@!475357293949485076> You Retard.\n> I have made it into another server!\n\n> Guild Name: **{}**'.format(guild.name))
@@ -315,10 +288,6 @@ class Mecha_Karen(commands.AutoShardedBot):
             self.logging.load(__logging__.CACHE) 
         except discord.errors.LoginFailure:
             return 'Failed to run Mecha Karen!\nDue to Incorrect Credentials...'
-        
-    @property
-    async def ver(self):
-        return __import__('version')
     
 ## You have sucessfully made it to the end!
 ## Ping -> random.randint(1, 10) is good
