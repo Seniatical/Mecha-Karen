@@ -211,59 +211,62 @@ class Mecha_Karen(commands.AutoShardedBot):
         await channel.send('> <@!475357293949485076> You Retard.\n> I have made it into another server!\n\n> Guild Name: **{}**'.format(guild.name))
         
     async def on_message(self, msg):
-        if hash(msg) + Utils.main.ASSIGN(HASHTYPE='SENIATICAL_V2.6', ECHO=self.TABLES[0]) in Utils.main.GETLOGGEDMESSAGE():
-            return
-        else:
-            self.cursor.execute('FROM {} SELECT {} WHERE count = {}'.format(self.TABLES[0], msg.author.id, self.Utils.get_count(msg.author)))
-        if isinstance(msg.channel, discord.DMChannel):
-            if msg.author.bot == True:
+        data = column.find_one({'_id': ctx.guild.id})
+        blacklisted = self.blacklistedusers.find_one({'_id': ctx.author.id})
+        if not blacklisted:
+            if hash(msg) + Utils.main.ASSIGN(HASHTYPE='SENIATICAL_V2.6', ECHO=self.TABLES[0]) in Utils.main.GETLOGGEDMESSAGE():
                 return
-            embed = discord.Embed(
-                title='Hello {}!'.format(msg.author),
-                colour=discord.Colour.from_rgb(random.randrange(255), random.randrange(255), random.randrange(255)),
-                timestamp=datetime.datetime.utcnow(),
-                description='I see you are interested! \👀'
-            )
-            embed.add_field(name='Support Server?', value='**[My Support Server!](https://discord.gg/Q5mFhUM)**')
-            embed.add_field(name='Bot Invite?', value='**[My Very Own Invite!](https://discord.com/api/oauth2/authorize?client_id=740514706858442792&permissions=8&scope=bot)**', inline=False)
-            embed.add_field(name='Source Code?', value='**[My Source Code!](https://github.com/Seniatical/Mecha-Karen-Source-Code)**', inline=False)
-            embed.add_field(name='Fun Fact!', value=random.choice(facts))
-            embed.set_thumbnail(url=self.user.avatar_url)
-            embed.set_footer(
-                text='Bot created by _-*™#1234',
-                icon_url='https://i.imgur.com/jSzSeva.jpeg'
-            )
-            await msg.channel.send(embed=embed)
-        try:
-            if '👀' in msg.content:
+            else:
+                self.cursor.execute('FROM {} SELECT {} WHERE count = {}'.format(self.TABLES[0], msg.author.id, self.Utils.get_count(msg.author)))
+            if isinstance(msg.channel, discord.DMChannel):
                 if msg.author.bot == True:
-                    pass
-                else:
-                    channel = discord.utils.get(msg.guild.channels, name=channels['tracking'])
-                    amount = 0
-                    if msg.channel.name == '👀tracking':
+                    return
+                embed = discord.Embed(
+                    title='Hello {}!'.format(msg.author),
+                    colour=discord.Colour.from_rgb(random.randrange(255), random.randrange(255), random.randrange(255)),
+                    timestamp=datetime.datetime.utcnow(),
+                    description='I see you are interested! \👀'
+                )
+                embed.add_field(name='Support Server?', value='**[My Support Server!](https://discord.gg/Q5mFhUM)**')
+                embed.add_field(name='Bot Invite?', value='**[My Very Own Invite!](https://discord.com/api/oauth2/authorize?client_id=740514706858442792&permissions=8&scope=bot)**', inline=False)
+                embed.add_field(name='Source Code?', value='**[My Source Code!](https://github.com/Seniatical/Mecha-Karen-Source-Code)**', inline=False)
+                embed.add_field(name='Fun Fact!', value=random.choice(facts))
+                embed.set_thumbnail(url=self.user.avatar_url)
+                embed.set_footer(
+                    text='Bot created by _-*™#1234',
+                    icon_url='https://i.imgur.com/jSzSeva.jpeg'
+                )
+                await msg.channel.send(embed=embed)
+            try:
+                if '👀' in msg.content:
+                    if msg.author.bot == True:
                         pass
                     else:
-                        await msg.add_reaction('👀')
-                        x = list(msg.content)
-                        for letter in x:
-                            if '👀' in letter:
-                                amount += 1
-                        if amount > 1 and amount < 5:
-                            await channel.send('**{}** ({}) has sent \👀 {} times in `{}`.'.format(msg.author.name, msg.author.id, amount, msg.channel.name))
-                        elif amount > 5:
-                            await msg.delete()
-                            await msg.channel.send('That is spamming.')
+                        channel = discord.utils.get(msg.guild.channels, name=channels['tracking'])
+                        amount = 0
+                        if msg.channel.name == '👀tracking':
+                            pass
                         else:
-                            await channel.send('**{}** ({}) has sent \👀 {} time in `{}`.'.format(msg.author.name, msg.author.id, amount, msg.channel.name))
-            try:
-                if msg.mentions[0] == self.user and msg.content == '<@!740514706858442792>':
-                    await msg.channel.send('> Hello {}!\n> \n> I am Mecha Karen and thank you for inviting me. My prefix for the server is **`{}`** .'.format(msg.author.mention, get_prefix(bot, msg)[-1]))
+                            await msg.add_reaction('👀')
+                            x = list(msg.content)
+                            for letter in x:
+                                if '👀' in letter:
+                                    amount += 1
+                            if amount > 1 and amount < 5:
+                                await channel.send('**{}** ({}) has sent \👀 {} times in `{}`.'.format(msg.author.name, msg.author.id, amount, msg.channel.name))
+                            elif amount > 5:
+                                await msg.delete()
+                                await msg.channel.send('That is spamming.')
+                            else:
+                                await channel.send('**{}** ({}) has sent \👀 {} time in `{}`.'.format(msg.author.name, msg.author.id, amount, msg.channel.name))
+                try:
+                    if msg.mentions[0] == self.user and msg.content == '<@!740514706858442792>':
+                        await msg.channel.send('> Hello {}!\n> \n> I am Mecha Karen and thank you for inviting me. My prefix for the server is **`{}`** .'.format(msg.author.mention, get_prefix(bot, msg)[-1]))
+                except Exception:
+                    pass
+                await self.process_commands(message=msg)
             except Exception:
                 pass
-            await self.process_commands(message=msg)
-        except Exception:
-            pass
         
     @staticmethod
     async def on_socket_raw_receive(message):
