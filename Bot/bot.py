@@ -146,7 +146,7 @@ class Mecha_Karen(commands.AutoShardedBot):
             
             disabled = data['Disabled']
             if ctx.command.name.lower() in disabled:
-                raise commands.errors.DisabledCommand
+                raise commands.errors.CommandHasBeenDisabled
             
             ctx.timer = time()
             try:
