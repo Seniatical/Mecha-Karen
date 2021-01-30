@@ -32,6 +32,7 @@ import traceback
 from Utils.help import PING, IMPORTED
 from Utils import db, events
 from typing import *
+from Utils import ratelimiter
 
 class DATA:
     self.cache_limit = 500
@@ -128,6 +129,9 @@ class Mecha_Karen(commands.AutoShardedBot):
         self._str = main.cls(main.conv_to_work(self.threads))
         self.connected = True if self.threads is not None and not self.client == False else False
         self.__xxx__ = True if self.threads < 4 and self.logging.grab_logs('threads').errors is not None
+        self.ratelimter = ratelimiter.ratelimiter()
+        
+        self.ratelimiter.start()
         
         for filename in os.listdir('./cogs'):
             if filename.endswith('.py'):
@@ -169,7 +173,7 @@ class Mecha_Karen(commands.AutoShardedBot):
         '''
         :Automatic handling of __logging__ dual instancing:
         
-        Asynced it so it doesnt stop the bot whilst waiting
+        :Asynced: it so it doesnt stop the bot whilst waiting
         '''
         if self.logging.instances > 1:
             __logging__.handle_instances(self.logging)
@@ -187,6 +191,13 @@ class Mecha_Karen(commands.AutoShardedBot):
             pass
         else:
             Utils.main.handle_snipe(message)
+            
+        op = __logging__.cache('update', {message.id: None}, 'store', 'deleted')
+        
+        if not __logging__.operation(op):
+            if __logging__.fetch_completed_operation(op) is not None and __logging__.completed(op):
+                return
+        await __logging__.until_completed(op)   ## Stops any other operations from running e.g. stops the module from being flooded
                 
     async def on_guild_remove(self, guild):
         column.delete_one({'_id': guild.id})
@@ -196,6 +207,18 @@ class Mecha_Karen(commands.AutoShardedBot):
         tags.delete_many({'_id': {'$regex': '^{}'.format(guild.id)}})
             
     async def on_guild_join(self, guild):
+        x = self.ratelimiter.action(guild.id, '+=', 1, 
+                                statement='''
+                                if self.ratelimiter.get_logs(guild.id) >= 5:
+                                    self.ratelimter.destroy(guild.id):
+                                        return await guild.leave()
+                                          '''
+                                ## Uses a env parsed by ast to complete this action
+                                ## Bonuses as it allows me to use local variables as well global variables between both files
+            )
+        if x is not None and str(x) is not 'Failed':
+            return
+        
         main.add_to_stack(guild.id)
         
         res = self.blacklistedguilds.find_one({'_id': guild.id})
@@ -256,11 +279,9 @@ class Mecha_Karen(commands.AutoShardedBot):
                             await msg.channel.send('That is spamming.')
                         else:
                             await channel.send('**{}** ({}) has sent \👀 {} time in `{}`.'.format(msg.author.name, msg.author.id, amount, msg.channel.name))
-            try:
-                if msg.mentions[0] == self.user and msg.content == '<@!740514706858442792>':
-                    await msg.channel.send('> Hello {}!\n> \n> I am Mecha Karen and thank you for inviting me. My prefix for the server is **`{}`** .'.format(msg.author.mention, get_prefix(bot, msg)[-1]))
-            except Exception:
-                pass
+                            
+            if msg.content == '<@!740514706858442792>':
+                await msg.channel.send('> Hello {}!\n> \n> I am Mecha Karen and thank you for inviting me. My prefix for the server is **`{}`** .'.format(msg.author.mention, get_prefix(bot, msg)[-1]))
             await self.process_commands(message=msg)
         except Exception:
             pass
@@ -268,6 +289,7 @@ class Mecha_Karen(commands.AutoShardedBot):
     @staticmethod
     async def on_socket_raw_receive(message):
         y = self.logging.call('./Logs/recieved.log')
+        
         @y.update()
         def clog(message_):
             x = __logging__.encode(message)
