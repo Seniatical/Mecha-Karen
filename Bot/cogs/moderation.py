@@ -52,7 +52,7 @@ class moderation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-   @commands.command(aliases=['purge'])
+    @commands.command(aliases=['purge'])
     @commands.has_permissions(manage_messages=True)
     @commands.bot_has_guild_permissions(manage_messages=True)
     @cooldown(1, 5, BucketType.user)
