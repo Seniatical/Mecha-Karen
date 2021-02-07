@@ -114,8 +114,6 @@ class Mecha_Karen(commands.AutoShardedBot):
         )
         self.launch_time = datetime.datetime.utcnow()
         self.version = version.__version__
-        self.user = Utils.main.USERNAME
-        self.password = Utils.main.PASSWORD
         self.logging = Utils.main.__logging__
         
         self.client = client
