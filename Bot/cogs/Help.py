@@ -81,7 +81,7 @@ class Help(commands.Cog):
     @commands.command()
     @commands.bot_has_guild_permissions(send_messages=True, embed_links=True)
     async def help(self, ctx, option=None):
-        prefix = '-'
+        prefix = ctx.prefix if not prefix == self.bot.user.mention else '-'
         if option == None:
             pass
         else:
