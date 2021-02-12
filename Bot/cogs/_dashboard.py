@@ -55,3 +55,6 @@ class Dashboard(commands.Cog):
 
         _format = Mongo._handle(viable_inst)
         Mongo.execute(_format['data'], mode=_format['mode'])
+        
+def setup(bot):
+    bot.add_cog(Dashboard(bot))
