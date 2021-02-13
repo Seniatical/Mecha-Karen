@@ -15,24 +15,20 @@ A robustly programmed bot which means there wont be as much errors in the long r
 ```
 Facts :
 
-  100+ Commands,
-  
-  Unique Features,
-  
-  Wacky Commands,
-  
+  100+ Commands
+  Unique Features
+  Wacky Commands
   Fast Responce Times (Most times)
-  
   Configurable commands and Starboard
-  
-  Soon to come warn system
-  
+  Warn mangement
+  Log everything
   Useful Tools such as Word Searches | Vid Searches | Image Searches  | + MORE
-  
   Ticket System
-  
   Music
 ```
+**View our dashboard!**
+[Click Me](https://mechakaren.xyz/)
+
 **Join the Server as this is the best way of contacting me.**
 
 **[![widget](https://discord.com/api/guilds/740523643980873789/widget.png?style=banner2)](https://discord.gg/Q5mFhUM)**
