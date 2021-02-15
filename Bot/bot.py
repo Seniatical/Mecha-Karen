@@ -16,19 +16,14 @@ Any violation to the license, will result in moderate action
 You are legally required to mention (original author, license, source and any changes made)
 """
 
-import datetime, asyncio, os, json, discord, version, subprocess, sys
+import datetime, asyncio, os, json, discord, version, subprocess, sys, Helpers, traceback
+
 from discord.ext import commands
 from discord.ext.commands import BucketType, cooldown
 from time import time
 from pathlib import Path
 from Utils.main import *
-import sys
-
-from __future__ import print_function
-from mysql.connector import errorcode
 from Utils import UD, __logging__
-import Helpers
-import traceback
 from Utils.help import PING, IMPORTED
 from Utils import db, events
 from typing import *
@@ -131,6 +126,10 @@ class Mecha_Karen(commands.AutoShardedBot):
         self.ratelimter = ratelimiter.ratelimiter()
         
         self.ratelimiter.start()
+        ## Mongo management from the client class
+        ## Uses Mongo features normally whilst allowing queueing
+        ## Prevents spam and manages the capped collection
+        ## Handles all the triggers from the Mongo server and the dashboard
         
         for filename in os.listdir('./cogs'):
             if filename.endswith('.py'):
