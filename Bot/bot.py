@@ -45,6 +45,7 @@ class DATA:
 PATH = Path(__file__).parents
 EXE = PATH[0]
 stringed_exe = str(EXE)
+
 table = client['Bot']
 column = table['Guilds']
 
@@ -203,6 +204,8 @@ class Mecha_Karen(commands.AutoShardedBot):
         warns.delete_many({'_id': {'$regex': '^{}'.format(guild.id)}})
         tags = table['Tags']
         tags.delete_many({'_id': {'$regex': '^{}'.format(guild.id)}})
+        ## No guarantee that they are going to re-add the bot so might as well delete there data
+        ## Also saves up memory
             
     async def on_guild_join(self, guild):
         x = self.ratelimiter.action(guild.id, '+=', 1, 
@@ -232,19 +235,20 @@ class Mecha_Karen(commands.AutoShardedBot):
         await channel.send('> <@!475357293949485076> You Retard.\n> I have made it into another server!\n\n> Guild Name: **{}**'.format(guild.name))
         
     async def on_message(self, msg):
-        if hash(msg) + Utils.main.ASSIGN(HASHTYPE='SENIATICAL_V2.6', ECHO=self.TABLES[0]) in Utils.main.GETLOGGEDMESSAGE():
-            return
-        else:
-            self.cursor.execute('FROM {} SELECT {} WHERE count = {}'.format(self.TABLES[0], msg.author.id, self.Utils.get_count(msg.author)))
         if isinstance(msg.channel, discord.DMChannel):
             if msg.author.bot and self.blacklistedusers.find_one({'_id': ctx.author.id}) is not None:
                 return
+            '''
+            Stops blacklisted uses from accessing any features of the bot.
+            '''
+            
             embed = discord.Embed(
                 title='Hello {}!'.format(msg.author),
                 colour=discord.Colour.from_rgb(random.randrange(255), random.randrange(255), random.randrange(255)),
                 timestamp=datetime.datetime.utcnow(),
                 description='I see you are interested! \👀'
             )
+            
             embed.add_field(name='Support Server?', value='**[My Support Server!](https://discord.gg/Q5mFhUM)**')
             embed.add_field(name='Bot Invite?', value='**[My Very Own Invite!](https://discord.com/api/oauth2/authorize?client_id=740514706858442792&permissions=8&scope=bot)**', inline=False)
             embed.add_field(name='Source Code?', value='**[My Source Code!](https://github.com/Seniatical/Mecha-Karen-Source-Code)**', inline=False)
@@ -254,7 +258,9 @@ class Mecha_Karen(commands.AutoShardedBot):
                 text='Bot created by _-*™#1234',
                 icon_url='https://i.imgur.com/jSzSeva.jpeg'
             )
+            
             await msg.channel.send(embed=embed)
+            
         try:
             if '👀' in msg.content:
                 if msg.author.bot:
@@ -281,31 +287,32 @@ class Mecha_Karen(commands.AutoShardedBot):
             if msg.content == '<@!740514706858442792>':
                 await msg.channel.send('> Hello {}!\n> \n> I am Mecha Karen and thank you for inviting me. My prefix for the server is **`{}`** .'.format(msg.author.mention, get_prefix(bot, msg)[-1]))
             await self.process_commands(message=msg)
-        except Exception:
+        except (discord.errors.Forbidden, discord.errors.HTTPException, AttributeError):    ## Only problems here
             pass
         
     @staticmethod
     async def on_socket_raw_receive(message):
         y = self.logging.call('./Logs/recieved.log')
         
-        @y.update()
-        def clog(message_):
-            x = __logging__.encode(message)
+        @y.update(cls=__logging__.binary)
+        async def clog(message_):
+            x = await __logging__.encode(message)
             if not x:
                 return
-            message_.repel(x)
+            await message_.repel(x)
             return True
         
     def run(self):
         try:
             Helpers.functions.help(x)
-            super().run(DATA().TOKEN, reconnect=True)
             for _ in self.logging.FILES:
                 try:
                     __logging__.update('cache')
                 except Utils.LOGGINGERRORS.file_empty_error:
                     print('File : {} was empty. Couldnt be emptied within the cache.'.format(_))
             self.logging.load(__logging__.CACHE) 
+            super().run(DATA().TOKEN, reconnect=True)
+            ## Realised it would miss it out causing potholes with the logging module
         except discord.errors.LoginFailure:
             return 'Failed to run Mecha Karen!\nDue to Incorrect Credentials...'
     
