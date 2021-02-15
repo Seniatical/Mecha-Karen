@@ -29,9 +29,11 @@ class Dashboard(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        _writer, _reader = await asyncio.open_connection(self.host, self.host)
+        _writer, _reader = await asyncio.open_connection(self.host, self.port)
         self.sender = _writer
         self.reader = _reader
+        
+        super(Mongo).__init__(self.bot.client, **_mongo)
 
     @commands.Cog.listener()
     async def on_website_rec(self, data):
@@ -50,8 +52,6 @@ class Dashboard(commands.Cog):
         viable_inst = self._read(data)
         if not viable_inst:
             self.bot.logging.Debug('[{}] | [{}] -> Recieved info from False Peer-Network.', "time", "date")
-
-        super(Mongo).__init__(self.bot.client, **_mongo)
 
         _format = Mongo._handle(viable_inst)
         Mongo.execute(_format['data'], mode=_format['mode'])
