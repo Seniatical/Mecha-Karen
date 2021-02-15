@@ -22,9 +22,19 @@ from Utils import __logging__
 from Utils import setup
 from Utils.sensitive import env_reader
 import bot
+import threading
 
 class Error(Exception):
     pass
+
+def _stop(__cls):
+    __cls = __logging__.clog(__cls)
+    __cls.destroy(
+        Trees = True
+        reason = f'[{__cls.created_at.date}] | [Subprocess Destroyed] -> Killed via __main__.py',
+        cause = __logging__.BUG ## Usual cause so ye
+    )
+    return __cls.process_id == None
     
 if not __name__ == '__main__':
     raise Error('Not __main__.py file being ran!')
@@ -62,4 +72,9 @@ mother.BRANCHES = __logging__.base_map('BRANCHES',
                                       )
 
 self = bot.Mecha_Karen()
-self.run()
+_thread = threading.Thread()
+_thread.run(self.run())
+
+while _thread.is_alive():
+    __logging__.monitor(_thread)
+_stop(_thread)
