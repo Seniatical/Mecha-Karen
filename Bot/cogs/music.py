@@ -64,7 +64,6 @@ class Music(commands.Cog):
                 description='<a:nope:787764352387776523> Must be in a voice channel to use this command!',
                 colour=discord.Colour.red()
             ), mention_author=False)
-            raise commands.errors.CommandInvokeError
 
         if not player.is_connected:
             if not should_connect:
@@ -75,7 +74,6 @@ class Music(commands.Cog):
                 ).set_footer(
                     text='If this is a mistake manually kick the bot.',
                     icon_url=self.bot.user.avatar_url), mention_author=False)
-                raise commands.errors.CommandInvokeError
 
         if player.is_connected:
             ctx.command.reset_cooldown(ctx)
@@ -85,7 +83,6 @@ class Music(commands.Cog):
             ).set_footer(
                text='If this is a mistake manually kick the bot.',
                icon_url=self.bot.user.avatar_url), mention_author=False)
-            raise commands.errors.CommandInvokeError
 
             permissions = ctx.author.voice.channel.permissions_for(ctx.me)
 
@@ -106,7 +103,6 @@ class Music(commands.Cog):
                     description='<a:nope:787764352387776523> You need to be in the same VC as me!',
                     colour=discord.Colour.red()
                 ), mention_author=False)
-                raise commands.errors.CommandInvokeError
 
     async def track_hook(self, event) -> None:
         if isinstance(event, lavalink.events.QueueEndEvent):
@@ -122,6 +118,7 @@ class Music(commands.Cog):
     async def join(self, ctx) -> None:
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         if ctx.author.voice:
+            await ctx.me.edit(deafen = True)
             await ctx.message.add_reaction('🎵')
             return await ctx.send(embed=discord.Embed(
                 description='🎶 **Mecha Karen** has joined **{}**'.format(ctx.author.voice.channel),
@@ -201,6 +198,7 @@ class Music(commands.Cog):
         await ctx.message.reply(embed=embed, mention_author=False)
 
         if not player.is_playing:
+            await ctx.me.edit(deafen = True)
             await player.play()
 
     @commands.command()
