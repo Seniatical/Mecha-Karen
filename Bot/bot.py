@@ -291,15 +291,24 @@ class Mecha_Karen(commands.AutoShardedBot):
         
     @staticmethod
     async def on_socket_raw_receive(message):
-        y = self.logging.call('./Logs/recieved.log')
+        _recieve = self.logging.call('./Logs/recieved.log')
         
-        @y.update(cls=__logging__.binary)
+        @yrecieve.update(cls=__logging__.binary)
         async def clog(message_):
             x = await __logging__.encode(message)
             if not x:
                 return
             await message_.repel(x)
-            return True
+            return message_.rebound(x if type(x) == __logging__.CLS, indentify=True).result_as_bytes
+        
+        @y.result
+        async def log_result(_bytes):
+            if not type(_bytes) == bytes:
+                return False
+            if not hasattr(_bytes, 'clog'):
+                return False
+            
+            self.logging.log('event', 'recieved.log', _bytes.clog.raw, format='[{data}] [{time}] -> {data}')
         
     def run(self):
         try:
