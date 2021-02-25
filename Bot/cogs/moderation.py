@@ -480,7 +480,7 @@ class moderation(commands.Cog):
             archived_messages.append(f"**{message.author}** -> {message.content}")
         
         with open("archived.md", "a", encoding = "utf-8") as f:
-            f.write("\n\n".join(archived_messages))
+            f.write("\n".join(archived_messages))
         
         await ctx.send(content = "I have archived your channels messages for you!", file = discord.File("archived.md"))
         os.remove("archived.md")
