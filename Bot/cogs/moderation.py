@@ -479,10 +479,9 @@ class moderation(commands.Cog):
         async for message in ctx.channel.history(limit = None):
             archived_messages.append(f"**{message.author}** -> {message.content}")
         
-        f = open("archived.md", "a", encoding = "utf-8")
-        f.write("\n\n".join(archived_messages))
-        f.close()
-
+        with open("archived.md", "a", encoding = "utf-8") as f:
+            f.write("\n\n".join(archived_messages))
+        
         await ctx.send(content = "I have archived your channels messages for you!", file = discord.File("archived.md"))
         os.remove("archived.md")
         archived_messages.clear()
