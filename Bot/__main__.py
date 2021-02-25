@@ -66,7 +66,7 @@ start.start(
 )
 
 start.rename_e = 'Mecha Karen'
-mother = start.ROOT = 'MOTHER'
+mother = start.ROOT = 'MOTHER'  ## Default was set to `%root%`
 mother.BRANCHES = __logging__.base_map('BRANCHES',
                                        ['INTERNAL HELPERS', __logging__.SWARM_BRANCH(None)]
                                       )
@@ -76,5 +76,8 @@ _thread = threading.Thread()
 _thread.run(self.run())
 
 while _thread.is_alive():
-    __logging__.monitor(_thread)
+    exp = __logging__.monitor(_thread)
+    if 'error' in exp:
+        __logging__.log('../logs/errors.log', type='error', format='[{date}] [{time}] -> {error.shortened} | {error.line}')
+    
 _stop(_thread)
