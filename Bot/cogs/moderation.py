@@ -464,6 +464,29 @@ class moderation(commands.Cog):
             description='<a:Passed:757652583392215201> Successfully unmuted the user **{}**.'.format(user),
             colour=discord.Color.green()
         ))
+        
+        
+    @commands.command()
+    @commands.has_guild_permissions(manage_channels=True)
+    @commands.bot_has_guild_permissions(manage_channels=True)
+    @commands.cooldown(1, 10, BucketType.user)
+    async def archive(self, ctx):
+        await ctx.send("Archiving your messages now!")
+        archived_messages = []
+        if os.path.exists("archived.md"):
+            open("archived.md", "x", encoding = "utf-8")
+
+        async for message in ctx.channel.history(limit = None):
+            archived_messages.append(f"**{message.author}** -> {message.content}")
+        
+        f = open("archived.md", "a", encoding = "utf-8")
+        f.write("\n\n".join(archived_messages))
+        f.close()
+
+        await ctx.send(content = "I have archived your channels messages for you!", file = discord.File("archived.md"))
+        os.remove("archived.md")
+        archived_messages.clear()
+       
 
 def setup(bot):
     bot.add_cog(moderation(bot))
