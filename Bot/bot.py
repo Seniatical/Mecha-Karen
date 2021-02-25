@@ -293,7 +293,7 @@ class Mecha_Karen(commands.AutoShardedBot):
     async def on_socket_raw_receive(message):
         _recieve = self.logging.call('./Logs/recieved.log')
         
-        @yrecieve.update(cls=__logging__.binary)
+        @_recieve.update(cls=__logging__.binary)
         async def clog(message_):
             x = await __logging__.encode(message)
             if not x:
@@ -301,7 +301,7 @@ class Mecha_Karen(commands.AutoShardedBot):
             await message_.repel(x)
             return message_.rebound(x if type(x) == __logging__.CLS, indentify=True).result_as_bytes
         
-        @y.result
+        @_recieve.result
         async def log_result(_bytes):
             if not type(_bytes) == bytes:
                 return False
@@ -312,15 +312,16 @@ class Mecha_Karen(commands.AutoShardedBot):
         
     def run(self):
         try:
-            Helpers.functions.help(x)
-            for _ in self.logging.FILES:
-                try:
-                    __logging__.update('cache')
-                except Utils.LOGGINGERRORS.file_empty_error:
-                    print('File : {} was empty. Couldnt be emptied within the cache.'.format(_))
-            self.logging.load(__logging__.CACHE) 
-            super().run(DATA().TOKEN, reconnect=True)
-            ## Realised it would miss it out causing potholes with the logging module
+            event_ = self.logging.start()
+            event_.cache = self.logging.loads('../logs')
+            if not event_.cache:
+                raise Exception('Failed to load logging cache')
+            cxn = event_.connect('thread')
+            cxn.start()
+            __import__('time').sleep(cxn.delay)
+            cxn.run()
+            
+            super().run(DATA.TOKEN, reconnect=True)
         except discord.errors.LoginFailure:
             return 'Failed to run Mecha Karen!\nDue to Incorrect Credentials...'
     
