@@ -477,7 +477,7 @@ class moderation(commands.Cog):
             open("archived.md", "x", encoding = "utf-8")
 
         async for message in ctx.channel.history(limit = None):
-            archived_messages.append(f"**{message.author}** -> {message.content}")
+            archived_messages.append(f"**{message.author}** => {message.content}")
         
         with open("archived.md", "a", encoding = "utf-8") as f:
             f.write("\n".join(archived_messages))
