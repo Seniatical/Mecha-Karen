@@ -22,18 +22,21 @@ from discord.ext.commands import BucketType, cooldown
 from PIL import Image, ImageOps, ImageFilter
 import os
 from io import BytesIO
-import cv2
-import numpy as np
-import math
-import random
 from wand.image import Image as swirler
+import aiohttp
+import glob
+import MK
 
 class image(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.warp = threading.Thread
+        self.converter = commands.MemberConverter()
+        self.client = MK.Client('$TOKEN YER LAD')   ## not my token so dont try :p
+        self.args_format = bot.arg()
 
-    @commands.command()
+    @commands.command(name='Trash')
     @commands.bot_has_guild_permissions(send_messages=True, attach_files=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def trash(self, ctx, *, user: discord.Member = None):
@@ -51,9 +54,11 @@ class image(commands.Cog):
         im.paste(pfp, (260, 120))
         im.paste(pfp2, (105, 7))
         im.save('./Images/trash2.jpg')
-        await ctx.send(file=discord.File('./Images/trash2.jpg'))
+        file = discord.File('./Images/trash2.jpg', filename='trash2.jpg')
+        embed = discord.Embed(title='{} Has Recycled {}!'.format(ctx.author.display_name, user.display_name), color=user.color).set_image(url='attachment://trash2.jpg')
+        await ctx.send(file=file, embed=embed)
 
-    @commands.command()
+    @commands.command(name='Slap')
     @commands.bot_has_guild_permissions(send_messages=True, attach_files=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def slap(self, ctx, *, user: discord.Member = None):
@@ -71,9 +76,11 @@ class image(commands.Cog):
         im.paste(pfp2, (465, 70))
         im.paste(pfp, (810, 350))
         im.save('./Images/slapped.jpg')
-        await ctx.send(file=discord.File('./Images/slapped.jpg'))
+        file = discord.File('./Images/slapped.jpg', filename='slapped.jpg')
+        embed = discord.Embed(title='{} Has Slapped {}!'.format(ctx.author.display_name, user.display_name), color=user.color).set_image(url='attachment://slapped.jpg')
+        await ctx.send(file=file, embed=embed)
 
-    @commands.command()
+    @commands.command(name='Spank')
     @commands.bot_has_guild_permissions(send_messages=True, attach_files=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def spank(self, ctx, *, user: discord.Member = None):
@@ -91,9 +98,11 @@ class image(commands.Cog):
         im.paste(pfp2, (750, 25))
         im.paste(pfp, (1200, 455))
         im.save('./Images/spanked.jpg')
-        await ctx.send(file=discord.File('./Images/spanked.jpg'))
+        file = discord.File('./Images/spanked.jpg', filename='spanked.jpg')
+        embed = discord.Embed(title='{} Has Spanked {}!'.format(ctx.author.display_name, user.display_name), color=user.color).set_image(url='attachment://spanked.jpg')
+        await ctx.send(file=file, embed=embed)
 
-    @commands.command()
+    @commands.command(name='Boot')
     @commands.bot_has_guild_permissions(send_messages=True, attach_files=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def boot(self, ctx, *, user: discord.Member = None):
@@ -111,9 +120,11 @@ class image(commands.Cog):
         im.paste(pfp, (183, 13))
         im.paste(pfp2, (33, 12))
         im.save('./Images/booted.jpg')
-        await ctx.send(file=discord.File('./Images/booted.jpg'))
+        file = discord.File('./Images/booted.jpg', filename='booted.jpg')
+        embed = discord.Embed(title='{} Has Ended {} Kids!'.format(ctx.author.display_name, user.display_name), color=user.color).set_image(url='attachment://booted.jpg')
+        await ctx.send(file=file, embed=embed)
 
-    @commands.command()
+    @commands.command(name='Obese')
     @commands.bot_has_guild_permissions(send_messages=True, attach_files=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def obese(self, ctx, *, user: discord.Member = None):
@@ -122,12 +133,14 @@ class image(commands.Cog):
         asset = user.avatar_url_as(format=None, static_format='jpg', size=128)
         data = BytesIO(await asset.read())
         pfp = Image.open(data)
-        pfp = pfp.resize((139,139))
-        im.paste(pfp, (386, 80))
+        pfp = pfp.resize((220,220))
+        im.paste(pfp, (457, 135))
         im.save('./Images/obesity.jpg')
-        await ctx.send(file=discord.File('./Images/obesity.jpg'))
+        file = discord.File('./Images/obesity.jpg', filename='obesity.jpg')
+        embed = discord.Embed(title='{} Has Gained *a bit* of weight.'.format(user.display_name), color=user.color).set_image(url='attachment://obesity.jpg')
+        await ctx.send(file=file, embed=embed)
 
-    @commands.command()
+    @commands.command(name='Bird')
     @commands.bot_has_guild_permissions(send_messages=True, attach_files=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def bird(self, ctx, *, user: discord.Member = None):
@@ -136,12 +149,14 @@ class image(commands.Cog):
         asset = user.avatar_url_as(format=None, static_format='jpg', size=128)
         data = BytesIO(await asset.read())
         pfp = Image.open(data)
-        pfp = pfp.resize((120, 120))
-        im.paste(pfp, (300, 35))
+        pfp = pfp.resize((220, 220))
+        im.paste(pfp, (555, 60))
         im.save('./Images/bird2.jpg')
-        await ctx.send(file=discord.File('./Images/bird2.jpg'))
+        file = discord.File('./Images/bird2.jpg', filename='bird2.jpg')
+        embed = discord.Embed(title='{} Has Prepared to Migrate.'.format(user.display_name), color=user.color).set_image(url='attachment://bird2.jpg')
+        await ctx.send(file=file, embed=embed)
 
-    @commands.command()
+    @commands.command(name='Delete')
     @commands.bot_has_guild_permissions(send_messages=True, attach_files=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def delete(self, ctx, *, user: discord.Member = None):
@@ -153,249 +168,193 @@ class image(commands.Cog):
         pfp = pfp.resize((196,196))
         im.paste(pfp, (121, 137))
         im.save('./Images/delete2.jpg')
-        await ctx.send(file=discord.File('./Images/delete2.jpg'))
+        file = discord.File('./Images/delete2.jpg', filename='delete2.jpg')
+        embed = discord.Embed(title='Preparing to remove {}'.format(user.display_name), color=user.color).set_image(url='attachment://delete2.jpg')
+        await ctx.send(file=file, embed=embed)
 
-    @commands.command()
+    @commands.command(name='Invert')
     @commands.bot_has_guild_permissions(send_messages=True, embed_links=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def invert(self, ctx, *, member: discord.Member = None):
         member = ctx.author if not member else member
-        img = Image.open(BytesIO(await member.avatar_url_as(static_format='jpg', size=1024).read())).convert('RGB').resize((900, 900))
-        img = ImageOps.invert(image=img)
-        img.save('./Images/inverted.jpg')
-        file = discord.File('./Images/inverted.jpg', filename='inverted.jpg')
-        embed = discord.Embed(title='Inverted!', color=member.color).set_image(url='attachment://inverted.jpg')
+        img = await self.client.image('invert', str(member.avatar_url_as(static_format='png')))
+        file = discord.File(fp=img, filename='inverted.png')
+        embed = discord.Embed(title='Inverted!', color=member.color).set_image(url='attachment://inverted.png')
         await ctx.send(file=file, embed=embed)
 
-    @commands.command()
+    @commands.command(name='Equalize')
     @commands.bot_has_guild_permissions(send_messages=True, embed_links=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def equalize(self, ctx, *, member: discord.Member = None):
         member = ctx.author if not member else member
-        img = Image.open(BytesIO(await member.avatar_url_as(static_format='jpg', size=1024).read())).convert('RGB').resize((900, 900))
-        img = ImageOps.equalize(image=img)
-        img.save('./Images/equalize.jpg')
-        file = discord.File('./Images/equalize.jpg', filename='equalize.jpg')
-        embed = discord.Embed(title='Equalized!', color=member.color).set_image(url='attachment://equalize.jpg')
+        img = await self.client.image('equalize', str(member.avatar_url_as(static_format='png')))
+        file = discord.File(fp=img, filename='equalized.png')
+        embed = discord.Embed(title='Equalized!', color=member.color).set_image(url='attachment://equalized.png')
         await ctx.send(file=file, embed=embed)
 
-    @commands.command()
+    @commands.command(name='Grayscale')
     @commands.bot_has_guild_permissions(send_messages=True, embed_links=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def grayscale(self, ctx, *, member: discord.Member = None):
         member = ctx.author if not member else member
-        img = Image.open(BytesIO(await member.avatar_url_as(static_format='jpg', size=1024).read())).convert('RGB').resize((900, 900))
-        img = ImageOps.grayscale(image=img)
-        img.save('./Images/grayscale.jpg')
-        file = discord.File('./Images/grayscale.jpg', filename='grayscale.jpg')
-        embed = discord.Embed(title='Grayscaled!', color=member.color).set_image(url='attachment://grayscale.jpg')
+        img = await self.client.image('greyscale', str(member.avatar_url_as(static_format='png')))
+        file = discord.File(fp=img, filename='greyscaled.png')
+        embed = discord.Embed(title='Grayscale!', color=member.color).set_image(url='attachment://greyscaled.png')
         await ctx.send(file=file, embed=embed)
 
-    @commands.command()
+    @commands.command(name='Mirror')
     @commands.bot_has_guild_permissions(send_messages=True, embed_links=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def mirror(self, ctx, *, member: discord.Member = None):
         member = ctx.author if not member else member
-        img = Image.open(BytesIO(await member.avatar_url_as(static_format='jpg', size=1024).read())).convert('RGB').resize((900, 900))
-        img = ImageOps.mirror(image=img)
-        img.save('./Images/mirror.jpg')
-        file = discord.File('./Images/mirror.jpg', filename='mirror.jpg')
-        embed = discord.Embed(title='Mirrored!', color=member.color).set_image(url='attachment://mirror.jpg')
+        img = await self.client.image('mirror', str(member.avatar_url_as(static_format='png')))
+        file = discord.File(fp=img, filename='mirror.png')
+        embed = discord.Embed(title='Mirrored!', color=member.color).set_image(url='attachment://mirror.png')
         await ctx.send(file=file, embed=embed)
 
-    @commands.command()
+    @commands.command(name='Posterize')
     @commands.bot_has_guild_permissions(send_messages=True, embed_links=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def posterize(self, ctx, *, member: discord.Member = None):
         member = ctx.author if not member else member
-        img = Image.open(BytesIO(await member.avatar_url_as(static_format='jpg', size=1024).read())).convert('RGB').resize((900, 900))
-        try:
-            img = ImageOps.posterize(image=img, bits=1)
-        except NotImplementedError:
-            return await ctx.send('The Library currently doesnt support this image type! P Mode.')
-        img.save('./Images/posterize.jpg')
-        file = discord.File('./Images/posterize.jpg', filename='posterize.jpg')
-        embed = discord.Embed(title='Posterized!', color=member.color).set_image(url='attachment://posterize.jpg')
+        img = await self.client.image('posterize', str(member.avatar_url_as(static_format='png')))
+        file = discord.File(fp=img, filename='posterize.png')
+        embed = discord.Embed(title='Posterized!', color=member.color).set_image(url='attachment://posterize.png')
         await ctx.send(file=file, embed=embed)
 
-    @commands.command()
+    @commands.command(name='Solarize')
     @commands.bot_has_guild_permissions(send_messages=True, embed_links=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def solarize(self, ctx, *, member: discord.Member = None):
         member = ctx.author if not member else member
-        img = Image.open(BytesIO(await member.avatar_url_as(static_format='jpg', size=1024).read())).convert('RGB').resize((900, 900))
-        try:
-            img = ImageOps.solarize(image=img, threshold=128)
-        except NotImplementedError:
-            return await ctx.send('The Library currently doesnt support this image type! P Mode.')
-        img.save('./Images/solarize.jpg')
-        file = discord.File('./Images/solarize.jpg', filename='solarize.jpg')
-        embed = discord.Embed(title='Solarized!', color=member.color).set_image(url='attachment://solarize.jpg')
+        img = await self.client.image('solarize', str(member.avatar_url_as(static_format='png')))
+        file = discord.File(fp=img, filename='solarize.png')
+        embed = discord.Embed(title='Solarized!', color=member.color).set_image(url='attachment://solarize.png')
         await ctx.send(file=file, embed=embed)
 
-    @commands.command()
+    @commands.command(name='Transpose')
     @commands.bot_has_guild_permissions(send_messages=True, embed_links=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def transpose(self, ctx, *, member: discord.Member = None):
         member = ctx.author if not member else member
-        img = Image.open(BytesIO(await member.avatar_url_as(static_format='jpg', size=1024).read())).convert('RGB').resize((900, 900))
-        try:
-            img = ImageOps.exif_transpose(image=img)
-        except NotImplementedError:
-            return await ctx.send('The Library currently doesnt support this image type! P Mode.')
-        img.save('./Images/exif_transpose.jpg')
-        file = discord.File('./Images/exif_transpose.jpg', filename='exif_transpose.jpg')
-        embed = discord.Embed(title='Transposed!', color=member.color).set_image(url='attachment://exif_transpose.jpg')
+        img = await self.client.image('transpose', str(member.avatar_url_as(static_format='png')))
+        file = discord.File(fp=img, filename='transpose.png')
+        embed = discord.Embed(title='Transposed!', color=member.color).set_image(url='attachment://transpose.png')
         await ctx.send(file=file, embed=embed)
 
-    @commands.command()
+    @commands.command(name='Flip')
     @commands.bot_has_guild_permissions(send_messages=True, embed_links=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def flip(self, ctx, *, member: discord.Member = None):
         member = ctx.author if not member else member
-        img = Image.open(BytesIO(await member.avatar_url_as(static_format='jpg', size=1024).read())).convert('RGB').resize((900, 900))
-        try:
-            img = ImageOps.flip(image=img)
-        except NotImplementedError:
-            return await ctx.send('The Library currently doesnt support this image type! P Mode.')
-        img.save('./Images/flip.jpg')
-        file = discord.File('./Images/flip.jpg', filename='flip.jpg')
-        embed = discord.Embed(title='Flipped!', color=member.color).set_image(url='attachment://flip.jpg')
+        img = await self.client.image('flip', str(member.avatar_url_as(static_format='png')))
+        file = discord.File(fp=img, filename='flip.png')
+        embed = discord.Embed(title='Flipped!', color=member.color).set_image(url='attachment://flip.png')
         await ctx.send(file=file, embed=embed)
 
-    @commands.command()
+    @commands.command(name='Gamma')
     @commands.bot_has_guild_permissions(send_messages=True, embed_links=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def gamma(self, ctx, *, user: discord.Member = None):
         user = ctx.author if not user else user
-        img = Image.open(BytesIO(await user.avatar_url_as(static_format='jpg', size=1024).read())).convert('RGB').resize((900, 900))
-        img.save('./Images/gamma.jpg')
-        img = cv2.imread(r"./Images/gamma.jpg")
-        img = cv2.applyColorMap(img, cv2.COLORMAP_JET)
-        img = Image.fromarray(img)
-        img.save('./Images/gamma.jpg')
-        file = discord.File('./Images/gamma.jpg', filename='gamma.jpg')
-        embed = discord.Embed(title='Gammafied!', color=user.color).set_image(url='attachment://gamma.jpg')
+        img = await self.client.image('gamma', str(user.avatar_url_as(static_format='png')))
+        file = discord.File(fp=img, filename='gamma.png')
+        embed = discord.Embed(title='Gammafied!', color=user.color).set_image(url='attachment://gamma.png')
         await ctx.send(file=file, embed=embed)
 
-    @commands.command()
+    @commands.command(name='Rainbow')
     @commands.bot_has_guild_permissions(send_messages=True, embed_links=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def rainbow(self, ctx, *, user: discord.Member = None):
         user = ctx.author if not user else user
-        img = Image.open(BytesIO(await user.avatar_url_as(static_format='jpg', size=1024).read())).convert('RGB').resize((900, 900))
-        img.save('./Images/rainbow.jpg')
-        img = cv2.imread(r"./Images/rainbow.jpg")
-        img = cv2.applyColorMap(img, cv2.COLORMAP_RAINBOW)
-        img = Image.fromarray(img)
-        img.save('./Images/rainbow.jpg')
-        file = discord.File('./Images/rainbow.jpg', filename='rainbow.jpg')
-        embed = discord.Embed(title='Rainbow Filter', color=user.color).set_image(url='attachment://rainbow.jpg')
+        img = await self.client.image('rainbow', str(user.avatar_url_as(static_format='png')))
+        file = discord.File(fp=img, filename='rainbow.png')
+        embed = discord.Embed(title='Rainbow Filter', color=user.color).set_image(url='attachment://rainbow.png')
         await ctx.send(file=file, embed=embed)
 
-    @commands.command()
+    @commands.command(name='Autumn')
     @commands.bot_has_guild_permissions(send_messages=True, embed_links=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def autumn(self, ctx, *, user: discord.Member = None):
         user = ctx.author if not user else user
-        img = Image.open(BytesIO(await user.avatar_url_as(static_format='jpg', size=1024).read())).convert('RGB').resize((900, 900))
-        img.save('./Images/autumn.jpg')
-        img = cv2.imread(r"./Images/autumn.jpg")
-        img = cv2.applyColorMap(img, cv2.COLORMAP_AUTUMN)
-        img = Image.fromarray(img)
-        img.save('./Images/autumn.jpg')
-        file = discord.File('./Images/autumn.jpg', filename='autumn.jpg')
-        embed = discord.Embed(title='Autumn Filter', color=user.color).set_image(url='attachment://autumn.jpg')
+        img = await self.client.image('autumn', str(user.avatar_url_as(static_format='png')))
+        file = discord.File(fp=img, filename='autumn.png')
+        embed = discord.Embed(title='Autumn Filter', color=user.color).set_image(url='attachment://autumn.png')
         await ctx.send(file=file, embed=embed)
         
-    @commands.command()
+    @commands.command(name='Inferno')
     @commands.bot_has_guild_permissions(send_messages=True, embed_links=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def inferno(self, ctx, *, user: discord.Member = None):
         user = ctx.author if not user else user
-        img = Image.open(BytesIO(await user.avatar_url_as(static_format='jpg', size=1024).read())).convert('RGB').resize((900, 900))
-        img.save('./Images/inferno.jpg')
-        img = cv2.imread(r"./Images/inferno.jpg")
-        img = cv2.applyColorMap(img, cv2.COLORMAP_INFERNO)
-        img = Image.fromarray(img)
-        img.save('./Images/inferno.jpg')
-        file = discord.File('./Images/inferno.jpg', filename='inferno.jpg')
-        embed = discord.Embed(title='Inferno Filter', color=user.color).set_image(url='attachment://inferno.jpg')
+        img = await self.client.image('inferno', str(user.avatar_url_as(static_format='png')))
+        file = discord.File(fp=img, filename='inferno.png')
+        embed = discord.Embed(title='Inferno Filter', color=user.color).set_image(url='attachment://inferno.png')
         await ctx.send(file=file, embed=embed)
 
-    @commands.command()
+    @commands.command(name='Twilight')
     @commands.bot_has_guild_permissions(send_messages=True, embed_links=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def twilight(self, ctx, *, user: discord.Member = None):
         user = ctx.author if not user else user
-        img = Image.open(BytesIO(await user.avatar_url_as(static_format='jpg', size=1024).read())).convert('RGB').resize((900, 900))
-        img.save('./Images/twilight.jpg')
-        img = cv2.imread(r"./Images/twilight.jpg")
-        img = cv2.applyColorMap(img, cv2.COLORMAP_TWILIGHT_SHIFTED)
-        img = Image.fromarray(img)
-        img.save('./Images/twilight.jpg')
-        file = discord.File('./Images/twilight.jpg', filename='twilight.jpg')
-        embed = discord.Embed(title='Twilight Filter', color=user.color).set_image(url='attachment://twilight.jpg')
+        img = await self.client.image('twilight', str(user.avatar_url_as(static_format='png')))
+        file = discord.File(fp=img, filename='twilight.png')
+        embed = discord.Embed(title='Twilight Filter', color=user.color).set_image(url='attachment://twilight.png')
         await ctx.send(file=file, embed=embed)
 
-    @commands.command()
+    @commands.command(name='Warp')
     @commands.bot_has_guild_permissions(send_messages=True, embed_links=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def warp(self, ctx, *, user: discord.Member = None):
         user = ctx.author if not user else user
-        ref = Image.open('./Images/ref.jpg')
-        img = Image.open(BytesIO(await user.avatar_url_as(static_format='jpg', size=1024).read())).convert('RGB').resize(ref.size)
-        img.save('./Images/warp.jpg')
-        img = cv2.imread(r"./Images/warp.jpg", cv2.IMREAD_GRAYSCALE)
-        rows, cols = img.shape
-        img_output = np.zeros(img.shape, dtype=img.dtype)
-        for i in range(rows):
-            for j in range(cols):
-                offset_x = int(15.0 * math.sin(1.5 * 2.36 * i / 100))
-                offset_y = int(15.0 * math.cos(1.5 * 2.36 * j / 100))
-                if i+offset_y < rows and j+offset_x < cols:
-                    img_output[i,j] = img[(i+offset_y) % rows,(j+offset_x) % cols]
-                else:
-                    img_output[i,j] = 0
-        img = Image.fromarray(img_output)
-        img.save('./Images/warp.jpg')
-        file = discord.File('./Images/warp.jpg', filename='warp.jpg')
-        embed = discord.Embed(title='Warped Filter', color=user.color).set_image(url='attachment://warp.jpg')
+        img = await self.client.image('warp', str(user.avatar_url_as(static_format='png')))
+        file = discord.File(fp=img, filename='warp.png')
+        embed = discord.Embed(title='Warped Filter', color=user.color).set_image(url='attachment://warp.png')
         await ctx.send(file=file, embed=embed)
 
-    @commands.command()
+    @commands.command(name='Blur')
     @commands.bot_has_guild_permissions(send_messages=True, embed_links=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def blur(self, ctx, member: discord.Member = None):
         member = ctx.author if not member else member
-        img = Image.open(BytesIO(await member.avatar_url_as(static_format='jpg', size=1024).read())).convert('RGB').resize((900,900))
-        img_ = img.filter(ImageFilter.GaussianBlur(radius=10))
-        img_.save('./Images/Blur.jpg')
-        file = discord.File('./Images/Blur.jpg', filename='Blur.jpg')
-        embed = discord.Embed(title='You now look like a foggy mirror!', color=member.color).set_image(url='attachment://Blur.jpg')
+        img = await self.client.image('warp', str(user.avatar_url_as(static_format='png')))
+        file = discord.File(fp=img, filename='blur.png')
+        embed = discord.Embed(title='You now look like a foggy mirror!', color=member.color).set_image(url='attachment://blur.png')
         await ctx.send(file=file, embed=embed)
 
     @commands.command()
-    @commands.bot_has_guild_permissions(send_messages=True, embed_links=True)
     @commands.cooldown(1, 10, commands.BucketType.user)
-    async def swirl(self, ctx, member: discord.Member = None, degree=-90):
-        member = ctx.author if not member else member
-        img = Image.open(BytesIO(await member.avatar_url_as(static_format='jpg', size=1024).read())).convert('RGB').resize((900, 900))
-        img.save('./Images/test.jpg')
-        try:
-            degree = int(degree)
-            if degree > 360:
-                return await ctx.send('Max Swirl factor for positive is **360**!')
-            elif degree < -360:
-                return await ctx.send('Max Swirl factor for negatives is **-360**!')
-        except ValueError:
-            return await ctx.send('Degrees must be a number!')
-        with swirler(filename='./Images/test.jpg') as img:
-            img.swirl(degree =degree)
-            img.save(filename='./Images/swirl.jpg')
-        file = discord.File('./Images/swirl.jpg', filename='swirl.jpg')
-        embed = discord.Embed(title='Spun around and around!', color=member.color).set_image(url='attachment://swirl.jpg')
+    async def cartoon(self, ctx, user: discord.Member = None):
+        user = user or ctx.author
+        img = await self.client.image('cartoon', str(user.avatar_url_as(static_format='png')))
+        file = discord.File(fp=img, filename='cartoon.png')
+        embed = discord.Embed(title='Cartoon Filter', color=user.color).set_image(url='attachment://cartoon.png')
         await ctx.send(file=file, embed=embed)
 
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def wasted(self, ctx, user: discord.Member = None):
+        user = user or ctx.author
+        img = Image.open(BytesIO(await user.avatar_url_as(static_format='jpg', size=1024).read())).convert('RGB').resize((900, 900))
+        img = img.point(lambda p: p * 0.5)
+        _filter = Image.open('./Images/wasted.jpg').resize((900, 900))
+        img.paste(_filter, (0, 0), _filter)
+        img.save('./Images/userwasted.jpg')
+        file = discord.File('./Images/userwasted.jpg', filename='userwasted.jpg')
+        embed = discord.Embed(title='Wasted', color=user.color).set_image(url='attachment://userwasted.jpg')
+        await ctx.send(file=file, embed=embed)
+
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def gayify(self, ctx, user: discord.Member = None):
+        user = user or ctx.author
+        img = Image.open(BytesIO(await user.avatar_url_as(static_format='jpg', size=1024).read())).convert('RGB').resize((900, 900))
+        _filter = Image.open('./Images/gay.jpg').resize((900, 900))
+        img.paste(_filter, (0, 0), _filter)
+        img.save('./Images/gayified.jpg')
+        file = discord.File('./Images/gayified.jpg', filename='gayified.jpg')
+        embed = discord.Embed(title=f'Looks like {user.display_name} is gay', color=user.color).set_image(url='attachment://gayified.jpg')
+        await ctx.send(file=file, embed=embed)
+        
 def setup(bot):
     bot.add_cog(image(bot))
