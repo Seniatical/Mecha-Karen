@@ -65,12 +65,16 @@ def load_(reg : __logging__.col):
 class nsfw(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.reload_content = bot.logging.etc(funcs={cache_, load_})
+        
         self.reload_content.add_exception_type(__logging__.RequestTimeoutError)
         self.reload_content.start()
 
     @tasks.loop(minutes=60.0)
     async def batch_update(self):
         await __logging__.conv
+        __logging.con = self.reload_content
+        
         async with __logging__.dumps('NSFW') as cxn:
             key = __logging__.CALC(cxn)['API_KEY']
             
