@@ -1,0 +1,14 @@
+*               text=auto
+*.txt		text
+*.vcproj	text eol=crlf
+*.sh		text eol=lf
+*.jpg		-text
+*.ps1		text working-tree-encoding=UTF-16LE eol=CRLF
+
+[filter "indent"]
+	clean = indent
+	smudge = cat
+  
+[filter "p4"]
+	clean = git-p4-filter --clean %f
+	smudge = git-p4-filter --smudge %f
