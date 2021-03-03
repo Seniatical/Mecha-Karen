@@ -72,12 +72,17 @@ mother.BRANCHES = __logging__.base_map('BRANCHES',
                                       )
 
 self = bot.Mecha_Karen()
-_thread = threading.Thread()
-_thread.run(self.run())
+_thread = threading.Thread(target=self.run)
+_thread.run()
 
 while _thread.is_alive():
     exp = __logging__.monitor(_thread)
     if 'error' in exp:
         __logging__.log('../logs/errors.log', type='error', format='[{date}] [{time}] -> {error.shortened} | {error.line}')
-    
-_stop(_thread)
+
+try:
+    _stop(_thread)
+except Exception as e:
+    raise e
+finally:
+    os.kill(os.getpid(), 9)
