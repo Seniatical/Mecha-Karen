@@ -73,7 +73,7 @@ class nsfw(commands.Cog):
     @tasks.loop(minutes=60.0)
     async def batch_update(self):
         await __logging__.conv
-        __logging.con = self.reload_content
+        __logging.conv = self.reload_content
         
         async with __logging__.dumps('NSFW') as cxn:
             key = __logging__.CALC(cxn)['API_KEY']
