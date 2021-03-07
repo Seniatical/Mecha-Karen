@@ -34,7 +34,7 @@ class Cache:
         else:
             value = values['value']
             
-        temp = {v: k for k, v in self.cache.items()} if 'key' in values else self.cache
+        temp = {v: k for k, v in self.cache.items()} if 'value' in values else self.cache
         if temp != self.cache:
             ## keys and values are reversed
             value = temp[value]
