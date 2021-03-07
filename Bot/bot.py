@@ -16,7 +16,7 @@ Any violation to the license, will result in moderate action
 You are legally required to mention (original author, license, source and any changes made)
 """
 
-import datetime, asyncio, os, json, discord, version, subprocess, sys, Helpers, traceback
+import datetime, asyncio, os, json, discord, version, subprocess, sys, Helpers, traceback, json
 
 from discord.ext import commands
 from discord.ext.commands import BucketType, cooldown
@@ -28,6 +28,7 @@ from Utils.help import PING, IMPORTED
 from Utils import db, events
 from typing import *
 from Utils import ratelimiter
+from Helpers import cache
 
 class DATA:
     self.cache_limit = 500
@@ -130,6 +131,10 @@ class Mecha_Karen(commands.AutoShardedBot):
         ## Uses Mongo features normally whilst allowing queueing
         ## Prevents spam and manages the capped collection
         ## Handles all the triggers from the Mongo server and the dashboard
+        
+        with open('../logs/json/cache.json', 'r') as f:
+            data = json.load(f)
+        self.cache = cache.Cache(data)
         
         for filename in os.listdir('./cogs'):
             if filename.endswith('.py'):
