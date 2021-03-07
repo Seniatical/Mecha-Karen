@@ -7,12 +7,11 @@ class Cache:
     async def base_template(self, user_id: int) -> dict:
         if user_id in self.cache:
             return False
-        self.cache[user_id] = {
-            "images": [],
+        self.cache.update({user_id: {
             "messages": [],
             "users": [],
             "quotes": []
-        }
+        }})
         ## NOTE: Everything here will get erased cus actuall no i can temp it in a .json :smart:
         
     def to_json(self, path, container):   ## Usually i will have 2 but fish
