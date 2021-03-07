@@ -1,6 +1,26 @@
+import json
+
 class Cache:
     def __init__(self, cache = None):
         self.cache = cache or {}  ## Load pre-exising cache if you like
+        
+    async def base_template(self, user_id: int) -> dict:
+        if user_id in self.cache:
+            return False
+        self.cache[user_id] = {
+            "images": [],
+            "messages": [],
+            "users": [],
+            "quotes": []
+        }
+        ## NOTE: Everything here will get erased cus actuall no i can temp it in a .json :smart:
+        
+    def to_json(self, path, container):   ## Usually i will have 2 but fish
+        ## My Method is to use try and finally to do this :>
+        ## not async cus it only used when the bot = dead
+        data = self.get_cache(container)
+        with open(path, 'w') as f:
+            json.dump(f, data, indent=4)
         
     async def update_cache(self, key, value) -> dict:
         if key in self.cache:
@@ -39,6 +59,13 @@ temp = self.{}
         return temp
     
     async def whole_cache(self, name):
+        global temp
+        exec('''global temp
+temp = self.{}
+        '''.format(name))
+        return temp
+    
+    def get_cache(self, name):
         global temp
         exec('''global temp
 temp = self.{}
