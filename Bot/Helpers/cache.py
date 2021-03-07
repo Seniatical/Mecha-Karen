@@ -8,6 +8,7 @@ class Cache:
         if user_id in self.cache:
             return False
         self.cache.update({user_id: {
+            "images": [],
             "messages": [],
             "users": [],
             "quotes": []
