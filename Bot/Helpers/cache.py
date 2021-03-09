@@ -22,11 +22,11 @@ class Cache:
         with open(path, 'w') as f:
             json.dump(f, data, indent=4)
         
-    async def update_cache(self, key, value, num) -> dict:
-        if key in self.cache:
-            self.cache[key][num] = value
+    async def update_cache(self, key, value, category, num = None) -> dict:
+        if num:
+            self.cache[key][category][num] = value
         else:
-            self.cache.update({key: value})
+            self.cache[key][category].append(value)
         return self.cache
     
     async def remove_key(self, **values):
