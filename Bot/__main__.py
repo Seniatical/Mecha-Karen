@@ -30,7 +30,7 @@ class Error(Exception):
 def _stop(__cls):
     __cls = __logging__.clog(__cls)
     __cls.destroy(
-        Trees = True
+        Trees = True,
         reason = f'[{__cls.created_at.date}] | [Subprocess Destroyed] -> Killed via __main__.py',
         cause = __logging__.BUG ## Usual cause so ye
     )
@@ -47,14 +47,14 @@ if not current_dir.endswith('Bot'):
 data = env_reader(get='*')
     
 start = __logging__.BOOT(
-    username = data['USERNAME']
-    password = data['PASSWORD']
+    username = data['USERNAME'],
+    password = data['PASSWORD'],
     host = 'https://127.0.0.1:9785',
-    is_local = True
-    server = data['SERVER_INFO']['ADDRESS']
-    raise_on_warnings = True
-    return_traceback = True
-    lint = '*'
+    is_local = True,
+    server = data['SERVER_INFO']['ADDRESS'],
+    raise_on_warnings = True,
+    return_traceback = True,
+    lint = '*',
     time = __logging__.last_triggered_at
     )
     
