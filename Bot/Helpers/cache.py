@@ -1,4 +1,10 @@
-import json
+import json, asyncio
+
+async def loop_event(cache: Cache, path: str, timeout: int) -> None:
+   while True:
+       cache.to_json(path, cache)
+       await asyncio.sleep(timeout)
+   return True
 
 class Cache:
     def __init__(self, cache = None):
