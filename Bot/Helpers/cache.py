@@ -1,11 +1,5 @@
 import json, asyncio
 
-async def loop_event(cache: Cache, path: str, timeout: int) -> None:
-   while True:
-       cache.to_json(path, cache)
-       await asyncio.sleep(timeout)
-   return True
-
 class Cache:
     def __init__(self, cache = None):
         self.cache = cache or {}  ## Load pre-exising cache if you like
@@ -77,3 +71,9 @@ temp = self.{}
 temp = self.{}
         '''.format(name))
         return temp
+
+async def loop_event(cache: Cache, path: str, timeout: int) -> None:
+   while True:
+       cache.to_json(path, cache)
+       await asyncio.sleep(timeout)
+   return True
