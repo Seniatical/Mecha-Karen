@@ -3,6 +3,19 @@ from discord.ext import commands
 import aiohttp
 import time
 import random
+from Utils import Truncater, Truncate.convert
+
+class Truncate(Truncater):
+    def __init__(self, object):
+        self.object = object
+        super().__init__(
+            const='__import__("discord.py").ext.commands.Bot',
+            form=dict
+        )
+        
+    @convert
+    async def start(self):
+        super().start(self.object)
 
 class Cache_Commands(commands.Cog):
     def __init__(self, bot):
@@ -10,6 +23,14 @@ class Cache_Commands(commands.Cog):
         self.container = bot.cache
         self.session = aiohttp.ClientSession()
         self.converter = commands.MemberConverter()
+        self.trunc = Truncate(bot.cache)
+        
+    @commands.Cog.listener()
+    async def on_ready(self):
+        try:
+            await self.trunc.start()
+        except Truncater.errors.CLOGGED as launch_error:
+            raise launch_error
         
     @commands.group(invoke_without_command=True)
     @commands.cooldown(1, 10, commands.BucketType.user)
