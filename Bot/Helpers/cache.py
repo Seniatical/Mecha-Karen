@@ -4,7 +4,7 @@ class Cache:
     def __init__(self, cache = None):
         self.cache = cache or {}  ## Load pre-exising cache if you like
         
-    async def base_template(self, user_id: int) -> dict:
+    async def base_template(self, user_id: int) -> bool:
         if user_id in self.cache:
             return False
         self.cache.update({user_id: {
@@ -13,7 +13,7 @@ class Cache:
             "users": [],
             "quotes": []
         }})
-        ## NOTE: Everything here will get erased cus actuall no i can temp it in a .json :smart:
+        return self.cache.get(user.id)
         
     def to_json(self, path, container):   ## Usually i will have 2 but fish
         ## My Method is to use try and finally to do this :>
