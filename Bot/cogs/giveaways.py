@@ -87,7 +87,7 @@ class Giveaway(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 60, commands.BucketType.guild)
-    async def test(self, ctx):
+    async def giveaway(self, ctx):
         r"""
         Because each question needs a seperate response / action,
         I will have to do them manually as opposed to a for loop :c
