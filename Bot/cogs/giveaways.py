@@ -5,6 +5,7 @@ import os
 from binascii import hexlify
 import asyncio
 import re
+import json
 
 class Giveaway(commands.Cog):
     def __init__(self, bot):
@@ -98,6 +99,21 @@ class Giveaway(commands.Cog):
 
         bot.loop.create_task(self.load_giveaways())
 
+    async def valid_perms(self, channel, bot):
+        ## Reason why im not using self.bot, is because thats a USER object, so i need to use ctx.me instead
+        perms = channel.permissions_for(bot)
+
+        if not perms.send_messages:
+            return False, 'SEND-MESSAGES'
+
+        if not perms.add_reactions:
+            return False, 'ADD-REACTIONS'
+
+        if not perms.embed_links:
+            return False, 'EMBED-LINKS'
+
+        return True, 'VALID'
+
     async def load_giveaways(self):
         for cached in self.codes.find():
             self.giveaways.update({
@@ -106,14 +122,18 @@ class Giveaway(commands.Cog):
                     'ending': cached['ending'],
                     'started': cached['starting'],
                     'message': cached['message'],
-                    'channel': cached['channel']
+                    'channel': cached['channel'],
+                    'scopes': cached['scope_data']
                 }})
                 
-    def gen_new_code(self, column):
+    async def gen_new_code(self, **data):
         codes = [code['_id'] for code in self.codes.find()]
         code = hexlify(os.urandom(7)).decode()
-        while code not in codes:
+        while code in codes:
             code = hexlify(os.urandom(7)).decode()
+
+        ## Now we got a new code
+        ## self.codes.insert_one({'_id': code, **data})
 
         return code
 
@@ -454,6 +474,52 @@ class Giveaway(commands.Cog):
             emoji = '🎉'
 
         message = await ctx.send('Using emoji "%s" for this giveaway.\nWriting up config files and generating new URL pattern. This may take a moment to complete.' % emoji)
+
+        ## Var names for tracking
+        r"""
+        Channel -> channel
+        Winner Count -> winners
+        Sleep Time -> time_to_rest
+        Formatted Time -> NULL
+        Requirements -> scopes    || God help with this one :/
+        Prize -> prize
+        Emoji -> emoji
+        """
+        check = await self.valid_perms(channel, ctx.me)
+
+        if not check[0]:
+            return await ctx.send('Cancelling giveaway due to missing permissions in allocated channel. Please allow the bot to **%s**.' % check[1])
+
+        giveaway_message = await channel.send('Setting up giveaway, Please give me a moment.')
+        
+        start = datetime.datetime.utcnow()
+        end = (start + datetime.timedelta(seconds=time_to_rest))
+        url = 'https://mechakaren.xyz/giveaways/' + await self.gen_new_code(ending=end.isoformat(), starting=start.isoformat(), message=giveaway_message.id, channel=channel.id, scope_data=scopes)
+        
+        contents = {
+            "Prize": prize, "Channel": channel.name,
+            "Time": seconds[0], "Winners": winners, "Emoji": emoji,
+            "Start-Time": start.isoformat(),
+            "End-Time": end.isoformat(),
+            'URL': url
+            }
+
+        embed = discord.Embed(title='Giveaway Configurations:', colour=discord.Colour.red())
+        embed.add_field(name='Prize:', value=prize, inline=False)
+        embed.add_field(name='Time:', value='**%s** %s' % (seconds[1][:-1], self.marks.get(seconds[1][-1].lower())))
+        embed.add_field(name='Channel:', value=channel.mention)
+        embed.add_field(name='Emoji:', value=emoji)
+        embed.add_field(name='Winners:', value='There are a total of **%s** Winners.' % winners)
+        embed.add_field(name='Starting Time:', value=start.strftime("%a, %#d %B %Y, %I:%M %p"), inline=False)
+        embed.add_field(name='Ending Time:', value=end.strftime("%a, %#d %B %Y, %I:%M %p"), inline=False)
+        embed.add_field(name='URL:', value='[Click Me](%s)' % url)
+        embed.add_field(name='Jump URL:', value='[Click Me](%s)' % giveaway_message.jump_url)
+
+        embed.set_author(name=ctx.me.display_name, icon_url=ctx.me.avatar_url)
+        embed.set_footer(text='Giveaway started by %s' % ctx.author.display_name, icon_url=ctx.author.avatar_url)
+        embed.set_thumbnail(url='https://image.flaticon.com/icons/png/512/1212/1212728.png')
+
+        await ctx.send(embed=embed)   
 
 def setup(bot):
     bot.add_cog(Giveaway(bot))
