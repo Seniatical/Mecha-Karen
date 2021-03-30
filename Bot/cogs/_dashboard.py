@@ -6,15 +6,25 @@ import urllib.parse
 import sys
 from Utils import Mongo, _mongo
 from Utils import Sensitive
+from Utils import GW, GW_CONFIGS
+from Utils.warn import Warn
 
 class Dashboard(commands.Cog):
     def __init__(self, bot):
+        
+        if not hasattr(bot, 'GW', None):
+            bot.GW = GW.NEW(**GW_CONFIGS)
+            ## Make life easier when theres alot of giveaways running
+        
         self.bot = bot
         self.host = Sensitive.WEBIP
         self.port = Sensitive.WEBPORT
         self.sender = None
         self.reader = None
         self.client = bot.client
+        
+        self.running = bot.GW.open_connection(host='https://mechakaren.xyz/giveaways/%REGEX;".............."%')
+        ## PORT is random so dont need to define one as of now
 
     async def _read(self, _reader, _writer):
         encoded_data = await _reader.readuntil(b'\n')   ## reads all the data till it finds the escape char \n
@@ -34,6 +44,17 @@ class Dashboard(commands.Cog):
         self.reader = _reader
         
         super(Mongo).__init__(self.bot.client, **_mongo)
+        
+    @commands.Cog.listener()
+    async def on_giveaway_start(ctx: commands.Context):
+        await self.bot.data_emit(ctx, ctx.code)
+        
+        if not self.fish(ctx):
+            Warn('Failed to send request to %s for giveaway code %s, Using DB version.' % (repr(self.running), ctx.code))
+            await self.bot.client.execute('GIVEAWAY', code=ctx.code, file_dict='./cogs/giveaways.py', station_dict='self.giveaways')
+        ## ctx.code is nested in the CTX on send
+        ## Simple done by
+        ## ctx.code = CODE
 
     @commands.Cog.listener()
     async def on_website_rec(self, data):
