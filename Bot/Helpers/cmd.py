@@ -8,7 +8,7 @@ async def get_command_by_aliases(bot, aliase):
                 aliases[_aliase.lower()] = command
         else:
             aliases[(command.name).lower()] = command
-    return aliases.get(aliases.lower())
+    return aliases.get(aliase.lower())
 
 async def get_command_by_hash(bot, hash):
     commands = bot.commands
