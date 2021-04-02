@@ -31,12 +31,13 @@ from Utils import ratelimiter
 from Helpers import cache
 
 class DATA:
-    self.cache_limit = 500
-    self.concurrent = False
-    self.CACHE = {}
-    self.CACHE_ = tuple(Utils.main.PRELOADED().cache)
-    self.IMPORTED = globals()
-    self.TOKEN = Utils.customs.READ_ENV('./Utils/Sensitive/LOGINS.env').give_obj('TOKEN')
+    cache_limit = 500
+    concurrent = False
+    CACHE = {}
+    CACHE_ = tuple(Utils.main.PRELOADED().cache)
+    ## Config cache & logging cache
+    IMPORTED = globals()
+    TOKEN = Utils.customs.READ_ENV('./Utils/Sensitive/LOGINS.env').give_obj('TOKEN')
         
 PATH = Path(__file__).parents
 EXE = PATH[0]
@@ -52,7 +53,7 @@ SECONDARY_DIR = '{}\\Utils'.format(CURRENT_DIR)
 PERM_COGS = (
     "cogs.Error Handler",
     "cogs.Loadup",
-    "cogs.R&R,",
+    ## Removed the R&R cog
     "cogs.Help",
     "cogs.Join_Events",
 )
@@ -67,7 +68,7 @@ facts = ('Your server is seen in the support server once you add me!',
 def get_prefix(bot,message):
     if isinstance(message.channel, discord.DMChannel):
         return
-    res = column.find_one({'_id': message.guild.id})
+    res = bot.cache.find('prefix', message.guild.id)
     if not res:
         data = {'_id': message.guild.id, 'prefix': '-', 'Disabled': [], 'StarChannel': int(), 'StarCount': 0}
         column.insert_one(data)
