@@ -27,7 +27,7 @@ from Utils import UD, __logging__
 from Utils.help import PING, IMPORTED
 from Utils import db, events
 from typing import *
-from Utils import ratelimiter
+from Utils import ratelimiter, parse_error
 from Helpers import cache
 
 class DATA:
@@ -142,6 +142,10 @@ class Mecha_Karen(commands.AutoShardedBot):
                 try:
                     self.load_extension(f'cogs.{filename[:-3]}')
                 except Exception as error:
+                    if type(error) == ImportError:
+                        error = parse_error(error)
+                        os.system('python -m pip install %s' % error.__package__)
+                        continue
                     traceback.print_exception(etype=type(error), value=error, tb=error.__traceback__)
         
         @self.before_invoke
