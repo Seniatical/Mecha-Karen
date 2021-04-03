@@ -42,8 +42,8 @@
             },
         ],
     },
-    "$ROOT": null   // OS Dependent so dont use it
-    "$ROOT-REQUIRE": false
+    "$ROOT": null,  // OS Dependent so dont use it
+    "$ROOT-REQUIRE": false,
     "$BASE": "$GET-QzovVXNlcnMuLklzYS8hISYkIVNSQy9NZWNoYUthcmVuL1V0aWxzL0hlbHBlcnMvc3JjL2Fzc2VzdHMvcm9vdHMuZGxs",
     "$BASE-ENCODING": "BASE64",
     "Startup-Commands": [
