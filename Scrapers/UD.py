@@ -5,7 +5,7 @@ try:
     import datetime
     import json
 except ModuleNotFoundError as import_error:
-    raise ModuleNotFoundError(import_error)
+    raise ModuleNotFoundError(import_error) from import_error
 
 
 class useful:
