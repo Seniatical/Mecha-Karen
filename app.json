@@ -1,0 +1,42 @@
+{
+    "__main__": "./Bot/__main__.py",
+    "config": "./Bot/config.json",
+    "net_pull": [
+        "http://127.0.0.1:24561",
+        "LOCATION::/home/container/configs/netscans.json",
+        "Help:: --help",
+        "LOCATION-FROM-HOST::/Relay/Latest/Mecha-Karen",
+        "*"
+    ],
+    "version": [
+        "READ-FROM::/home/container/bot/version.py"
+        "VARIABLE::__version__"
+        ],
+    "ENVIROMENT": "venv",
+    "PIPLOCK": true,
+    "PIPFILE": "./",
+    "SLL": {
+        "ENABLED": true,
+        "ENCRYPTION": true,
+        "ENCRYPTION-TYPE": "BASE64",
+        "HASHES": {
+            "SHA-256": [
+                "a446c86bda23fcc19f0c11886837b7b016c2c6854be4a6d49c50521da49e377d",
+                "253d399fe2adea7daa230ceaee35f1eee75ab3ad6d86d5761bfe9db339b12cf5",
+                "593ddf9915219e3847d0e5cf6eb779b867fa03de34d159f2749f91977d216b6b",
+                "484bc42ab4067fb0447769596cb6f4ada94398601ff05595d08766a9067051f9",
+                "5d2bbc74a0cb6c2c9222419a27abe1820337b60a00fa5edb8c7a2e3c631f8250",
+            ],
+        },
+    },
+    "OS": "POSIX",
+    "OS-DEPENDENT": false,
+    "$RAW": null,
+    "$ROOT": null,
+    "REQUIRE": {
+        "CPU": ">=0.5",
+        "RAM": ">=500",
+        "DISK": ">=2048",
+        "SWAP": ">=10<=20"
+    }
+}
