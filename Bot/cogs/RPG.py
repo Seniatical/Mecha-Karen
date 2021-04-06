@@ -4,10 +4,10 @@
 ## Meh Related.
 ## PARTNERING WITH PLEB
 
-from .Economy import Cog
-from .Economy import Support
-from .Economy import Use
-from .Economy import EcoOwner
+from .RPG import Cog
+from .RPG import Support
+from .RPG import Use
+from .RPG import EcoOwner
 
 def setup(bot):
     bot.add_cog(Cog(bot))
