@@ -16,6 +16,8 @@ Any violation to the license, will result in moderate action
 You are legally required to mention (original author, license, source and any changes made)
 """
 
+## VERSION IS OUTDATED
+
 import discord
 from discord.ext import commands
 from discord.ext.commands import BucketType, cooldown
