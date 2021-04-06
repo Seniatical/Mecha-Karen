@@ -1,7 +1,7 @@
-from pymongo import MongoClient
-
-connection = MongoClient('')
-
-root_db = connection['RGB']
-blacklists = root_db['Blacklists']
-main = root_db['Data']
+from .__main__ import (
+    connection, 
+    root_db, 
+    main, 
+    blacklists
+)
+from .__main__ import get_user
