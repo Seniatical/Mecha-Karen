@@ -1,6 +1,9 @@
 import pymongo
 from typing import Union
 from discord import Member
+from discord.ext.commands import check
+from .errors import VerficationError
+
 import datetime
 
 connection = pymongo.MongoClient('')
@@ -23,6 +26,13 @@ __base__ = {
     "prestige": 0,
 }
 
+def has_verified():
+    async def predicate(ctx):
+        if not main.find_one({'_id': ctx.author.id}):
+            raise VerficationError('User has not verified their account')
+        return True
+    return check(predicate)
+
 async def get_user(user: Union[Member, str, int]) -> dict:
     updated_base = None
 
@@ -37,6 +47,8 @@ async def get_user(user: Union[Member, str, int]) -> dict:
         updated_base['_id'] = user
 
         main.insert_one(updated_base)
+        
+        updated_base['is_new'] = True
 
     ## It will always be one or the other
     ## Never both or none
