@@ -3,7 +3,7 @@ from typing import Union
 from discord import Member
 import datetime
 
-connection = pymongo.MongoClient('mongodb+srv://Seniatical:NFenqAE9RBlSPFwB@cluster0.rgnis.mongodb.net/RPG?retryWrites=true&w=majority')
+connection = pymongo.MongoClient('')
 
 root_db = connection['RPG']
 blacklists = root_db['Blacklists']
