@@ -1,7 +1,18 @@
 from .__main__ import (
-    connection, 
-    root_db, 
-    main, 
-    blacklists
+    connection, root_db,
+    main, blacklists,
+    get_user, prestige,
+    can_prestige, reset_progress,
+    has_verified
 )
-from .__main__ import get_user
+
+from .errors import (
+    VerificationError
+)
+
+__all__ = (
+    'connection', 'root_db', 'main',
+    'blacklists', 'get_user', 'can_prestige',
+    'reset_progress', 'prestige', 'has_verified',
+    'VerificationError'
+)
