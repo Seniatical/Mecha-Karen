@@ -3,6 +3,7 @@ from .gangs import Gangs  ## HELP COMMANDS / TUTORIALS
 from .use import Use ## Commands to use special items and stuff
 from .owner import EcoOwner ## Owner commands
 from .DB import *
+from .src.shop import shop as Shop
 
 __all__ = (
     'Cog', 'Support', 'Use', 'EcoOwner',
