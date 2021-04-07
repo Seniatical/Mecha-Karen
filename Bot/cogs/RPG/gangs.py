@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
 
-class Support(commands.Cog):
+class Gangs(commands.Cog):
   def __init__(self, bot):
     self.bot = bot
