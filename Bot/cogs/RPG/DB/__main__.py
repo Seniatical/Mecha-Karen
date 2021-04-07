@@ -27,7 +27,7 @@ async def get_user(user: Union[Member, str, int]) -> dict:
     updated_base = None
 
     if type(user) == Member:
-        user = member.id
+        user = user.id
     else:
         user = int(user)
 
@@ -44,7 +44,7 @@ async def get_user(user: Union[Member, str, int]) -> dict:
 
 async def can_prestige(user) -> bool:
     if type(user) == Member:
-        user = member.id
+        user = user.id
     else:
         user = int(user)
 
@@ -58,7 +58,7 @@ async def can_prestige(user) -> bool:
 
 async def reset_progress(user: Union[Member, str, int]) -> dict:
     if type(user) == Member:
-        user = member.id
+        user = user.id
     else:
         user = int(user)
 
@@ -73,7 +73,7 @@ async def reset_progress(user: Union[Member, str, int]) -> dict:
 
 async def prestige(user: Union[Member, str, int]) -> dict:
     if type(user) == Member:
-        user = member.id
+        user = user.id
     else:
         user = int(user)
 
