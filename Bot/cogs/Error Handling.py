@@ -25,7 +25,8 @@ import string
 import random
 import prawcore
 from Helpers import emoji, functions
-from cogs.Help import get_prefix
+from .Help import get_prefix
+from .RPG import VerificationError
 
 errors = ('ArithmeticError', 'AssertionError', 'BaseException', 'BlockingIOError',
           'BrokenPipeError', 'BufferError', 'BytesWarning', 'ChildProcessError', 'ConnectionAbortedError',
@@ -104,6 +105,9 @@ class Events(commands.Cog):
                 y.insert(-1, '<' + i.name + '> ')
             y.insert(-1, '\n\n' + error.args[0])
             await ctx.send(''.join(y))
+            
+        elif isinstance(error, VerificationError):
+            return await ctx.send('You have not verified yet! This is needed because the RPG may or may not be suitable for certain age groups so we require consent from you!\n\nUse command `-Start` to verify!')
 
         elif isinstance(error, commands.MissingPermissions):
             await ctx.message.reply(embed=discord.Embed(
