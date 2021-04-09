@@ -5,8 +5,8 @@
 ![Flask-Version](https://img.shields.io/badge/Flask-1.1.2-blue?style=flat-square)
 
 # __Mecha Karen Source Code__
-In this repository you will find the code in Mecha Karen!<br/>
-<br>Disclaimer: This repository only serves as a guide for newer and older bot developers alike. Please do not copy blindy and ask why it doesnt work. I specifically made this bot to match the needs of how i styled it. I wont be responsible for anything that goes wrong when using this or for any voilations you make. If something doesnt work and you want to know why I am more than happy to explain but I wont bother helping you if your blindly pasting everything.
+In this repository you will find the code in Mecha Karen!<br/><br/>
+<br>Disclaimer: This repository only serves as a guide for newer and older bot developers alike. Please do not copy blindy and ask why it doesnt work. I specifically made this bot to match the needs of how i styled it. If something doesnt work and you want to know why I am more than happy to explain but I wont bother helping you if your blindly pasting everything.
 
 <img alt="Mecha_Karen's logo" align="right" src="https://cdn.discordapp.com/avatars/740514706858442792/3d4c161d2bfa97ec86cc82102df5cad5.png?size=128" width=40%/>
 
@@ -51,6 +51,9 @@ Click the button below to report an issue
 
 2. **`https://discordpy.readthedocs.io/en/latest/index.html`**
 
+# Future Notice:
+I am slowly stopping open sourcing certain areas of this bot, mainly due to premium coming out soon and many popular features which are being stolen from this bot.<br/>This was one of the reasons why I haven't open sourced the dashboard and Utils folders as then you could ultimatley copy the entire bot with ease.
+
 # Other info :
 **>** Utils folder will no longer be updated as new files contain sensitive data.
 
@@ -58,4 +61,3 @@ Click the button below to report an issue
 
 **>** Follow me to keep updated with other stuff <!-- Place this tag where you want the button to render. -->
 <a class="github-button" href="https://github.com/Seniatical" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" data-show-count="true" aria-label="Follow @Seniatical on GitHub">Follow @Seniatical</a>
-
