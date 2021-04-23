@@ -29,6 +29,7 @@ from Utils import db, events
 from typing import *
 from Utils import ratelimiter, parse_error
 from Helpers import cache
+from IPC import AsyncAppClient
 
 class DATA:
     cache_limit = 500
@@ -133,9 +134,18 @@ class Mecha_Karen(commands.AutoShardedBot):
         ## Prevents spam and manages the capped collection
         ## Handles all the triggers from the Mongo server and the dashboard
         
+        self.server = AsyncAppClient(*self.logging.GET_ADDR)
+        
+        self.server.start()
+        
         with open('../logs/json/cache.json', 'r') as f:
             data = json.load(f)
         self.cache = cache.Cache(data)
+        
+        with open('./config.json', 'r') as f:
+            data = json.load(f)
+        
+        self.logging.ext.networks(data)
         
         for filename in os.listdir('./cogs'):
             if filename.endswith('.py'):
