@@ -9,11 +9,11 @@ class Truncate(Truncater):
     def __init__(self, object):
         self.object = object
         super().__init__(
-            const='__import__("discord.py").ext.commands.Bot',
+            const='from discord.ext import commands',
             form=dict
         )
         
-    @convert
+    @Truncate.convert
     async def start(self):
         super().start(self.object)
 
