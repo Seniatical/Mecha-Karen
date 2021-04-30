@@ -10,6 +10,8 @@ from Utils import GW, GW_CONFIGS
 from Utils.warn import Warn
 import json
 
+from IPC import AsyncAppClient
+
 class Dashboard(commands.Cog):
     def __init__(self, bot):
         
@@ -20,8 +22,6 @@ class Dashboard(commands.Cog):
         self.bot = bot
         self.host = Sensitive.WEBIP
         self.port = Sensitive.WEBPORT
-        self.sender = None
-        self.reader = None
         self.client = bot.client
         
         self.running = bot.GW.open_connection(host='https://mechakaren.xyz/giveaways/%REGEX;".............."%')
@@ -34,25 +34,19 @@ class Dashboard(commands.Cog):
         if not raw:
             return False
         return json.loads(raw)
-    
-    async def _read(self, _reader, _writer):
-        encoded_data = await _reader.readuntil(b'\n')   ## reads all the data till it finds the escape char \n
-        peer_network = _writer.get_extra_info('peername')
-
-        if not peer_network == self.host:
-            return False
-
-        decoded_data = encoded_data.decode()
-
-        return decoded_data
 
     @commands.Cog.listener()
     async def on_ready(self):
-        _writer, _reader = await asyncio.open_connection(self.host, self.port)
-        self.sender = _writer
-        self.reader = _reader
-        
         super(Mongo).__init__(self.bot.client, **_mongo)
+        
+        server = AsyncAppClient(self.host, self.port, close_on_completion=False, close_on_rejection=True)
+        
+        server.start()
+        
+        self.bot.server = server
+        
+        @server.on_call(event_name='GET_COMMAND', methods=['GET'])
+        async def return_command(self, command: str) -> dict:
         
     @commands.Cog.listener()
     async def on_giveaway_start(ctx: commands.Context):
@@ -79,7 +73,7 @@ class Dashboard(commands.Cog):
         data: :class:`bytes`
             Encoded instructions / data recieved from the websocket which is connected to the bot
         """
-        viable_inst = self._read(data)
+        viable_inst = data.decode('utf-8', errors='ignore')
         if not viable_inst:
             self.bot.logging.Debug('[{}] | [{}] -> Recieved info from False Peer-Network.', "time", "date")
 
