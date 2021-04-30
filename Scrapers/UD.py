@@ -15,7 +15,6 @@ class useful:
         self.months = [datetime.date(2020, i, 1).strftime('%B') for i in range(1, 13)]
         self.opts = ['date', 'author', 'rating', 'example', 'meaning']
 
-
 def is_homepage(query: str = None):
     if not query:
         return 'No link was specifed'
@@ -24,7 +23,6 @@ def is_homepage(query: str = None):
         return True
     return False
 
-
 def is_urban(query: str = None):
     query = query.lower()
     if not query:
@@ -32,7 +30,6 @@ def is_urban(query: str = None):
     if not 'https://www.urbandictionary.com/' in query:
         return False
     return True
-
 
 async def is_valid_word(name: str = None):
     if not name:
@@ -45,7 +42,6 @@ async def is_valid_word(name: str = None):
             if not valid:
                 return False
             return True
-
 
 def recieve(word):
     returner = {}
@@ -68,8 +64,7 @@ def recieve(word):
             returner[x[i]] = res
     return returner
 
-
-class search:
+class Search:
     def __init__(self, query: str = None):
         try:
             if query.lower() == 'homepage':
@@ -208,6 +203,3 @@ class search:
     all, everything = property(all), property(all)
     view, format_data = property(view), property(view)
     the_word = property(chosen_word)
-    print('\nReady to Locate your Word.')
-
-
