@@ -8,6 +8,7 @@ from Utils import Mongo, _mongo
 from Utils import Sensitive
 from Utils import GW, GW_CONFIGS
 from Utils.warn import Warn
+import json
 
 class Dashboard(commands.Cog):
     def __init__(self, bot):
@@ -26,6 +27,14 @@ class Dashboard(commands.Cog):
         self.running = bot.GW.open_connection(host='https://mechakaren.xyz/giveaways/%REGEX;".............."%')
         ## PORT is random so dont need to define one as of now
 
+    @property
+    def has_emitted(self, ctx):
+        raw = self.running.fetch(ctx.guild.id).decode('utf-8', errors='ignore')
+        
+        if not raw:
+            return False
+        return json.loads(raw)
+    
     async def _read(self, _reader, _writer):
         encoded_data = await _reader.readuntil(b'\n')   ## reads all the data till it finds the escape char \n
         peer_network = _writer.get_extra_info('peername')
@@ -49,7 +58,7 @@ class Dashboard(commands.Cog):
     async def on_giveaway_start(ctx: commands.Context):
         await self.bot.data_emit(ctx, ctx.code)
         
-        if not self.fish(ctx):
+        if not self.has_emitted(ctx):
             Warn('Failed to send request to %s for giveaway code %s, Using DB version.' % (repr(self.running), ctx.code))
             await self.bot.client.execute('GIVEAWAY', code=ctx.code, file_dict='./cogs/giveaways.py', station_dict='self.giveaways')
         ## ctx.code is nested in the CTX on send
