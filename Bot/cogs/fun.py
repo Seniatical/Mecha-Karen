@@ -25,17 +25,119 @@ from discord.ext import commands
 from discord.ext.commands import BucketType, cooldown
 import os
 import requests
+from requests.utils import requote_uri
 import aiohttp
+import asyncio
+from Helpers import functions
+import math
 
 from Others import IMG, Bio, Channel, Co, gender, Jokes, Numbers, Numbers2, Quotes, Stuff, words
+
+async def ship(name1, name2):
+    vowels = ['a','e','i','o','u','y']
+    count1 = -1
+    count2 = -1
+    mid1 = math.ceil(len(name1)/2)-1
+    mid2 = math.ceil(len(name2)/2)-1
+    noVowel1 = False
+    noVowel2 = False
+    
+    i = mid1
+    while i >= 0:
+        count1 += 1
+        if name1[i].lower() in vowels:
+            i = -1
+        elif i == 0:
+            noVowel1 = True
+        i -= 1
+
+    i = mid2
+    while i < len(name2):
+        count2 += 1
+        if name2[i].lower() in vowels:
+            i = len(name2)
+        elif i == len(name2) - 1:
+            noVowel2 = True
+        i += 1
+
+    name = ""
+    if noVowel1 and noVowel2:
+        name = name1[:mid1+1]
+        name += name2[mid2:]
+    elif count1 <= count2:
+        name = name1[:mid1-count1+1]
+        name += name2[mid2:]
+    else:
+        name = name1[:mid1+1]
+        name += name2[mid2+count2:]
+    return name
 
 class fun(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.m_converter = commands.MemberConverter()
+        self.times = dict()
+        self.session = aiohttp.ClientSession()
+        ## self.client = bot.api_c
+        self.sched = {}
 
-    @commands.command(aliases=['slots', 'bet'])
-    @cooldown(1, 10, BucketType.user)
+    async def convert(self, num) -> str:
+        if num >= (60*60):
+            hours = num // (60*60)
+            num %= (60*60)
+            mins = num // 60
+            return '**{}** Hrs and **{}** Mins.'.format(hours, mins)
+        elif num > 60:
+            mins = num // 60
+            num %= 60
+            return '**{}** Mins and **{}** Seconds.'.format(mins, num)
+        else:
+            return '**{}** Seconds.'.format(num)
+
+    @commands.Cog.listener()
+    async def on_message(self, message) -> object:
+        if message.guild.id not in [740523643980873789, 798546507715444746]:
+            return
+        if message.channel.id not in [772048764587606017, 819142185438019634]:
+            return
+        
+        reference = getattr(message, 'reference', None)
+        if not reference:
+            return
+        
+        raw_message = reference.resolved
+        if not raw_message:
+            return
+        
+        if (message.content.startswith('!') and message.guild.id == 819142185438019634) or (message.content.startswith('-') and message.guild.id == 772048764587606017):
+            return
+        
+        last_used = self.sched.get(message.author.id)
+        if last_used:
+            if (time.time() - last_used) < 5:
+                return
+            self.sched.pop(message.author.id)
+        else:
+            self.sched.update({message.author.id: time.time()})
+        
+        if raw_message.author.id == self.bot.user.id:
+            ctx = await self.bot.get_context(message)
+            await ctx.trigger_typing()
+            
+            res = await self.session.post(
+                'https://api.mechakaren.xyz/v1/chatbot',
+                headers = {'Authorization': 'idk mate'},
+                json = {'message': message.content}
+            )
+            try:
+                real = await res.json()
+            except Exception:
+                return
+            return await message.reply(content=real['response']['answer'] or 'Hello There.')
+    
+    @commands.command(aliases=['slots', 'bet'], name='Slot')
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def slot(self, ctx):
         emojis = "🍎🍊🍐🍋🍉🍇🍓🍒"
         a = random.choice(emojis)
@@ -57,17 +159,17 @@ class fun(commands.Cog):
                                                description=slotmachine + ' has gotten 0/3 he looses. :pensive:',
                                                colour=discord.Colour.red()))
 
-    @commands.command(aliases=['Latency'])
-    @cooldown(1, 10, BucketType.user)
+    @commands.command(aliases=['Latency'], name='Ping')
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def ping(self, ctx):
-        msg = await ctx.send("`Bot Latency...`")
+        msg = await ctx.send("Gathering Information...")
         times = []
         counter = 0
-        embed = discord.Embed(title="More Information:", description="Pings from BOT to YOU::", colour=discord.Color.red())
+        embed = discord.Embed(colour=discord.Colour.red())
         for _ in range(3):
             counter += 1
             start = time.perf_counter()
-            await msg.edit(content=f"Trying Ping... {counter}/3")
+            await msg.edit(content=f"Trying Ping{('.'*counter)} {counter}/3")
             end = time.perf_counter()
             speed = round((end - start) * 1000)
             times.append(speed)
@@ -77,14 +179,35 @@ class fun(commands.Cog):
                 embed.add_field(name=f"Ping {counter}:", value=f"🟡 | {speed}ms", inline=True)
             else:
                 embed.add_field(name=f"Ping {counter}:", value=f"🔴 | {speed}ms", inline=True)
-        embed.set_author(name="🏓    PONG    🏓", icon_url="https://img.icons8.com/ultraviolet/40/000000/table-tennis.png")
-        embed.add_field(name="Bot Latency", value=f"{round(self.bot.latency * 1000)}ms", inline=True)
+                
+        embed.add_field(name="Bot Latency", value=f"{round(self.bot.latency * 1000)}ms")
         embed.add_field(name="Normal Speed", value=f"{round((round(sum(times)) + round(self.bot.latency * 1000))/4)}ms")
+        embed.add_field(name='Buffer', value=f'{self.bot.buffer.ping(packets=1, wait_for=False, timeout=20000, unit='ms')}ms')
+
+##        start = time.perf_counter()
+##        async with aiohttp.ClientSession() as session:
+##            async with session.get('https://api.mechakaren.xyz/') as r:
+##                pass
+##        end = time.perf_counter()
+##        
+##        embed.add_field(name="API Latency", value=f'{round((end - start) * 1000)}ms')
+##
+##        start = time.perf_counter()
+##        async with aiohttp.ClientSession() as session:
+##            async with session.get('https://mechakaren.xyz/') as r:
+##                pass
+##        end = time.perf_counter()
+##        embed.add_field(name="Website Latency", value=f'{round((end - start) * 1000)}ms')
+                           
+## Useless testing - Inaccurate pings
+        
         embed.set_footer(text=f"Total estimated elapsed time: {round(sum(times))}ms")
+        embed.set_author(name=ctx.me.display_name, icon_url=ctx.me.avatar_url)
+        
         await msg.edit(content=f":ping_pong: **{round((round(sum(times)) + round(self.bot.latency * 1000))/4)}ms**", embed=embed)
 
-    @commands.command()
-    @commands.cooldown(1, 60, BucketType.guild)
+    @commands.command(name='Useless')
+    @commands.cooldown(1, 60, commands.BucketType.guild)
     async def useless(self, ctx):
         user = ctx.author
         await ctx.send('Hello ' + user.name)
@@ -108,45 +231,43 @@ class fun(commands.Cog):
                 colour=discord.Colour.red()
             ))
 
-    @commands.command(aliases=['le'])
-    @commands.cooldown(1, 10, BucketType.user)
+    @commands.command(aliases=['le'], name='LifeExpectancy')
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def lifeexpectancy(self, ctx, user: discord.Member = None):
         user = user or ctx.author
         counter = random.randint(1, 150)
         embed = discord.Embed(
-            title="{}'s life expectancy is:".format(user),
             color=discord.Color.red(),
             description=f'**{counter} yrs old!**'
         )
         await ctx.send(embed=embed)
 
-    @commands.command()
-    @commands.cooldown(1, 10, BucketType.user)
+    @commands.command(name='BWeight')
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def bweight(self, ctx, user: discord.Member = None):
         user = user or ctx.author
         weight = ['Pinweight\t(44 - 46 Kg)', 'Light Flyweight\t(Below 48Kg)', 'Flyweight\t(49 - 52 Kg)', 'Bantamweight\t(52 - 53.5 Kg)', 'Featherweight\t(54 - 57 Kg)', 'Lightweight\t(59 - 61 Kg)', 'Lighter welterweight\t(54 - 67 Kg)', 'Welterweight\t(64 - 69 Kg)', 'Middleweight\t(70 - 73 Kg)', 'Light heavyweight\t(76 - 80 Kg)', 'Heavyweight\t(Above 81 Kg)', 'Super Heavyweight\t(Above 91 Kg)']
         choice = random.choice(weight)
         embed = discord.Embed(
-            title='What is {} boxing weight?'.format(user),
             color=discord.Color.red(),
             description=f'{choice}'
         )
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=['Weight', 'WI'])
-    @commands.cooldown(1, 10, BucketType.user)
+    @commands.command(aliases=['Weight', 'WI'], name='WeighIn')
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def weighin(self, ctx, user: discord.Member = None):
         if user == None:
             user = ctx.author
         weight = random.randint(1, 200)
         embed = discord.Embed(
-            title='How much do {} weigh?'.format(user),
             color=discord.Color.red(),
             description=f'**`{weight}` Kg**'
         )
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(name='Beer')
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def beer(self, ctx, user: discord.Member = None, *, reason: commands.clean_content = ""):
         if not user or user.id == ctx.author.id:
             return await ctx.send(f"**{ctx.author.mention}**: fieeeeestaaa!🎉🍺")
@@ -170,87 +291,79 @@ class fun(commands.Cog):
             await msg.delete()
             await ctx.send(f"well it seems **{user.name}** didn't want a beer with **{ctx.author.name}** ;-;")
         except discord.Forbidden:
-            beer_offer = f"**{user.name}**, you have a 🍺 from **{ctx.author.name}**"
+            beer_offer = f"{user.mention} and {ctx.author.mention} are enjoying a 🍻."
             beer_offer = beer_offer + f"\n\n**reason:** {reason}" if reason else beer_offer
             await msg.edit(content=beer_offer)
 
-    @commands.command()
-    @commands.cooldown(1, 10, BucketType.user)
-    async def reverse(self, ctx, *args):
-        if not args:
-            ctx.command.reset_cooldown(ctx)
-            return await ctx.send('Give me something to reverse!')
-        args = ' '.join(map(str, args))
+    @commands.command(name='Reverse')
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def reverse(self, ctx, *, message):
         await ctx.send(embed=discord.Embed(
-            description=args[::-1],
+            description=message[::-1],
             colour=discord.Colour.red()
         ))
 
-    @commands.command()
-    @cooldown(1, 10, BucketType.user)
+    @commands.command(name='Simp')
+    @commands.cooldown(1, 5, commands.BucketType.user)
     async def simp(self, ctx, user: discord.Member = None):
         user = user or ctx.author
         embed = discord.Embed(
-            title=f'How much of a simp are they?',
-            color=discord.Color.red()
+            color=discord.Color.red(),
+            description=f'{user.display_name} is {random.randint(0, 101)}% simp'
         )
-        embed.add_field(name='**Simp**', value=f'{user.display_name} is {random.randint(0, 101)}% simp')
         await ctx.send(embed=embed)
 
-    @commands.command()
-    @cooldown(1, 10, BucketType.user)
+    @commands.command(name='Retard')
+    @commands.cooldown(1, 5, commands.BucketType.user)
     async def retard(self, ctx, user: discord.Member = None):
         user = user or ctx.author
         embed = discord.Embed(
-            title='',
+            description=f'{user.display_name} is {random.randint(0, 101)}% retarded',
             color=discord.Color.red()
         )
-        embed.add_field(name='**Retard**', value=f'{user.display_name} is {random.randint(0, 101)}% retarded')
         await ctx.send(embed=embed)
 
-    @commands.command()
-    @cooldown(1, 10, BucketType.user)
+    @commands.command(name='Human')
+    @commands.cooldown(1, 5, commands.BucketType.user)
     async def human(self, ctx, user: discord.Member = None):
         user = user or ctx.author
         embed = discord.Embed(
-            title='',
+            description=f'{user.display_name} is {random.randint(0, 101)}% human',
             color=discord.Color.red()
         )
-        embed.add_field(name='**Human**', value=f'{user.display_name} is {random.randint(0, 101)}% human')
         await ctx.send(embed=embed)
 
-    @commands.command()
-    @cooldown(1, 10, BucketType.user)
+    @commands.command(name='Buff')
+    @commands.cooldown(1, 5, commands.BucketType.user)
     async def buff(self, ctx, user: discord.Member = None):
         user = user or ctx.author
-        embed = discord.Embed(color=discord.Color.red())
-        embed.add_field(name='**Buffness**', value=f'{user.display_name} is {random.randint(0, 101)}/100 Buff :muscle:')
+        embed = discord.Embed(
+            color=discord.Color.red(),
+            description=f'{user.display_name} is {random.randint(0, 101)}/100 Buff :muscle:'
+            )
         await ctx.send(embed=embed)
 
-    @commands.command()
-    @cooldown(1, 10, BucketType.user)
+    @commands.command(name='Waifu')
+    @commands.cooldown(1, 5, commands.BucketType.user)
     async def waifu(self, ctx, user: discord.Member = None):
         user = user or ctx.author
         embed = discord.Embed(
-            color=discord.Color.red()
+            color=discord.Color.red(),
+            description=f'{user.display_name} is {random.choice(IMG.Number1)}'
         )
-        embed.add_field(name='**Waifu**', value=f'{user.display_name} is {random.choice(IMG.Number1)}')
         await ctx.send(embed=embed)
 
-    @commands.command()
-    @cooldown(1, 10, BucketType.user)
-    async def dad(self, ctx, *, message: str = None):
-        if message == None:
-            ctx.command.reset_cooldown(ctx)
-            return await ctx.send('I cant name you anything.')
+    @commands.command(name='Dad')
+    @commands.cooldown(1, 5, commands.BucketType.user)
+    async def dad(self, ctx, *, message: str):
         embed = discord.Embed(
-            color=discord.Color.red()
+            color=discord.Color.red(),
+            description=f'Hello {message}, Im Dad'
         )
-        embed.add_field(name='Daddo Machine 9000', value=f'Hello {message}, Im Dad')
         await ctx.send(embed=embed)
 
-    @commands.command()
-    @cooldown(1, 10, BucketType.user)
+    @commands.command(name='Gay')
+    @commands.cooldown(1, 5, commands.BucketType.user)
     async def gay(self, ctx, user: discord.Member = None):
         user = user or ctx.author
         embed = discord.Embed(
@@ -259,8 +372,8 @@ class fun(commands.Cog):
         )
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=['jokes'])
-    @cooldown(1, 10, BucketType.user)
+    @commands.command(aliases=['jokes'], name='Joke')
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def joke(self, ctx):
         async with aiohttp.ClientSession() as session:
             async with session.get(
@@ -272,30 +385,30 @@ class fun(commands.Cog):
         embed.set_footer(text='Prompted by {}'.format(ctx.author), icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=['fact'])
-    @cooldown(1, 10, BucketType.user)
+    @commands.command(aliases=['facts'], name='Fact')
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def facts(self, ctx):
         embed = discord.Embed(
-            title='**Fun Facts:**',
-            color=discord.Color.teal()
+            title='**Fun Fact:**',
+            color=discord.Color.teal(),
+            description=f'{random.choice(Co.fact)}'
         )
-        embed.add_field(name='‏‏‎ ', value=f'{random.choice(Co.fact)}')
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=['gender'])
-    @cooldown(1, 10, BucketType.user)
+    @commands.command(aliases=['gender'], name='GenderFinder')
+    @commands.cooldown(1, 5, commands.BucketType.user)
     async def genderfinder(self, ctx, user: discord.Member = None):
         user = user or ctx.author
         genders = random.choice(gender.gend)
         embed = discord.Embed(
             title=f"**{user.display_name}'s Gender!**",
             description=genders,
-            color=discord.Color.magenta()
+            color=discord.Color.red()
         )
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=['mk', 'MagicK', 'MKaren'])
-    @cooldown(1, 10, BucketType.user)
+    @commands.command(aliases=['mk', 'MagicK', 'MKaren'], name='MagicKaren')
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def magickaren(self, ctx, *, question=None):
         if question == None:
             ctx.command.reset_cooldown(ctx)
@@ -326,7 +439,7 @@ class fun(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(name='IQ')
-    @cooldown(1, 10, BucketType.user)
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def iq(self, ctx, user: discord.Member = None):
         user = user or ctx.author
         iq = ['130 and above (Very Superior)',
@@ -336,26 +449,26 @@ class fun(commands.Cog):
               '80–89 (Low Average)',
               '70–79 (Borderline)',
               '69 and below	(Extremely Low)']
-        e = discord.Embed(color=discord.Colour.red()).set_author(
-            name=self.bot.user,
-            icon_url=self.bot.user.avatar_url)
-        e.add_field(name='**IQ Machine 9000**', value=f'{user.display_name} IQ is {random.choice(iq)}')
+        e = discord.Embed(
+            color=discord.Colour.red(),
+            description=f'{user.display_name} IQ is {random.choice(iq)}'
+            )
         await ctx.send(embed=e)
 
     @commands.command(aliases=['Penis'], name='PP')
-    @cooldown(1, 10, BucketType.user)
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def pp(self, ctx, user: discord.Member = None):
         user = user or ctx.author
         former = ['8', 'D']
         for i in range(random.randrange(10)):
             former.insert(1, '=')
-        e = discord.Embed(title="", description="__**Mecha Karen:**__", color=0x50C878)
+        e = discord.Embed(color=0x50C878)
         e.add_field(name="**{}'s penis is:**".format(user),
                     value=''.join(map(str, former)))
         await ctx.send(embed=e)
 
-    @commands.command(aliases=['insult'])
-    @cooldown(1, 10, BucketType.user)
+    @commands.command(aliases=['insult'], name='Roast')
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def roast(self, ctx):
         A = ['You’re the reason God created the middle finger.',
              'You’re a grey sprinkle on a rainbow cupcake.',
@@ -383,15 +496,14 @@ class fun(commands.Cog):
              'I thought of you today. It reminded me to take out the trash.',
              'Don’t worry about me. Worry about your eyebrows.',
              'there is approximately 1,010,030 words in the language english, but i cannot string enough words together to express how much i want to hit you with a chair']
-
         await ctx.send(embed=discord.Embed(
             colour=discord.Colour.red(),
             description=random.choice(A)
         ).set_author(name=self.bot.user.display_name, icon_url=self.bot.user.avatar_url))
 
-    @commands.command(aliases=['murder'])
-    @cooldown(1, 10, BucketType.user)
-    async def kill(self, ctx, user: discord.Member = None, *, reason = None):
+    @commands.command(aliases=['murder', 'die'], name='Kill')
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def kill(self, ctx, *, user: discord.Member = None):
         user = user or ctx.author
         died = ['rolling out of the bed and the demon under the bed ate them.',
                 'getting impaled on the bill of a swordfish.',
@@ -408,52 +520,37 @@ class fun(commands.Cog):
                 'car engine bonnet shutting on there head.',
                 'tried to brake check a train.',
                 'dressing up as a cookie and cookie monster ate them.',
-                'tried to react Indiana Jones, died from a snake bite.',
-                'tried to short circuit me, not that easy retard'
+                'trying to re-act Indiana Jones, died from a snake bite.',
+                'tried to short circuit me, not that easy retard',
+                'tried to fight a bear with there hands',
+                'getting Billy Heartied in the ball sacks'
                 ]
         await ctx.send(embed=discord.Embed(
             colour=discord.Colour.red(),
-            description='{} was killed by {}'.format(user.display_name, reason if reason else random.choice(died))
+            description='{} was killed by {}'.format(user.display_name, random.choice(died))
         ).set_author(name=self.bot.user.display_name, icon_url=self.bot.user.avatar_url))
 
     @commands.command(aliases=['punch'], name='PunchMachine')
-    @cooldown(1, 10, BucketType.user)
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def punchmachine(self, ctx):
         answer = random.randint(0, 999)
-        response = ['**Nice shot bro**',
-                    '**Did you miss the machine**',
-                    '**DAHM HAVE SOME MERCY**',
-                    '**Even a baby can hit harder**',
-                    '**Weakling lmfao**',
-                    '**You wasted money to get that score**',
-                    ]
+
         embed = discord.Embed(
-            color=discord.Color.red()
+            color=discord.Color.red(),
+            description='You swing and hit a **{}**.'.format(answer)
         )
-        embed.add_field(name='**Punch MACHINE**',
-                        value=f'\n\nYou swing and hit a **{answer}**\n\nThe crowd around you: **{random.choice(response)}**')
         await ctx.send(embed=embed)
-        
-    @commands.command()
-    @commands.cooldown(1, 10, BucketType.user)
+
+    @commands.command(name='Say')
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def say(self, ctx, *, quote: str = None):
         if not quote:
             ctx.command.reset_cooldown(ctx)
             return await ctx.send('What are u saying!')
         await ctx.send('{}\n\t- **{}**'.format(quote, ctx.author))
-        
-    @commands.command()
-    @commands.cooldown(1, 60, BucketType.user)
-    async def annoy(self, ctx, member: discord.Member = None):
-        if not member:
-            ctx.command.reset_cooldown(ctx)
-            return await ctx.send('Please ping a user.')
 
-        if ctx.message.content == '<@!{}>'.format(member.id):
-            return await ctx.send('I will have to ping him for you!\n{}'.format(member.mention))
-        await ctx.send('You have successfully pinged {}'.format(member))
-
-    @commands.command()
+    @commands.command(name='F')
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def f(self, ctx, *, message: str = None):
         if message == None:
             await ctx.send('<:F_:745287381816574125>')
@@ -461,26 +558,90 @@ class fun(commands.Cog):
         await ctx.send('<:F_:745287381816574125>')
         await ctx.send('**{} Has Paid There Respects:** {}'.format(ctx.author.display_name, message.title()))
 
-    @commands.command()
-    async def spoiler(self, ctx, *, message: str = None):
-        if message == None:
-            ctx.command.reset_cooldown(ctx)
-            return await ctx.send('||{} Is a retard. Retry with an actual message.||'.format(ctx.author))
+    @commands.command(name='Spoiler')
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def spoiler(self, ctx, *, message: str):
         await ctx.send('||{}||'.format(message))
 
-    @commands.command()
+    @commands.command(name='Pings')
+    @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.bot_has_guild_permissions(read_message_history=True, read_messages=True)
-    async def pings(self, ctx, limit='10', user: discord.Member = None):
+    async def pings(self, ctx, limit: str = '10', user: discord.Member = None):
         user = ctx.author if not user else user
         try:
             limit = int(limit)
         except ValueError:
             return await ctx.send('The limit for the searching must be a number.')
+        if limit > 100:
+            return await ctx.send('Max limit is 100 messages. This is to keep the command consistent.')
         counter = 0
         async for message in ctx.channel.history(limit=limit):
-            if '<@!{}>'.format(user.id) in message.content:
+            if user.mentioned_in(message):
                 counter += 1
         await ctx.send('You have been pinged {} times in the last {} messages'.format(counter, limit))
 
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def timer(self, ctx, time: str = None):
+        try:
+            is_there = self.times[ctx.author.id]
+            now = time.time()
+            gap = now - is_there['time']
+            del self.times[ctx.author.id]
+            return await ctx.send(embed=discord.Embed(
+                description='⌚ | Timer was set for {}'.format(await self.convert(int(gap))),
+                colour=discord.Colour.red()
+            ))
+        except KeyError:
+            if not time:
+                self.times[ctx.author.id] = {
+                    'time': time.time()
+                }
+                await ctx.send(embed=discord.Embed(
+                    description='⌚ | The timer has been set...',
+                    colour=discord.Colour.red()
+                ))
+            else:
+                try:
+                    time = int(time)
+                except ValueError:
+                    ctx.command.reset_cooldown(ctx)
+                    return await ctx.send(embed=discord.Embed(
+                        description='<a:nope:787764352387776523> Time to set must a number (counted with minutes)',
+                        colour=discord.Color.red()
+                        ))
+                await ctx.send(embed=discord.Embed(
+                    description='⌚ | Will remind you in **{}** minutes.'.format(time),
+                    colour=discord.Colour.green()
+                ))
+                await asyncio.sleep(time*60)
+                return await ctx.send(embed=discord.Embed(
+                    description='⏰ | Times Up!',
+                    colour=discord.Color.red()
+                    ), content=ctx.author.mention)
+            
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def ship(self, ctx, member1: discord.Member, member2: discord.Member):
+        res = await ship(name1=member1.display_name, name2=member2.display_name)
+        await ctx.send(embed=discord.Embed(
+            description='❤️ | {} + {} = {}'.format(member1.display_name, member2.display_name, res),
+            colour=discord.Colour.red()
+        ))
+    
+    @commands.command(aliases=['cb'])
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def chatbot(self, ctx, *, message: str):
+        res = await self.session.post(
+            'https://api.mechakaren.xyz/v1/chatbot',
+            headers = {'Authorization': 'idk lads'},
+            json = {'message': message}
+        )
+        try:
+            real = await res.json()
+        except Exception:
+            return await ctx.message.reply(content='I have no response for you, now go away.')
+        return await ctx.message.reply(content=real['response']['answer'] or 'Hello There.')
+    
 def setup(bot):
     bot.add_cog(fun(bot))
