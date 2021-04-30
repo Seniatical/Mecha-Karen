@@ -1,6 +1,6 @@
 ![Discord.py-Version](https://img.shields.io/badge/discord.py-1.5.1-blue?style=flat-square)
 ![Python-Version](https://img.shields.io/badge/python-3.8.6-green?style=flat-square)
-![MySQL-Version](https://img.shields.io/badge/MySQL-8.0-blue?style=flat-square)
+![MySQL-Version](https://img.shields.io/badge/MongoDB-pink?style=flat-square)
 ![Django-Version](https://img.shields.io/badge/Django-3.1.3-blue?style=flat-square)
 ![Flask-Version](https://img.shields.io/badge/Flask-1.1.2-blue?style=flat-square)
 
