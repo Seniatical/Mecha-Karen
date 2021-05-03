@@ -16,11 +16,11 @@ A robustly programmed bot which means there wont be as much errors in the long r
 ```
 Facts :
 
-  100+ Commands
+  150+ Commands
   Unique Features
   Wacky Commands
-  Fast Responce Times (Most times)
-  Configurable commands and Starboard
+  Fast response Times (Most times)
+  Configurable commands and a Starboard
   Warn mangement
   Log everything
   Useful Tools such as Word Searches | Vid Searches | Image Searches  | + MORE
@@ -38,7 +38,7 @@ Facts :
 
 **[Click me to invite `Mecha Karen`](https://discord.com/api/oauth2/authorize?client_id=740514706858442792&permissions=8&scope=bot)**
 
-**Notice any errors that i haven't?**
+**Notice any errors that I haven't?**
 
 Click the button below to report an issue
 
@@ -52,12 +52,12 @@ Click the button below to report an issue
 2. **`https://discordpy.readthedocs.io/en/latest/index.html`**
 
 # Future Notice:
-I am slowly stopping open sourcing certain areas of this bot, mainly due to premium coming out soon and many popular features which are being stolen from this bot.<br/>This was one of the reasons why I haven't open sourced the dashboard and Utils folders as then you could ultimatley copy the entire bot with ease.
+I am slowly stopping open sourcing certain areas of this bot, mainly due to premium coming out soon and many popular features which are being stolen from this bot.<br/>This was one of the reasons why I haven't open sourced the dashboard and Utils folders as then you could ultimately copy the entire bot with ease.
 
 # Other info :
 **>** Utils folder will no longer be updated as new files contain sensitive data.
 
-**>** You can use and modify parts of this repository, it servers a recourse to learn how the discord.py API wrapper works and how you can use it to make your ideas become reality. Please dont steal / claim code's which you haven't created (the copyright world is a deadly place). If want to know your limits and how to use my works read the limitions stated in the `LICENSE` file.
+**>** You can use and modify parts of this repository, it servers as a recourse to learn how the discord.py API wrapper works and how you can use it to make your ideas become reality. Please dont steal / claim code's which you haven't created (the copyright world is a deadly place). If you want to know your limits and how to use my works read the limitions stated in the `LICENSE` file.
 
 **>** Follow me to keep updated with other stuff <!-- Place this tag where you want the button to render. -->
 <a class="github-button" href="https://github.com/Seniatical" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" data-show-count="true" aria-label="Follow @Seniatical on GitHub">Follow @Seniatical</a>
