@@ -13,5 +13,5 @@
 </p>
 
 <h3 align="center">
-  <a href="https://mechakaren.xyz/invite">Invite Mecha Karen</a> | <a href="https://discord.gg/Q5mFhUM">Discord Server</a> | <a href="https://mechakaren.xyz/">Website</a>
+  <a href="https://mechakaren.xyz/invite">Invite Mecha Karen</a> | <a href="https://discord.gg/Q5mFhUM">Discord Server</a> | <a href="https://mechakaren.xyz/">Website</a> | <a href="https://docs.mechakaren.xyz/">Documentation</a>
 </h3>
