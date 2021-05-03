@@ -6,6 +6,12 @@
 
 <h1 align="center">Documentation For Mecha Karen - Built with Sphinx</h1>
 
+<h3 align="center">Credits</h3>
+<p align="center">
+  Crepco - Helping with the Fun Section
+  Toaxtt - Helping with the Image Section
+</p>
+
 <h3 align="center">
   <a href="https://mechakaren.xyz/invite">Invite Mecha Karen</a> | <a href="https://discord.gg/Q5mFhUM">Discord Server</a> | <a href="https://mechakaren.xyz/">Website</a>
 </h3>
