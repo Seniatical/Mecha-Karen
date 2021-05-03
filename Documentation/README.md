@@ -8,8 +8,8 @@
 
 <h3 align="center">Credits</h3>
 <p align="center">
-  Crepco - Helping with the Fun Section
-  Toaxtt - Helping with the Image Section
+  Crepco - Helping with the Fun Section<br>
+  Toaxtt - Helping with the Image Section<br>
 </p>
 
 <h3 align="center">
