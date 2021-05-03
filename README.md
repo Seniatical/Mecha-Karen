@@ -6,7 +6,7 @@
 
 # __Mecha Karen Source Code__
 In this repository you will find the code in Mecha Karen!<br/><br/>
-<br>Disclaimer: This repository only serves as a guide for newer and older bot developers alike. Please do not copy blindy and ask why it doesnt work. I specifically made this bot to match the needs of how i styled it. If something doesnt work and you want to know why I am more than happy to explain but I wont bother helping you if your blindly pasting everything.
+<br>Disclaimer: This repository only serves as a guide for bot developers with some programming experience. Please do not copy blindy and ask why it does not work. I specifically made this bot to match the needs of how I styled it. If something does not work and you want to know why, I am more than happy to explain but I will not help you if you just copy and paste code.
 
 <img alt="Mecha_Karen's logo" align="right" src="https://cdn.discordapp.com/avatars/740514706858442792/3d4c161d2bfa97ec86cc82102df5cad5.png?size=128" width=40%/>
 
@@ -14,7 +14,7 @@ A mostly fun bot but can offer some useful moderation tools.
 Has many categories including `NSFW`, `Fun`, `Games`, `Motivation` and more!
 A robustly programmed bot which means there wont be as much errors in the long run.
 ```
-Facts :
+Features :
 
   150+ Commands
   Unique Features
@@ -57,7 +57,7 @@ I am slowly stopping open sourcing certain areas of this bot, mainly due to prem
 # Other info :
 **>** Utils folder will no longer be updated as new files contain sensitive data.
 
-**>** You can use and modify parts of this repository, it servers as a recourse to learn how the discord.py API wrapper works and how you can use it to make your ideas become reality. Please dont steal / claim code's which you haven't created (the copyright world is a deadly place). If you want to know your limits and how to use my works read the limitions stated in the `LICENSE` file.
+**>** You can use and modify parts of this repository, it serves as a recourse to learn how the discord.py API wrapper works and how you can use it to make your ideas become reality. Please dont steal / claim code's which you haven't created (the copyright world is a deadly place). If you want to know your limits and how to use my works read the limitions stated in the `LICENSE` file.
 
 **>** Follow me to keep updated with other stuff <!-- Place this tag where you want the button to render. -->
 <a class="github-button" href="https://github.com/Seniatical" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" data-show-count="true" aria-label="Follow @Seniatical on GitHub">Follow @Seniatical</a>
