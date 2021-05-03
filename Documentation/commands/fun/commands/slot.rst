@@ -35,8 +35,4 @@ Example Usage
 -------------
 ::
 
-    -slot 
-    
-
-1.  [ 🍎 | 🍊 | 🍓 ]
-Crepco, has gotten 0/3 he looses. :pensive:
+image_here
