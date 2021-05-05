@@ -1,5 +1,5 @@
 {
-    "DEFAULT-PREFIX": '-',
+    "DEFAULT-PREFIX": "-",
     "INTENTS": [
         "guilds",
         "members",
