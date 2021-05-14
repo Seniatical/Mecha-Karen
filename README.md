@@ -20,14 +20,15 @@ Expanding - Mecha Karen doesn't stop growing! Got a feature - DM one of our devs
 ```
 
 #### 🔗 Links
-[Dashboard](https://mechakaren.xyz/login)
-[API](https://api.mechakaren.xyz/docs)
-[Bot Documentation - W.I.P](https://docs.mechakaren.xyz/)
-[Support Server](https://discord.gg/Q5mFhUM)
-[Bot Invite](https://discord.com/oauth2/authorize?client_id=740514706858442792&permissions=0&scope=bot)
+[Dashboard](https://mechakaren.xyz/login)\
+[API](https://api.mechakaren.xyz/docs)\
+[Bot Documentation - W.I.P](https://docs.mechakaren.xyz/)\
+[Support Server](https://discord.gg/Q5mFhUM)\
+[Bot Invite](https://discord.com/oauth2/authorize?client_id=740514706858442792&permissions=0&scope=bot)\
 
 #### Running Karen
-Running KAREN is not easy - Mainly due to missing modules and parts. I will not make it easy for anybody - If you wish to run it, modify the bot.py file and do your thing!
+Running KAREN is not easy - Mainly due to missing modules and parts.\
+I will not make it easy for anybody - If you wish to run it, modify the bot.py file and do your thing!
 
 #### Copyright
 Mecha Karen is licensed and distributed under the APACHE 2.0 License - The copyright protects:
