@@ -5,18 +5,18 @@
 ![Flask-Version](https://img.shields.io/badge/Flask-1.1.2-blue?style=flat-square)
 
 # Mecha Karen
-Mecha Karen is an open sourced discord bot - Built with discord.py
+Mecha Karen is an open sourced Discord bot - Built with discord.py
 
 #### Features
 ```
 Moderation - Simple but powerful!
 Image Manipulation - Mecha Karen has unique commands, Some apply effects and flip you over!
-Logging - Mecha Karen can log everything that happens in your server
-Fast and Reliable - Mecha Karen heavily caches data to prevent constantly fetching from the DB
-                    It can also report any unknown errors automatically for!
-                    Bring it for the support server for a treat.
-Customisable - You can customise everything from the prefix to what channels you can run the command in!
-Expanding - Mecha Karen doesn't stop growing! Got a feature - DM one of our devs and it may be added.
+Logging - Mecha Karen can log everything that happens in your server.
+Fast and Reliable - Mecha Karen heavily caches data to prevent constantly fetching from the DB, so you enjoy fast responses. 
+                    It can also report any unknown errors automatically for you!
+                    Need some help with the bot? Join the welcoming and friendly support server!
+Customisable - You can customise everything from the prefix, to restricting commands to a certain channel!
+Expanding - Mecha Karen doesn't stop growing! Got a feature request? - DM one of our devs and it may be added.
 ```
 
 #### 🔗 Links
@@ -39,4 +39,4 @@ DOCUMENTATION
 DASHBOARD
 ```
 
-Any voilations to the license will result in moderate action
+Any voilations to the license will result in moderate action.
