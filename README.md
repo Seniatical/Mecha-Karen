@@ -4,60 +4,38 @@
 ![Django-Version](https://img.shields.io/badge/Django-3.1.3-blue?style=flat-square)
 ![Flask-Version](https://img.shields.io/badge/Flask-1.1.2-blue?style=flat-square)
 
-# __Mecha Karen Source Code__
-In this repository you will find the code in Mecha Karen!<br/><br/>
-<br>Disclaimer: This repository only serves as a guide for bot developers with some programming experience. Please do not copy blindy and ask why it does not work. I specifically made this bot to match the needs of how I styled it. If something does not work and you want to know why, I am more than happy to explain but I will not help you if you just copy and paste code.
+#### Mecha Karen
+Mecha Karen is an open sourced discord bot - Built with discord.py
 
-<img alt="Mecha_Karen's logo" align="right" src="https://cdn.discordapp.com/avatars/740514706858442792/3d4c161d2bfa97ec86cc82102df5cad5.png?size=128" width=40%/>
-
-A mostly fun bot but can offer some useful moderation tools. 
-Has many categories including `NSFW`, `Fun`, `Games`, `Motivation` and more!
-A robustly programmed bot which means there wont be as much errors in the long run.
+#### Features
 ```
-Features :
-
-  150+ Commands
-  Unique Features
-  Wacky Commands
-  Fast response Times (Most times)
-  Configurable commands and a Starboard
-  Warn mangement
-  Log everything
-  Useful Tools such as Word Searches | Vid Searches | Image Searches  | + MORE
-  Ticket System
-  Music
+Moderation - Simple but powerful!
+Image Manipulation - Mecha Karen has unique commands, Some apply effects and flip you over!
+Logging - Mecha Karen can log everything that happens in your server
+Fast and Reliable - Mecha Karen heavily caches data to prevent constantly fetching from the DB
+                    It can also report any unknown errors automatically for!
+                    Bring it for the support server for a treat.
+Customisable - You can customise everything from the prefix to what channels you can run the command in!
+Expanding - Mecha Karen doesn't stop growing! Got a feature - DM one of our devs and it may be added.
 ```
-**View our dashboard!**
-[Click Me](https://mechakaren.xyz/)
 
-**Join the Server as this is the best way of contacting me.**
+#### 🔗 Links
+[Dashboard](https://mechakaren.xyz/login)
+[API](https://api.mechakaren.xyz/docs)
+[Bot Documentation - W.I.P](https://docs.mechakaren.xyz/)
+[Support Server](https://discord.gg/Q5mFhUM)
+[Bot Invite](https://discord.com/oauth2/authorize?client_id=740514706858442792&permissions=0&scope=bot)
 
-**[![widget](https://discord.com/api/guilds/740523643980873789/widget.png?style=banner2)](https://discord.gg/Q5mFhUM)**
+#### Running Karen
+Running KAREN is not easy - Mainly due to missing modules and parts. I will not make it easy for anybody - If you wish to run it, modify the bot.py file and do your thing!
 
-**Invite the bot.**
+#### Copyright
+Mecha Karen is licensed and distributed under the APACHE 2.0 License - The copyright protects:
+```
+BOT
+API
+DOCUMENTATION
+DASHBOARD
+```
 
-**[Click me to invite `Mecha Karen`](https://discord.com/api/oauth2/authorize?client_id=740514706858442792&permissions=8&scope=bot)**
-
-**Notice any errors that I haven't?**
-
-Click the button below to report an issue
-
-<!-- Place this tag where you want the button to render. -->
-<a class="github-button" href="https://github.com/Seniatical/Mecha-Karen-Source-Code/issues" data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-issue-opened" data-size="large" data-show-count="true" aria-label="Issue Seniatical/Mecha-Karen-Source-Code on GitHub">Issues</a>
-
-**_Useful things that you may or may not need:_**
-
-1. **`pip install discord.py`**
-
-2. **`https://discordpy.readthedocs.io/en/latest/index.html`**
-
-# Future Notice:
-I am slowly stopping open sourcing certain areas of this bot, mainly due to premium coming out soon and many popular features which are being stolen from this bot.<br/>This was one of the reasons why I haven't open sourced the dashboard and Utils folders as then you could ultimately copy the entire bot with ease.
-
-# Other info :
-**>** Utils folder will no longer be updated as new files contain sensitive data.
-
-**>** You can use and modify parts of this repository, it serves as a recourse to learn how the discord.py API wrapper works and how you can use it to make your ideas become reality. Please dont steal / claim code's which you haven't created (the copyright world is a deadly place). If you want to know your limits and how to use my works read the limitions stated in the `LICENSE` file.
-
-**>** Follow me to keep updated with other stuff <!-- Place this tag where you want the button to render. -->
-<a class="github-button" href="https://github.com/Seniatical" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" data-show-count="true" aria-label="Follow @Seniatical on GitHub">Follow @Seniatical</a>
+Any voilations to the license will result in moderate action
