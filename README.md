@@ -39,4 +39,4 @@ DOCUMENTATION
 DASHBOARD
 ```
 
-Any voilations to the license will result in moderate action.
+Any violations to the license will result in moderate action.
