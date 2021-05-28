@@ -66,7 +66,7 @@ facts = ('Your server is seen in the support server once you add me!',
          'Show me an error code in the support server for a special role!',
          'My Code was lost 10 times before! This is why you may loose your data from time to time.')
 
-def get_prefix(bot,message):
+def get_prefix(bot, message):
     if isinstance(message.channel, discord.DMChannel):
         return
     res = bot.cache.find('prefix', message.guild.id)
@@ -82,16 +82,16 @@ class Mecha_Karen(commands.AutoShardedBot):
     def __init__(self):
         allowed_mentions = discord.AllowedMentions(everyone=False, roles=False, users=True)
         intents=discord.Intents(
-                guilds=True,
-                members=True,
-                bans=True,
-                emojis=True,
-                voice_states=True,
-                presences=True,
-                messages=True,
-                guild_messages=True,
-                reactions=True,
-            ),
+            guilds=True,
+            members=True,
+            bans=True,
+            emojis=True,
+            voice_states=True,
+            presences=True,
+            messages=True,
+            guild_messages=True,
+            reactions=True,
+        ),
 
         super().__init__(
             command_prefix=get_prefix,
@@ -204,7 +204,7 @@ class Mecha_Karen(commands.AutoShardedBot):
             if str(cond.status) != 'Green':
                 warnings.warn('Failed to complete issue. Currently sitting at: {}'.format(str(cond.status)))
         
-    async def on_message_delete(self, message) -> [Any]:
+    async def on_message_delete(self, message:discord.Message) -> [Any]:
         if message.author.bot:
             pass
         else:
@@ -217,25 +217,25 @@ class Mecha_Karen(commands.AutoShardedBot):
                 return
         await __logging__.until_completed(op)   ## Stops any other operations from running e.g. stops the module from being flooded
                 
-    async def on_guild_remove(self, guild):
+    async def on_guild_remove(self, guild:discord.Guild):
         column.delete_one({'_id': guild.id})
         warns = table['Warns']
         warns.delete_many({'_id': {'$regex': '^{}'.format(guild.id)}})
         tags = table['Tags']
         tags.delete_many({'_id': {'$regex': '^{}'.format(guild.id)}})
-        ## No guarantee that they are going to re-add the bot so might as well delete there data
+        ## No guarantee that they are going to re-add the bot so might as well delete their data
         ## Also saves up memory
             
-    async def on_guild_join(self, guild):
+    async def on_guild_join(self, guild:discord.Guild):
         x = self.ratelimiter.action(guild.id, '+=', 1, 
-                                statement='''
-                                if self.ratelimiter.get_logs(guild.id) >= 5:
-                                    self.ratelimter.destroy(guild.id):
-                                        return await guild.leave()
-                                          '''
-                                ## Uses a env parsed by ast to complete this action
-                                ## Bonuses as it allows me to use local variables as well global variables between both files
-            )
+            statement='''
+            if self.ratelimiter.get_logs(guild.id) >= 5:
+                self.ratelimter.destroy(guild.id):
+                    return await guild.leave()
+                      '''
+            ## Uses an env parsed by ast to complete this action
+            ## Bonuses as it allows me to use local variables as well global variables between both files
+        )
         if x is not None and str(x) is not 'Failed':
             return
         
@@ -253,7 +253,7 @@ class Mecha_Karen(commands.AutoShardedBot):
         channel = self.get_channel(753311458171027547)
         await channel.send('> <@!475357293949485076> You Retard.\n> I have made it into another server!\n\n> Guild Name: **{}**'.format(guild.name))
         
-    async def on_message(self, msg):
+    async def on_message(self, msg:discord.Message):
         if isinstance(msg.channel, discord.DMChannel):
             if msg.author.bot and self.blacklistedusers.find_one({'_id': ctx.author.id}) is not None:
                 return
