@@ -91,7 +91,7 @@ class Mecha_Karen(commands.AutoShardedBot):
                 messages=True,
                 guild_messages=True,
                 reactions=True,
-            ),
+            )[0],
 
         super().__init__(
             command_prefix=get_prefix,
