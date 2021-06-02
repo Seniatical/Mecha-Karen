@@ -24,7 +24,7 @@ copyright = '2021, Seniatical'
 author = 'Seniatical'
 
 # The full version, including alpha/beta/rc tags
-release = '1.9.2a'
+release = '2.1.2+a'
 
 
 # -- General configuration ---------------------------------------------------
