@@ -58,8 +58,8 @@ $ cd Mecha-Karen
 
 $ python3 -m venv ./venv --system-site-packages
 $ source ./venv/bin/activate
-$ pip3 install -r requirements.txt
-$ deactivate
+(venv) $ pip3 install -r requirements.txt
+(venv) $ deactivate
 
 $ touch .env
 $ nano .env
@@ -76,8 +76,8 @@ C:\> cd Mecha-Karen
 
 C:\> python3 -m venv ./venv --system-site-packages
 C:\> path/to/venv/Scripts/activate.bat
-C:\> pip install -r requirements.txt
-C:\> deactivate
+(venv) C:\> pip install -r requirements.txt
+(venv) C:\> deactivate
 
 C:\> type nul > .env
 ... Next part cannot be in terminal for windows
