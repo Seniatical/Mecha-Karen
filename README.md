@@ -43,6 +43,7 @@ START_SERVER = True
 IS_MAIN = True
 ALT_TOKEN = "Optional feature to run an alt instead of your main acc - change IS_MAIN to false"
 API_TOKEN = "API Token for the mecha karen API - https://api.mechakaren.xyz"
+OPEN_WEATHER_API_KEY = "Your api key for open-weather"
 
 LAVALINK_SERVER_IP = "Lavalink server ip"
 LAVALINK_SERVER_PORT = Lavalink-server-port
