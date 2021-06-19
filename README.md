@@ -30,6 +30,62 @@ Expanding - Mecha Karen doesn't stop growing! Got a feature request? - DM one of
 Running KAREN is not easy - Mainly due to missing modules and parts.\
 I will not make it easy for anybody - If you wish to run it, modify the bot.py file and do your thing!
 
+##### Simple Running
+
+**Env Data**
+```
+MONGO_DB_URI = "Your mongo DB URI"
+DISCORD_BOT_TOKEN = "Your discord bot token"
+RECONNECT = True
+SERVER_IP = "the IP to run your websocket on"
+SERVER_PORT = 8000
+START_SERVER = True
+IS_MAIN = True
+ALT_TOKEN = "Optional feature to run an alt instead of your main acc - change IS_MAIN to false"
+API_TOKEN = "API Token for the mecha karen API - https://api.mechakaren.xyz"
+
+LAVALINK_SERVER_IP = "Lavalink server ip"
+LAVALINK_SERVER_PORT = Lavalink-server-port
+LAVALINK_SERVER_PASSWORD = "Your password for the env"
+LAVALINK_REGION = "your server region"
+LAVALINK_NODETYPE = "default-node"
+```
+
+**Linux**
+```sh
+$ git clone https://github.com/Seniatical/Mecha-Karen/
+$ cd Mecha-Karen
+
+$ python3 -m venv ./venv --system-site-packages
+$ source ./venv/bin/activate
+$ pip3 install -r requirements.txt
+$ deactivate
+
+$ touch .env
+$ nano .env
+... Env data goes here
+
+$ python3 main.py
+```
+To exit out of the NANO GUI press `Ctrl+X` then press `Y` and then press `ENTER`
+
+**Windows**
+```
+C:\> git clone https://github.com/Seniatical/Mecha-Karen/
+C:\> cd Mecha-Karen
+
+C:\> python3 -m venv ./venv --system-site-packages
+C:\> path/to/venv/Scripts/activate.bat
+C:\> pip install -r requirements.txt
+C:\> deactivate
+
+C:\> type nul > .env
+... Next part cannot be in terminal for windows
+... Go to your .env file and fill out the env data
+... close the file and go to cmd again
+C:\> python main.py
+```
+
 #### Copyright
 Mecha Karen is licensed and distributed under the APACHE 2.0 License - The copyright protects:
 ```
