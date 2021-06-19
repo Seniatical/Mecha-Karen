@@ -7,7 +7,7 @@
 # Mecha Karen
 Mecha Karen is an open sourced Discord bot - Built with discord.py
 
-#### Features
+# Features
 ```
 Moderation - Simple but powerful!
 Image Manipulation - Mecha Karen has unique commands, Some apply effects and flip you over!
@@ -19,20 +19,20 @@ Customisable - You can customise everything from the prefix, to restricting comm
 Expanding - Mecha Karen doesn't stop growing! Got a feature request? - DM one of our devs and it may be added.
 ```
 
-#### 🔗 Links
+# 🔗 Links
 [Dashboard](https://mechakaren.xyz/login)\
 [API](https://api.mechakaren.xyz/docs)\
 [Bot Documentation - W.I.P](https://docs.mechakaren.xyz/)\
 [Support Server](https://discord.gg/Q5mFhUM)\
 [Bot Invite](https://discord.com/oauth2/authorize?client_id=740514706858442792&permissions=0&scope=bot)
 
-#### Running Karen
+# Running Karen
 Running KAREN is not easy - Mainly due to missing modules and parts.\
 I will not make it easy for anybody - If you wish to run it, modify the bot.py file and do your thing!
 
-##### Simple Running
+## Simple Running
 
-**Env Data**
+### Env Data
 ```
 MONGO_DB_URI = "Your mongo DB URI"
 DISCORD_BOT_TOKEN = "Your discord bot token"
@@ -51,7 +51,7 @@ LAVALINK_REGION = "your server region"
 LAVALINK_NODETYPE = "default-node"
 ```
 
-**Linux**
+### Linux
 ```sh
 $ git clone https://github.com/Seniatical/Mecha-Karen/
 $ cd Mecha-Karen
@@ -69,7 +69,7 @@ $ python3 main.py
 ```
 To exit out of the NANO GUI press `Ctrl+X` then press `Y` and then press `ENTER`
 
-**Windows**
+### Windows
 ```
 C:\> git clone https://github.com/Seniatical/Mecha-Karen/
 C:\> cd Mecha-Karen
@@ -86,7 +86,7 @@ C:\> type nul > .env
 C:\> python main.py
 ```
 
-#### Copyright
+# Copyright
 Mecha Karen is licensed and distributed under the APACHE 2.0 License - The copyright protects:
 ```
 BOT
