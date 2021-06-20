@@ -41,9 +41,7 @@
 <p align="center">
     This area will show you the major steps of running Mecha-Karen on your machine. If you run into any errors which are related to the steps below, contact me on discord so i can issue a fix for the issue.<br><br>
     If it due to the code - A majority of the causes are stated in the repo in them sections, so give them a read before asking for help.<br>
-    
     I am not going to help you self host karen due to many reasons.<br>
-    
     If your self hosting karen - please make sure to follow the license.<br>
     This project has taken a very long to make and crediting would be nice.<br>
     If you wish to learn more about the licence <a href='#license'>click here</a>!
@@ -61,18 +59,15 @@
     IS_MAIN = True
     ALT_TOKEN = "Optional feature to run an alt instead of your main acc - change IS_MAIN to false"
     API_TOKEN = "API Token for the mecha karen API - https://api.mechakaren.xyz"
-    OPEN_WEATHER_API_KEY = "Your api key for open-weather"
-
+    OPEN_WEATHER_API_KEY = "Your api key for open-weather"<br>
     LAVALINK_SERVER_IP = "Lavalink server ip"
     LAVALINK_SERVER_PORT = Lavalink-server-port
     LAVALINK_SERVER_PASSWORD = "Your password for the env"
     LAVALINK_REGION = "your server region"
-    LAVALINK_NODETYPE = "default-node"
-
+    LAVALINK_NODETYPE = "default-node"<br>
     IPC_SECRET_KEY = "The key which will be used to authenticate requests from dashboard to bot"
     IPC_HOST = "The host which the server will run off of"
-
-    REDDIT_USERNAME = ""
+    REDDIT_USERNAME = ""<br>
     REDDIT_PASSWORD = ""
     REDDIT_CLIENT_ID = ""
     REDDIT_CLIENT_SECRET = ""
@@ -83,12 +78,10 @@
 <p align="center">
   <code>
     $ git clone https://github.com/Seniatical/Mecha-Karen/
-    $ cd Mecha-Karen/Bot
-
+    $ cd Mecha-Karen/Bot<br>
     $ touch .env
     $ nano .env
-    ... Env data goes here
-
+    ... Env data goes here<br>
     $ python3 -m venv ./venv --system-site-packages
     $ source ./venv/bin/activate
     (venv) $ pip3 install -r requirements.txt
@@ -103,13 +96,11 @@
 <p align="center">
   <code>
     C:\> git clone https://github.com/Seniatical/Mecha-Karen/
-    C:\> cd Mecha-Karen/Bot
-
+    C:\> cd Mecha-Karen/Bot<br>
     C:\> type nul > .env
     ... Next part cannot be in terminal for windows
     ... Go to your .env file and fill out the env data
-    ... close the file and go to cmd again
-
+    ... close the file and go to cmd again<br>
     C:\> python3 -m venv ./venv --system-site-packages
     C:\> path/to/venv/Scripts/activate.bat
     (venv) C:\> pip install -r requirements.txt
