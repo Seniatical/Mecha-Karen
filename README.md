@@ -53,6 +53,11 @@ LAVALINK_NODETYPE = "default-node"
 
 IPC_SECRET_KEY = "The key which will be used to authenticate requests from dashboard to bot"
 IPC_HOST = "The host which the server will run off of"
+
+REDDIT_USERNAME = ""
+REDDIT_PASSWORD = ""
+REDDIT_CLIENT_ID = ""
+REDDIT_CLIENT_SECRET = ""
 ```
 
 ### Linux
