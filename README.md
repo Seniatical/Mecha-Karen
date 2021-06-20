@@ -12,14 +12,14 @@
 
 <h1 align="center">Features</h1>
 <p allign="center">
-    - Moderation - Simple but powerful!
-    - Image Manipulation - Mecha Karen has unique commands, Some apply effects and flip you over!
-    - Logging - Mecha Karen can log everything that happens in your server.
-    - Fast and Reliable - Mecha Karen heavily caches data to prevent constantly fetching from the DB, so you enjoy fast responses. 
-                          It can also report any unknown errors automatically for you!
-                          Need some help with the bot? Join the welcoming and friendly support server!
-    - Customisable - You can customise everything from the prefix, to restricting commands to a certain channel!
-    - Expanding - Mecha Karen doesn't stop growing! Got a feature request? - DM one of our devs and it may be added.
+    - Moderation - Simple but powerful!<br>
+    - Image Manipulation - Mecha Karen has unique commands, Some apply effects and flip you over!<br>
+    - Logging - Mecha Karen can log everything that happens in your server.<br>
+    - Fast and Reliable - Mecha Karen heavily caches data to prevent constantly fetching from the DB, so you enjoy fast responses.<br>
+                          It can also report any unknown errors automatically for you!<br>
+                          Need some help with the bot? Join the welcoming and friendly support server!<br>
+    - Customisable - You can customise everything from the prefix, to restricting commands to a certain channel!<br>
+    - Expanding - Mecha Karen doesn't stop growing! Got a feature request? - DM one of our devs and it may be added.<br>
 </p>
 
 <h1 allign="center">🔗 Links</h1>
@@ -31,7 +31,7 @@
     <a href="https://discord.com/oauth2/authorize?client_id=740514706858442792&permissions=0&scope=bot">Bot Invite</a>
 </p>
 
-<h1 allign="center">Running Karen</a>
+<h1 allign="center">Running Karen</h1>
 <p allign="center">
     Running KAREN is not easy - Mainly due to missing modules and parts.\
     I will not make it easy for anybody - If you wish to run it, modify the bot.py file and do your thing!
