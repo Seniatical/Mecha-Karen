@@ -1,3 +1,17 @@
+# !/usr/bin/python
+
+"""
+Copyright ©️: 2020 Seniatical / _-*™#7519
+License: Apache 2.0
+A permissive license whose main conditions require preservation of copyright and license notices.
+Contributors provide an express grant of patent rights.
+Licensed works, modifications, and larger works may be distributed under different terms and without source code.
+FULL LICENSE CAN BE FOUND AT:
+    https://www.apache.org/licenses/LICENSE-2.0.html
+Any violation to the license, will result in moderate action
+You are legally required to mention (original author, license, source and any changes made)
+"""
+
 words = ['“All our dreams can come true, if we have the courage to pursue them.” – Walt Disney',
        '“The secret of getting ahead is getting started.” – Mark Twain',
        '“I’ve missed more than 9,000 shots in my career. I’ve lost almost 300 games. 26 times I’ve been trusted to take the game winning shot and missed. I’ve failed over and over and over again in my life and that is why I succeed.” – Michael Jordan',

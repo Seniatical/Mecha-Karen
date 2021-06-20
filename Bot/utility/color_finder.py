@@ -8,6 +8,7 @@ ImageMagick names and WebColor names.
 2. Provide error checking for input R, G, B values to be within the interval [0, 255].
 3. Provide different ways to specify the input RGB values, aside from the (R, G, B) values as done in the program above.
 """
+
 class ColorNames:
     # Src: http://www.w3schools.com/html/html_colornames.asp
     WebColorMap = dict()
