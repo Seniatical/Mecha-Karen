@@ -46,7 +46,7 @@
     If you wish to learn more about the licence <a href='#license'>click here</a>!
 </p>
 
-<h2 align="center">Env file data</h2>
+<h2 align="center">Env File</h2>
 <p align="center">
   
     MONGO_DB_URI = "Your mongo DB URI"
@@ -75,7 +75,7 @@
     REDDIT_CLIENT_ID = ""
     REDDIT_CLIENT_SECRET = ""
   
-  All the stuff here goes into your <code>.env</code> file.
+  All the stuff here goes into your <code>.env</code> file. This file should be in the same directory as <code>main.py</code>.
 </p>
 
 <h2 align="center">Linux</h2>
@@ -118,12 +118,13 @@
 
 <h1 align="center" name="license"></h1>
 <p align="center">
-    Mecha Karen is licensed and distributed under the APACHE 2.0 License - The copyright protects:
-        BOT
-        API
-        DOCUMENTATION
-        DASHBOARD
+  Mecha Karen is licensed and distributed under the APACHE 2.0 License - The copyright protects:
+  
+    BOT
+    API
+    DOCUMENTATION
+    DASHBOARD
 
-    Any violations to the license will result in moderate action.
+  Any violations to the license will result in moderate action.
 </p>    
     
