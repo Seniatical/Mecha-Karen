@@ -60,16 +60,15 @@ IPC_HOST = "The host which the server will run off of"
 $ git clone https://github.com/Seniatical/Mecha-Karen/
 $ cd Mecha-Karen
 
-$ python3 -m venv ./venv --system-site-packages
-$ source ./venv/bin/activate
-(venv) $ pip3 install -r requirements.txt
-(venv) $ deactivate
-
 $ touch .env
 $ nano .env
 ... Env data goes here
 
-$ python3 main.py
+$ python3 -m venv ./venv --system-site-packages
+$ source ./venv/bin/activate
+(venv) $ pip3 install -r requirements.txt
+(venv) $ python3 main.py
+(venv) $ deactivate
 ```
 To exit out of the NANO GUI press `Ctrl+X` then press `Y` and then press `ENTER`
 
@@ -78,16 +77,16 @@ To exit out of the NANO GUI press `Ctrl+X` then press `Y` and then press `ENTER`
 C:\> git clone https://github.com/Seniatical/Mecha-Karen/
 C:\> cd Mecha-Karen
 
-C:\> python3 -m venv ./venv --system-site-packages
-C:\> path/to/venv/Scripts/activate.bat
-(venv) C:\> pip install -r requirements.txt
-(venv) C:\> deactivate
-
 C:\> type nul > .env
 ... Next part cannot be in terminal for windows
 ... Go to your .env file and fill out the env data
 ... close the file and go to cmd again
-C:\> python main.py
+
+C:\> python3 -m venv ./venv --system-site-packages
+C:\> path/to/venv/Scripts/activate.bat
+(venv) C:\> pip install -r requirements.txt
+(venv) C:\> python main.py
+(venv) C:\> deactivate
 ```
 
 # Copyright
