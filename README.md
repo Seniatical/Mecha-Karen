@@ -15,9 +15,9 @@
     - Moderation - Simple but powerful!<br>
     - Image Manipulation - Mecha Karen has unique commands, Some apply effects and flip you over!<br><br>
     - Logging - Mecha Karen can log everything that happens in your server.<br><br>
-    - Fast and Reliable - Mecha Karen heavily caches data to prevent constantly fetching from the DB, so you enjoy fast responses.<br><br>
-                          - It can also report any unknown errors automatically for you!
-                          - Need some help with the bot? Join the welcoming and friendly support server!
+    - Fast and Reliable - Mecha Karen heavily caches data to prevent constantly fetching from the DB, so you enjoy fast responses.<br>
+                          - It can also report any unknown errors automatically for you!<br>
+                          - Need some help with the bot? Join the welcoming and friendly support server!<br><br>
     - Customisable - You can customise everything from the prefix, to restricting commands to a certain channel!<br><br>
     - Expanding - Mecha Karen doesn't stop growing! Got a feature request? - DM one of our devs and it may be added.<br><br>
 </p>
