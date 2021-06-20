@@ -12,7 +12,7 @@
 
 <h1 align="center">Features</h1>
 <p align="center">
-    - Moderation - Simple but powerful!<br>
+    - Moderation - Simple but powerful!<br><br>
     - Image Manipulation - Mecha Karen has unique commands, Some apply effects and flip you over!<br><br>
     - Logging - Mecha Karen can log everything that happens in your server.<br><br>
     - Fast and Reliable - Mecha Karen heavily caches data to prevent constantly fetching from the DB, so you enjoy fast responses.<br>
