@@ -16,8 +16,8 @@
     - Image Manipulation - Mecha Karen has unique commands, Some apply effects and flip you over!<br><br>
     - Logging - Mecha Karen can log everything that happens in your server.<br><br>
     - Fast and Reliable - Mecha Karen heavily caches data to prevent constantly fetching from the DB, so you enjoy fast responses.<br><br>
-                          - It can also report any unknown errors automatically for you!<br>
-                          - Need some help with the bot? Join the welcoming and friendly support server!<br>
+                          - It can also report any unknown errors automatically for you!
+                          - Need some help with the bot? Join the welcoming and friendly support server!
     - Customisable - You can customise everything from the prefix, to restricting commands to a certain channel!<br><br>
     - Expanding - Mecha Karen doesn't stop growing! Got a feature request? - DM one of our devs and it may be added.<br><br>
 </p>
@@ -26,7 +26,6 @@
 <p align="center">
     <a href="https://mechakaren.xyz/login">Dashboard</a><br>
     <a href="https://api.mechakaren.xyz/docs">Bot Documentation - W.I.P</a><br>
-    <a href="https://docs.mechakaren.xyz/">Bot Documentation - W.I.P</a><br>
     <a href="https://discord.gg/Q5mFhUM">Support Server</a><br>
     <a href="https://discord.com/oauth2/authorize?client_id=740514706858442792&permissions=0&scope=bot">Bot Invite</a><br>
 </p>
@@ -49,6 +48,7 @@
 
 <h2 align="center">Env file data</h2>
 <p align="center">
+  
     MONGO_DB_URI = "Your mongo DB URI"
     DISCORD_BOT_TOKEN = "Your discord bot token"
     RECONNECT = True
