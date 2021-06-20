@@ -1,3 +1,17 @@
+# !/usr/bin/python
+
+"""
+Copyright ©️: 2020 Seniatical / _-*™#7519
+License: Apache 2.0
+A permissive license whose main conditions require preservation of copyright and license notices.
+Contributors provide an express grant of patent rights.
+Licensed works, modifications, and larger works may be distributed under different terms and without source code.
+FULL LICENSE CAN BE FOUND AT:
+    https://www.apache.org/licenses/LICENSE-2.0.html
+Any violation to the license, will result in moderate action
+You are legally required to mention (original author, license, source and any changes made)
+"""
+
 import discord
 from asyncio import sleep
 from os import system, name
@@ -5,6 +19,7 @@ from discord.ext import commands
 from colorama import Fore, init
 import platform
 import sys
+from core._.handle_clear
 
 os = platform.system()
 
@@ -13,6 +28,8 @@ def clear():
         _ = system('cls')
     else:
         _ = system('clear')
+                        ## Cleans up stdout
+    handle_clear()      ## This function cleans up the hidden area
 
 class Boot(commands.Cog):
     def __init__(self, bot):
