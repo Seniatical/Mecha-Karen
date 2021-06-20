@@ -63,7 +63,7 @@ REDDIT_CLIENT_SECRET = ""
 ### Linux
 ```sh
 $ git clone https://github.com/Seniatical/Mecha-Karen/
-$ cd Mecha-Karen
+$ cd Mecha-Karen/Bot
 
 $ touch .env
 $ nano .env
@@ -80,7 +80,7 @@ To exit out of the NANO GUI press `Ctrl+X` then press `Y` and then press `ENTER`
 ### Windows
 ```
 C:\> git clone https://github.com/Seniatical/Mecha-Karen/
-C:\> cd Mecha-Karen
+C:\> cd Mecha-Karen/Bot
 
 C:\> type nul > .env
 ... Next part cannot be in terminal for windows
