@@ -56,25 +56,31 @@
     SERVER_PORT = 8000
     START_SERVER = True
     IS_MAIN = True
+  
     ALT_TOKEN = "Optional feature to run an alt instead of your main acc - change IS_MAIN to false"
     API_TOKEN = "API Token for the mecha karen API - https://api.mechakaren.xyz"
-    OPEN_WEATHER_API_KEY = "Your api key for open-weather"<br>
+    OPEN_WEATHER_API_KEY = "Your api key for open-weather"
+  
     LAVALINK_SERVER_IP = "Lavalink server ip"
     LAVALINK_SERVER_PORT = Lavalink-server-port
     LAVALINK_SERVER_PASSWORD = "Your password for the env"
     LAVALINK_REGION = "your server region"
-    LAVALINK_NODETYPE = "default-node"<br>
+    LAVALINK_NODETYPE = "default-node"
+  
     IPC_SECRET_KEY = "The key which will be used to authenticate requests from dashboard to bot"
     IPC_HOST = "The host which the server will run off of"
-    REDDIT_USERNAME = ""<br>
+  
+    REDDIT_USERNAME = ""
     REDDIT_PASSWORD = ""
     REDDIT_CLIENT_ID = ""
     REDDIT_CLIENT_SECRET = ""
+  
+  All the stuff here goes into your <code>.env</code> file.
 </p>
 
 <h2 align="center">Linux</h2>
 <p align="center">
-
+  
     $ git clone https://github.com/Seniatical/Mecha-Karen/
     $ cd Mecha-Karen/Bot<br>
     $ touch .env
@@ -93,6 +99,7 @@
   
 <h2 align="center">Windows</h2>
 <p align="center">
+  
     C:\> git clone https://github.com/Seniatical/Mecha-Karen/
     C:\> cd Mecha-Karen/Bot<br>
     C:\> type nul > .env
