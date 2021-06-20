@@ -1,3 +1,17 @@
+# !/usr/bin/python
+
+"""
+Copyright ©️: 2020 Seniatical / _-*™#7519
+License: Apache 2.0
+A permissive license whose main conditions require preservation of copyright and license notices.
+Contributors provide an express grant of patent rights.
+Licensed works, modifications, and larger works may be distributed under different terms and without source code.
+FULL LICENSE CAN BE FOUND AT:
+    https://www.apache.org/licenses/LICENSE-2.0.html
+Any violation to the license, will result in moderate action
+You are legally required to mention (original author, license, source and any changes made)
+"""
+
 import discord
 import asyncio
 from discord.ext import commands
@@ -206,12 +220,12 @@ class ErrorHandler(commands.Cog):
                     return
 
             channel = self.bot.get_channel(800315954008948747)
-            try:
+            if len(error) < 1850:
                 await channel.send(
                     '**Error in the command {}**, Located from `{}` by user `{}`\n```\n'.format(ctx.command.name,
                                                                                                 ctx.guild.name,
                                                                                                 ctx.author) + error + '\n```')
-            except Exception:
+            else:
                 await channel.send(
                     content='**Error in the command {}**, Located from `{}` by user `{}`'.format(ctx.command.name,
                                                                                                  ctx.guild.name,
