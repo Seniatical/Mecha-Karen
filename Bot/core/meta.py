@@ -21,7 +21,7 @@ import pymongo
 from discord.ext import commands, ipc
 from utility import (Enviroment, Cache, handler, get_dm_embed, errors, emojis)
 from utility.prefix import PrefixHandler
-from src.support.Join_events import ending
+from src.support.join_events import ending
 
 from ._ import extract_
 
