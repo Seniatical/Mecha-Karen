@@ -49,7 +49,6 @@
 
 <h2 align="center">Env file data</h2>
 <p align="center">
-  <code>
     MONGO_DB_URI = "Your mongo DB URI"
     DISCORD_BOT_TOKEN = "Your discord bot token"
     RECONNECT = True
@@ -71,7 +70,6 @@
     REDDIT_PASSWORD = ""
     REDDIT_CLIENT_ID = ""
     REDDIT_CLIENT_SECRET = ""
-  </code>
 </p>
 
 <h2 align="center">Linux</h2>
@@ -100,12 +98,15 @@
     C:\> type nul > .env
     ... Next part cannot be in terminal for windows
     ... Go to your .env file and fill out the env data
-    ... close the file and go to cmd again<br>
+    ... close the file and go to cmd again
+  
     C:\> python3 -m venv ./venv --system-site-packages
     C:\> path/to/venv/Scripts/activate.bat
     (venv) C:\> pip install -r requirements.txt
     (venv) C:\> python main.py
     (venv) C:\> deactivate
+  
+  The <code>type nul > .env</code> is used to create an empty file for you.
 </p>
 
 <h1 align="center" name="license"></h1>
