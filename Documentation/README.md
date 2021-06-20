@@ -10,6 +10,7 @@
 <p align="center">
   Crepco - Helping with the Fun Section<br>
   Toaxtt - Helping with the Image Section<br>
+  Tweak - Helping with correcting the grammar<br>
 </p>
 
 <h3 align="center">
