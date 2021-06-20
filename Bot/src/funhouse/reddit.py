@@ -14,25 +14,23 @@ You are legally required to mention (original author, license, source and any ch
 
 import random
 import datetime
-import time
 
 import discord
 from discord.ext import commands
 from discord.ext.commands import BucketType, cooldown
-import os
 import apraw
 import asyncio
 from utility import emojis as emoji
 from utility import abbrev_denary as convert_size
-import math
 import aiohttp
 from requests.utils import requote_uri
+from core._.tasks.reddit import memes
 
 class Reddit(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.all_subs = []
+        self.memes = []
         self.reddit = apraw.Reddit(
             username=bot.env('REDDIT_USERNAME'),
             password=bot.env('REDDIT_PASSWORD'),
@@ -41,10 +39,14 @@ class Reddit(commands.Cog):
             user_agent='<Mecha Karen - Discord Bot [https://github.com/Seniatical/Mecha-Karen/main/Bot/src/funhouse/reddit.py]>'
         )
 
+        memes.add_global(self.memes)
+        
+        self.bot.loop.create_task(memes.task())
+        
     @commands.command(name='Meme', aliases=['memes'])
     @commands.cooldown(1, 5, BucketType.user)
     async def memes(self, ctx):
-        embed = random.choice(self.all_subs)
+        embed = random.choice(self.memes)
         await ctx.send(embed=embed)
 
     @commands.command(name='BB', aliases=['BreakingBad'])
