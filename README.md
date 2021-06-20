@@ -50,6 +50,9 @@ LAVALINK_SERVER_PORT = Lavalink-server-port
 LAVALINK_SERVER_PASSWORD = "Your password for the env"
 LAVALINK_REGION = "your server region"
 LAVALINK_NODETYPE = "default-node"
+
+IPC_SECRET_KEY = "The key which will be used to authenticate requests from dashboard to bot"
+IPC_HOST = "The host which the server will run off of"
 ```
 
 ### Linux
