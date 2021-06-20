@@ -1,3 +1,17 @@
+# !/usr/bin/python
+
+"""
+Copyright ©️: 2020 Seniatical / _-*™#7519
+License: Apache 2.0
+A permissive license whose main conditions require preservation of copyright and license notices.
+Contributors provide an express grant of patent rights.
+Licensed works, modifications, and larger works may be distributed under different terms and without source code.
+FULL LICENSE CAN BE FOUND AT:
+    https://www.apache.org/licenses/LICENSE-2.0.html
+Any violation to the license, will result in moderate action
+You are legally required to mention (original author, license, source and any changes made)
+"""
+
 import re
 import typing
 
@@ -12,6 +26,7 @@ from requests.utils import requote_uri
 from io import BytesIO
 import asyncio
 from itertools import accumulate
+from core._.filters import filters
 
 url_rx = re.compile(r'https?://(?:www\.)?.+')
 
@@ -29,41 +44,7 @@ class Music(commands.Cog):
         self.votes = {}
         self.session = __import__('aiohttp').ClientSession()
         self.gains = ([(1 * (i / 100)) for i in range(101)] + [-(1 * (i / 100)) for i in range(26)])
-        self.filter_maps = {
-            "flat": [
-                (0, .0), (1, .0), (2, .0), (3, .0), (4, .0),
-                (5, .0), (6, .0), (7, .0), (8, .0), (9, .0),
-                (10, .0), (11, .0), (12, .0), (13, .0), (14, .0)
-            ],
-            "boost": [
-                (0, -0.075), (1, .125), (2, .125), (3, .1), (4, .1),
-                (5, .05), (6, 0.075), (7, .0), (8, .0), (9, .0),
-                (10, .0), (11, .0), (12, .125), (13, .15), (14, .05)
-            ],
-            "metal": [
-                (0, .0), (1, .1), (2, .1), (3, .15), (4, .13),
-                (5, .1), (6, .0), (7, .125), (8, .175), (9, .175),
-                (10, .125), (11, .125), (12, .1), (13, .075), (14, .0)
-            ],
-            "piano": [
-                (0, -0.25), (1, -0.25), (2, -0.125), (3, 0.0),
-                (4, 0.25), (5, 0.25), (6, 0.0), (7, -0.25), (8, -0.25),
-                (9, 0.0), (10, 0.0), (11, 0.5), (12, 0.25), (13, -0.025)
-            ],
-            "bassboost": [
-                (0, 0.01), (1, 0.25), (2, 0.64), (3, 0.44),
-                (4, 0.46), (5, -0.03), (6, 0.98), (7, 0.13), (8, 0.77), (9, 0.25),
-                (10, 0.01), (11, -0.04), (12, 0.18), (13, 0.78), (14, 0.27)
-            ],
-            "speed": [
-                (0, 0.25), (1, 0.25), (2, 0.25), (3, 0.25),
-                (4, 0.25), (5, 0.25), (6, 0.25), (7, 0.25), (8, 0.25), (9, 0.25),
-                (10, 0.25), (11, 0.25), (12, 0.25), (13, 0.25), (14, 0.25)
-            ],
-            "crystal": [(0, 0.2), (1, -0.01), (2, 0.27), (3, -0.11), (4, 0.01), (5, 0.65),
-                        (6, -0.24), (7, 0.39), (8, 0.6), (9, 0.08), (10, -0.07),
-                        (11, -0.06), (12, 0.78), (13, 0.42), (14, 0.37)]
-        }
+        self.filter_maps = filters
 
         if not hasattr(bot, 'lavalink'):
             bot.lavalink = lavalink.Client(740514706858442792)
@@ -222,48 +203,6 @@ class Music(commands.Cog):
             return '{}:{}'.format(mins, num)
         else:
             return '00:{}'.format(num)
-
-    @commands.Cog.listener()
-    async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
-        guild: typing.Optional[discord.Guild] = member.guild
-        if not guild:
-            return
-        bot_voice_state: typing.Optional[discord.VoiceState] = guild.me.voice
-        if not bot_voice_state:
-            # BOT NOT IN A VC
-            return
-        voice_channel: typing.Optional[discord.VoiceChannel] = bot_voice_state.channel
-        if not voice_channel:
-            return
-
-        player = self.bot.lavalink.player_manager.get(guild.id)
-
-        if player:
-            ctx = player.fetch('ctx')
-        else:
-            ctx = None
-
-        if player.is_playing and ctx:
-            if int(player.current.requester) == member.id:
-                track = player.current
-                await player.skip()
-                await ctx.send('Automatically skipped **%s** as the requester left the channel' % track.title)
-
-        if len(voice_channel.voice_states) == 1:
-            # This means its just karen in the VC
-            await asyncio.sleep(10)
-
-            if len(voice_channel.voice_states) == 1:
-                if player and ctx:
-                    await ctx.send('Left **%s** as there is nobody in the VC.' % voice_channel.name)
-                    player.delete('ctx')
-
-                player.queue.clear()
-                await player.reset_equalizer()
-                await player.set_volume(100)
-                player.repeat = False
-                await player.stop()
-                await self.connect_to(guild_id=guild.id, channel_id=None)
 
     @commands.command()
     @commands.cooldown(1, 15, commands.BucketType.user)
@@ -635,39 +574,6 @@ class Music(commands.Cog):
             content='Volume has been set as normal again.',
             mention_author=False)
 
-    @commands.command(name="time", aliases=["np", "song", "current", "nowplaying"])
-    async def _time(self, ctx):
-        player = self.bot.lavalink.player_manager.get(ctx.guild.id)
-        if player.is_playing:
-            # Get Current Timestamp player.current
-            current_song_position = player.position
-            current_song_position_in_min = self.convert_to_min_and_seconds(current_song_position)
-            # Get Full Song Length From Memory
-            song_name = player.current.title
-            song_link = player.current.uri
-            song_duration = player.current.duration
-            song_duration_in_min = self.convert_to_min_and_seconds(song_duration)
-
-            ratio_of_times = (current_song_position / song_duration) * 100
-            now_playing_cursor = ""
-            ratio_of_times_in_range = ratio_of_times // 5
-            # Make The Cursor
-            for i in range(20):
-                if i == ratio_of_times_in_range:
-                    now_playing_cursor += "🔘"
-                else:
-                    now_playing_cursor += "▬"
-            embed = discord.Embed(
-                title=song_name,
-                color=discord.Colour.red(),
-                url=song_link,
-                description=f'{now_playing_cursor}\t{current_song_position_in_min} / {song_duration_in_min}')
-            await ctx.send(embed=embed)
-        else:
-            await ctx.message.reply(
-                content='Nothing is currently playing!',
-                mention_author=False)
-
     """ FILTERS """
 
     @commands.command(help='Adds a filter to your tracks.', aliases=['filters'])
@@ -738,57 +644,6 @@ Bassboost⠀⠀⠀⠀Random
             await player.set_gains(*self.filter_maps.get(_filter))
             player.store('filter', _filter)
             return await ctx.send('Swapped the **%s** filter with **%s**.' % (current_eq.title(), _filter.title()))
-
-    @commands.command(aliases=['lyric'])
-    @commands.cooldown(1, 10, commands.BucketType.user)
-    async def lyrics(self, ctx, *, song: str = None):
-        embed = discord.Embed(colour=discord.Colour.red())
-
-        if not song:
-            player = self.bot.lavalink.player_manager.get(ctx.guild.id)
-            if not player:
-                return await ctx.send('I am not connected to any voice channels!')
-            if not player.is_connected or not player.is_playing:
-                return await ctx.send('I am not playing anything!')
-            embed.title = player.current.title
-            embed.url = player.current.uri
-            request = await self.session.get(
-                requote_uri('https://some-random-api.ml/lyrics?title=%s' % player.current.title))
-            try:
-                json = await request.json()
-            except Exception:
-                embed.description = 'Sorry I couldn\'t find that song\'s lyrics'
-                return await ctx.send(embed=embed)
-            if json.get('error'):
-                embed.description = 'Sorry I couldn\'t find that song\'s lyrics'
-                return await ctx.send(embed=embed)
-            embed.title = json['title']
-            lyrics = json['lyrics']
-
-        else:
-            request = await self.session.get(requote_uri('https://some-random-api.ml/lyrics?title=%s' % song))
-            try:
-                json = await request.json()
-            except Exception:
-                embed.description = 'Sorry I couldn\'t find that song\'s lyrics'
-                return await ctx.send(embed=embed)
-            if json.get('error'):
-                embed.description = 'Sorry I couldn\'t find that song\'s lyrics'
-                return await ctx.send(embed=embed)
-            embed.title = json['title']
-            lyrics = json['lyrics']
-
-        if len(lyrics) >= 2048:
-            with BytesIO() as b:
-                b.write(bytes(
-                    ('Song:\n{!r} - {}\n\nLyrics:\n'.format(json['title'], json['author']) + lyrics).encode('utf-8')))
-                b.seek(0)
-                return await ctx.send(
-                    content='Woops! These lyrics were abit large, but don\'t worry. I have put them in a file for you!',
-                    file=discord.File(fp=b, filename='Lyrics.txt'))
-        else:
-            embed.description = lyrics
-            await ctx.send(embed=embed)
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
