@@ -24,28 +24,28 @@
 
 <h1 allign="center">🔗 Links</h1>
 <p allign="center">
-    <a href="https://mechakaren.xyz/login">Dashboard</a>
-    <a href="https://api.mechakaren.xyz/docs">Bot Documentation - W.I.P</a>
-    <a href="https://docs.mechakaren.xyz/">Bot Documentation - W.I.P</a>
-    <a href="https://discord.gg/Q5mFhUM">Support Server</a>
-    <a href="https://discord.com/oauth2/authorize?client_id=740514706858442792&permissions=0&scope=bot">Bot Invite</a>
+    <a href="https://mechakaren.xyz/login">Dashboard</a><br>
+    <a href="https://api.mechakaren.xyz/docs">Bot Documentation - W.I.P</a><br>
+    <a href="https://docs.mechakaren.xyz/">Bot Documentation - W.I.P</a><br>
+    <a href="https://discord.gg/Q5mFhUM">Support Server</a><br>
+    <a href="https://discord.com/oauth2/authorize?client_id=740514706858442792&permissions=0&scope=bot">Bot Invite</a><br>
 </p>
 
 <h1 allign="center">Running Karen</h1>
 <p allign="center">
-    Running KAREN is not easy - Mainly due to missing modules and parts.\
-    I will not make it easy for anybody - If you wish to run it, modify the bot.py file and do your thing!
+    Running KAREN is not easy - Mainly due to missing modules and parts.<br>
+    I will not make it easy for anybody - If you wish to run it, modify some areas of the bot and your good to go!<br>
 </p>
 
 <h2 allign="center">Basic Use of Running Karen</h2>
 <p allign="center">
-    This area will show you the major steps of running Mecha-Karen on your machine. If you run into any errors which are related to the steps below, contact me on discord so i can issue a fix for the issue. 
-    If it due to the code - A majority of the causes are stated in the repo in them sections, so give them a read before asking for help.
+    This area will show you the major steps of running Mecha-Karen on your machine. If you run into any errors which are related to the steps below, contact me on discord so i can issue a fix for the issue.<br><br>
+    If it due to the code - A majority of the causes are stated in the repo in them sections, so give them a read before asking for help.<br>
     
-    I am not going to help you self host karen due to many reasons.
+    I am not going to help you self host karen due to many reasons.<br>
     
-    If your self hosting karen - please make sure to follow the license. 
-    This project has taken a very long to make and crediting would be nice.
+    If your self hosting karen - please make sure to follow the license.<br>
+    This project has taken a very long to make and crediting would be nice.<br>
     If you wish to learn more about the licence <a href='#license'>click here</a>!
 </p>
 
