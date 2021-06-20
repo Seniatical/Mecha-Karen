@@ -8,7 +8,7 @@
 
 <h3 align="center">Usage?</h3>
 <p align="center">
-  This folder contains different images which are used by karen
+  This folder contains different images which are used by Karen.
 </p>
 
 <h3 align="center">
