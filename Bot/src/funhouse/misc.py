@@ -1,3 +1,17 @@
+# !/usr/bin/python
+
+"""
+Copyright ©️: 2020 Seniatical / _-*™#7519
+License: Apache 2.0
+A permissive license whose main conditions require preservation of copyright and license notices.
+Contributors provide an express grant of patent rights.
+Licensed works, modifications, and larger works may be distributed under different terms and without source code.
+FULL LICENSE CAN BE FOUND AT:
+    https://www.apache.org/licenses/LICENSE-2.0.html
+Any violation to the license, will result in moderate action
+You are legally required to mention (original author, license, source and any changes made)
+"""
+
 import discord
 from discord.ext import commands
 import pyfiglet
@@ -72,7 +86,7 @@ class Misc(commands.Cog):
             try:
                 x = location
                 x = x.lower()
-                r = requests.get('http://api.openweathermap.org/data/2.5/weather?q={}&APPID=49466a8c290796e687e2490621bac0b3'.format(x))
+                r = requests.get('http://api.openweathermap.org/data/2.5/weather?q={}&APPID={}'.format(x, self.bot.env('OPEN_WEATHER_API_KEY')))
                 x = r.json()
                 country = x['sys']['country']
                 city = x['name']
@@ -122,18 +136,19 @@ class Misc(commands.Cog):
     async def pwned(self, ctx, *, password: str) -> discord.Embed:
         password = hashlib.sha1(password.encode('utf-8')).hexdigest()
         search = password.upper()[:5]  # Search up first 5 hashes
-        async with aiohttp.ClientSession() as session:
-            async with session.get(f"https://api.pwnedpasswords.com/range/{search}") as response:
-                passwords = await response.text()
-                for item in passwords.splitlines():
-                    if password.upper()[5:] == item[0:35]:  # If password has been pwned before
-                        embed = discord.Embed(title="Password Results: ", color=discord.Colour.red())
-                        embed.add_field(name="Better change your password: ", value=f"Your password has been pwned: {item[36:]} times")
-                        return await ctx.send(embed=embed)
-                #  If it has not been pwned before
-                embed = discord.Embed(title="Password Results: ", color=discord.Colour.green())
-                embed.add_field(name="Congratulations: ", value="Your password has never been pwned before!")
-                return await ctx.send(embed=embed)
+
+        response = await self.bot.session.get(self.bot.env('PWNED_URL').format(query=requote_uri(password)))
+        passwords = await response.text()
+        for item in passwords.splitlines():
+        if password.upper()[5:] == item[0:35]:  # If password has been pwned before
+            embed = discord.Embed(title="Password Results: ", color=discord.Colour.red())
+            embed.add_field(name="Better change your password", value=f"Your password has been pwned {item[36:]} times")
+            return await ctx.send(embed=embed)
+            #  If it has not been pwned before
+            
+        embed = discord.Embed(title="Password Results: ", color=discord.Colour.green())
+        embed.add_field(name="Congratulations: ", value="Your password has never been pwned before!")
+        return await ctx.send(embed=embed)
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
@@ -142,9 +157,8 @@ class Misc(commands.Cog):
         compound = element_name.lower()
         IMAGE = requote_uri(f'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/{compound}/PNG')
         URL = requote_uri(f'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/{compound}/json')
-        async with aiohttp.ClientSession() as session:
-            async with session.get(URL) as r:
-                data = await r.json()
+        r = await self.bot.session.get(url)
+        data = await r.json()
         try:
             data['Fault']
             return await msg.edit(content=None, embed=discord.Embed(
