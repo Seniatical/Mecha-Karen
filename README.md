@@ -11,7 +11,7 @@
 <h4 align="center">Fun, Powerful and Unique</h4>
 
 <h1 align="center">Features</h1>
-<p allign="center">
+<p align="center">
     - Moderation - Simple but powerful!<br>
     - Image Manipulation - Mecha Karen has unique commands, Some apply effects and flip you over!<br>
     - Logging - Mecha Karen can log everything that happens in your server.<br>
@@ -22,8 +22,8 @@
     - Expanding - Mecha Karen doesn't stop growing! Got a feature request? - DM one of our devs and it may be added.<br>
 </p>
 
-<h1 allign="center">🔗 Links</h1>
-<p allign="center">
+<h1 align="center">🔗 Links</h1>
+<p align="center">
     <a href="https://mechakaren.xyz/login">Dashboard</a><br>
     <a href="https://api.mechakaren.xyz/docs">Bot Documentation - W.I.P</a><br>
     <a href="https://docs.mechakaren.xyz/">Bot Documentation - W.I.P</a><br>
@@ -31,14 +31,14 @@
     <a href="https://discord.com/oauth2/authorize?client_id=740514706858442792&permissions=0&scope=bot">Bot Invite</a><br>
 </p>
 
-<h1 allign="center">Running Karen</h1>
-<p allign="center">
+<h1 align="center">Running Karen</h1>
+<p align="center">
     Running KAREN is not easy - Mainly due to missing modules and parts.<br>
     I will not make it easy for anybody - If you wish to run it, modify some areas of the bot and your good to go!<br>
 </p>
 
-<h2 allign="center">Basic Use of Running Karen</h2>
-<p allign="center">
+<h2 align="center">Basic Use of Running Karen</h2>
+<p align="center">
     This area will show you the major steps of running Mecha-Karen on your machine. If you run into any errors which are related to the steps below, contact me on discord so i can issue a fix for the issue.<br><br>
     If it due to the code - A majority of the causes are stated in the repo in them sections, so give them a read before asking for help.<br>
     
@@ -49,70 +49,77 @@
     If you wish to learn more about the licence <a href='#license'>click here</a>!
 </p>
 
-<h2 allign="center">Env file data</h2>
-```
-MONGO_DB_URI = "Your mongo DB URI"
-DISCORD_BOT_TOKEN = "Your discord bot token"
-RECONNECT = True
-SERVER_IP = "the IP to run your websocket on"
-SERVER_PORT = 8000
-START_SERVER = True
-IS_MAIN = True
-ALT_TOKEN = "Optional feature to run an alt instead of your main acc - change IS_MAIN to false"
-API_TOKEN = "API Token for the mecha karen API - https://api.mechakaren.xyz"
-OPEN_WEATHER_API_KEY = "Your api key for open-weather"
+<h2 align="center">Env file data</h2>
+<p align="center">
+  <code>
+    MONGO_DB_URI = "Your mongo DB URI"
+    DISCORD_BOT_TOKEN = "Your discord bot token"
+    RECONNECT = True
+    SERVER_IP = "the IP to run your websocket on"
+    SERVER_PORT = 8000
+    START_SERVER = True
+    IS_MAIN = True
+    ALT_TOKEN = "Optional feature to run an alt instead of your main acc - change IS_MAIN to false"
+    API_TOKEN = "API Token for the mecha karen API - https://api.mechakaren.xyz"
+    OPEN_WEATHER_API_KEY = "Your api key for open-weather"
 
-LAVALINK_SERVER_IP = "Lavalink server ip"
-LAVALINK_SERVER_PORT = Lavalink-server-port
-LAVALINK_SERVER_PASSWORD = "Your password for the env"
-LAVALINK_REGION = "your server region"
-LAVALINK_NODETYPE = "default-node"
+    LAVALINK_SERVER_IP = "Lavalink server ip"
+    LAVALINK_SERVER_PORT = Lavalink-server-port
+    LAVALINK_SERVER_PASSWORD = "Your password for the env"
+    LAVALINK_REGION = "your server region"
+    LAVALINK_NODETYPE = "default-node"
 
-IPC_SECRET_KEY = "The key which will be used to authenticate requests from dashboard to bot"
-IPC_HOST = "The host which the server will run off of"
+    IPC_SECRET_KEY = "The key which will be used to authenticate requests from dashboard to bot"
+    IPC_HOST = "The host which the server will run off of"
 
-REDDIT_USERNAME = ""
-REDDIT_PASSWORD = ""
-REDDIT_CLIENT_ID = ""
-REDDIT_CLIENT_SECRET = ""
-```
+    REDDIT_USERNAME = ""
+    REDDIT_PASSWORD = ""
+    REDDIT_CLIENT_ID = ""
+    REDDIT_CLIENT_SECRET = ""
+  </code>
+</p>
 
-<h2 allign="center">Linux</h2>
-```sh
-$ git clone https://github.com/Seniatical/Mecha-Karen/
-$ cd Mecha-Karen/Bot
+<h2 align="center">Linux</h2>
+<p align="center">
+  <code>
+    $ git clone https://github.com/Seniatical/Mecha-Karen/
+    $ cd Mecha-Karen/Bot
 
-$ touch .env
-$ nano .env
-... Env data goes here
+    $ touch .env
+    $ nano .env
+    ... Env data goes here
 
-$ python3 -m venv ./venv --system-site-packages
-$ source ./venv/bin/activate
-(venv) $ pip3 install -r requirements.txt
-(venv) $ python3 main.py
-(venv) $ deactivate
-```
-To exit out of the NANO GUI press `Ctrl+X` then press `Y` and then press `ENTER`
+    $ python3 -m venv ./venv --system-site-packages
+    $ source ./venv/bin/activate
+    (venv) $ pip3 install -r requirements.txt
+    (venv) $ python3 main.py
+    (venv) $ deactivate
+  </code>  
 
-<h2 allign="center">Windows</h2>
-```
-C:\> git clone https://github.com/Seniatical/Mecha-Karen/
-C:\> cd Mecha-Karen/Bot
+  To exit out of the NANO GUI press `Ctrl+X` then press `Y` and then press `ENTER`
+</p>
+  
+<h2 align="center">Windows</h2>
+<p align="center">
+  <code>
+    C:\> git clone https://github.com/Seniatical/Mecha-Karen/
+    C:\> cd Mecha-Karen/Bot
 
-C:\> type nul > .env
-... Next part cannot be in terminal for windows
-... Go to your .env file and fill out the env data
-... close the file and go to cmd again
+    C:\> type nul > .env
+    ... Next part cannot be in terminal for windows
+    ... Go to your .env file and fill out the env data
+    ... close the file and go to cmd again
 
-C:\> python3 -m venv ./venv --system-site-packages
-C:\> path/to/venv/Scripts/activate.bat
-(venv) C:\> pip install -r requirements.txt
-(venv) C:\> python main.py
-(venv) C:\> deactivate
-```
+    C:\> python3 -m venv ./venv --system-site-packages
+    C:\> path/to/venv/Scripts/activate.bat
+    (venv) C:\> pip install -r requirements.txt
+    (venv) C:\> python main.py
+    (venv) C:\> deactivate
+  </code>
+</p>
 
-<h1 allign="center" name="license"></h1>
-<p allign="center">
+<h1 align="center" name="license"></h1>
+<p align="center">
     Mecha Karen is licensed and distributed under the APACHE 2.0 License - The copyright protects:
     <code>
         BOT
