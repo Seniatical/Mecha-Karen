@@ -6,7 +6,6 @@ from discord.ext.commands import BucketType
 from PIL import Image, ImageDraw
 from io import BytesIO
 import aiohttp
-import vacefron
 import MK
 import numpy as np
 import random
@@ -15,13 +14,14 @@ import cv2
 from core._ import extract_
 from core._.image.effects import *
 from core._.image._ import sort_size, save_image
+from core._.image.cloud import APISESSION
 
 class _Image(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
         self.converter = commands.MemberConverter()
-        self.vac_api = vacefron.Client()
+        self.vac_api = APISESSION.Client()
         self.client = MK.Async.Client(bot.env('API_TOKEN'))
         self.ses = aiohttp.ClientSession()
         self.cache = bot.cache
