@@ -30,7 +30,6 @@ class Reddit(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.memes = []
         self.reddit = apraw.Reddit(
             username=bot.env('REDDIT_USERNAME'),
             password=bot.env('REDDIT_PASSWORD'),
@@ -39,14 +38,17 @@ class Reddit(commands.Cog):
             user_agent='<Mecha Karen - Discord Bot [https://github.com/Seniatical/Mecha-Karen/main/Bot/src/funhouse/reddit.py]>'
         )
 
-        memes.add_global(self.memes)
+        bot.cache.cache['memes'] = []
+
+        print('Storing memes from `r/memes` in cache container - `self.cache.cache["memes"]`')
         
-        self.bot.loop.create_task(memes.task())
+        memes.add_global(bot.cache.cache['memes'])
+        self.bot.loop.create_task(memes.task(bot, self.reddit))
         
     @commands.command(name='Meme', aliases=['memes'])
     @commands.cooldown(1, 5, BucketType.user)
     async def memes(self, ctx):
-        embed = random.choice(self.memes)
+        embed = random.choice(self.bot.cache.cache['memes'])
         await ctx.send(embed=embed)
 
     @commands.command(name='BB', aliases=['BreakingBad'])
