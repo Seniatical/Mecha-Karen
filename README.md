@@ -76,25 +76,25 @@
 
 <h2 align="center">Linux</h2>
 <p align="center">
-  <code>
+
     $ git clone https://github.com/Seniatical/Mecha-Karen/
     $ cd Mecha-Karen/Bot<br>
     $ touch .env
     $ nano .env
     ... Env data goes here<br>
+  
     $ python3 -m venv ./venv --system-site-packages
     $ source ./venv/bin/activate
+  
     (venv) $ pip3 install -r requirements.txt
     (venv) $ python3 main.py
     (venv) $ deactivate
-  </code>  
 
   To exit out of the NANO GUI press `Ctrl+X` then press `Y` and then press `ENTER`
 </p>
   
 <h2 align="center">Windows</h2>
 <p align="center">
-  <code>
     C:\> git clone https://github.com/Seniatical/Mecha-Karen/
     C:\> cd Mecha-Karen/Bot<br>
     C:\> type nul > .env
@@ -106,18 +106,15 @@
     (venv) C:\> pip install -r requirements.txt
     (venv) C:\> python main.py
     (venv) C:\> deactivate
-  </code>
 </p>
 
 <h1 align="center" name="license"></h1>
 <p align="center">
     Mecha Karen is licensed and distributed under the APACHE 2.0 License - The copyright protects:
-    <code>
         BOT
         API
         DOCUMENTATION
         DASHBOARD
-    </code>
 
     Any violations to the license will result in moderate action.
 </p>    
