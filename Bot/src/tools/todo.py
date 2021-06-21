@@ -12,322 +12,290 @@ Any violation to the license, will result in moderate action
 You are legally required to mention (original author, license, source and any changes made)
 """
 
-import datetime
-import typing
 import asyncio
+import datetime
+
+import TagScriptEngine
 import discord
 from discord.ext import commands
-from durations import Duration
+import TagScriptEngine as tagscript
+from pydantic import BaseModel
+from core.abc import KarenMixin, KarenMetaClass
 
-class Todo(commands.Cog):
+
+class Tags(commands.Cog, KarenMixin, metaclass=KarenMetaClass):
     def __init__(self, bot):
-        self.bot = bot
-        self.tasks = bot.client['todo']['tasks']
-        self.member = commands.MemberConverter()
+        super().__init__()
 
-    async def convert(self, seconds: int) -> str:
-        hours = seconds // (60 * 60)
-        seconds %= (60 * 60)
-        minutes = seconds // 60
-        if hours != 0 and seconds != 0 and minutes != 0:
-            return f'{hours} Hour(s), {minutes} Minute(s) and {seconds} Second(s)'
-        if hours != 0 and minutes != 0:
-            return f'{hours} Hour(s) and {minutes} Minute(s)'
-        if minutes != 0 and seconds != 0:
-            return f'{minutes} Minute(s) and {seconds} Second(s)'
-        if minutes != 0:
-            return f'{minutes} Minute(s)'
-        return f'{seconds} Second(s)'
-    
+        self.bot = bot
+        self.client = bot.client
+        
+        column = self.client['Bot']
+        self.table = column['Tags']
+
+        bot.cache.cache['Tags'] = dict()
+
+        self.max_tags = 10
+
+        for tag in self.table.find():
+            tag_id = tag['_id']
+            guild, name, *args = tag_id.split('/')
+            ## If `/` in the tag_name it will be filtered into args
+            name += '/'.join(args)
+            ## We get the original tag name by rejoining the args with a `/`
+
+            tag['_id'] = guild
+            tag['name'] = name
+
+            guild = bot.get_guild(tag['_id'])
+
+            if not guild:
+                continue
+
+            if bot.cache.cache['Tags'].get(tag['_id']):
+                bot.cache.cache['Tags'][tag['_id']].update({tag['name']: self.Tag(
+                    content=tag['value'], name=tag['name'], guild=guild.id,
+                    author=getattr(guild.get_member(tag['author']), 'id', 0),
+                    created_at=datetime.datetime.fromisoformat(tag['created_at']),
+                    updated_at=datetime.datetime.fromisoformat(tag['updated_at']),
+                    uses=tag['uses']
+                )})
+            else:
+                self.bot.cache.cache['Tags'][tag['_id']] = dict()
+                self.bot.cache.cache['Tags'][tag['_id']][tag['name']] = self.Tag(
+                    content=tag['value'], name=tag['name'], guild=guild.id,
+                    author=getattr(guild.get_member(tag['author']), 'id', 0),
+                    created_at=datetime.datetime.fromisoformat(tag['created_at']),
+                    updated_at=datetime.datetime.fromisoformat(tag['updated_at']),
+                    uses=tag['uses']
+                )
+
+        tagscript_blocks = [
+            tagscript.MathBlock(),
+            tagscript.RandomBlock(),
+            tagscript.RangeBlock(),
+            tagscript.AnyBlock(),
+            tagscript.IfBlock(),
+            tagscript.AllBlock(),
+            tagscript.BreakBlock(),
+            tagscript.StrfBlock(),
+            tagscript.StopBlock(),
+            tagscript.AssignmentBlock(),
+            tagscript.FiftyFiftyBlock(),
+            tagscript.ShortCutRedirectBlock("args"),
+            tagscript.LooseVariableGetterBlock(),
+            tagscript.SubstringBlock(),
+            tagscript.EmbedBlock(),
+            tagscript.ReplaceBlock(),
+            tagscript.PythonBlock(),
+            tagscript.URLEncodeBlock(),
+            tagscript.RequireBlock(),
+            tagscript.BlacklistBlock(),
+            tagscript.CommandBlock(),
+            tagscript.OverrideBlock(),
+        ]
+
+        self.engine = TagScriptEngine.Interpreter(tagscript_blocks)
+
+    class Tag(BaseModel):
+        r""" An object which represents a TAG """
+        content: str
+        name: str
+        guild: int
+        author: int
+        created_at: datetime.datetime
+        updated_at: datetime.datetime
+        uses: int
+
+    async def save_tag(self, ctx: commands.Context, name: str, value: str):
+        tag_info_as_dict = await self.get_tag_info(ctx, name, value)
+        tag = self.Tag(content=value, name=name, guild=ctx.guild.id, author=ctx.author.id,
+                       created_at=ctx.message.created_at, updated_at=ctx.message.created_at,
+                       uses=0
+                       )
+        try:
+            self.bot.cache.cache['Tags'][ctx.guild.id][tag.name] = tag
+        except KeyError:
+            self.bot.cache.cache['Tags'][ctx.guild.id] = dict()
+            self.bot.cache.cache['Tags'][ctx.guild.id][tag.name] = tag
+
+        await self.bot.loop.run_in_executor(
+            None, self.table.insert_one, tag_info_as_dict
+        )
+
+    @staticmethod
+    async def get_tag_info(ctx: commands.Context, name: str, value: str) -> dict:
+        tag = {'_id': f'{ctx.guild.id}/{name}', 'author': ctx.author.id,
+               'created_at': ctx.message.created_at.isoformat(),
+               'updated_at': ctx.message.created_at.isoformat(),
+               'value': value, 'uses': 0,
+               }
+        return tag
+
+    @staticmethod
+    async def get_seeds(ctx: commands.Context, tag):
+        author = {
+            'avatar': ctx.author.avatar,
+            'name': ctx.author.name,
+            'id': ctx.author.id,
+            'display_name': ctx.author.display_name,
+            'mention': ctx.author.mention
+        }
+
+        seed = {
+            "author": author,
+            "user": author,
+            "tag_owner": tag.author,
+            "tag_name": tag.name,
+            "tag_uses": tag.uses
+        }
+        if ctx.guild:
+            guild = {
+                'name': ctx.guild.name,
+                'icon': ctx.guild.icon,
+                'id': ctx.guild.id,
+                'owner': ctx.guild.owner
+            }
+            seed.update(guild=guild, server=guild)
+        return seed
+
+    async def tag_exists(self, ctx: commands.Context, name: str):
+        tag = await self.bot.loop.run_in_executor(
+            None, self.table.find_one, {'_id': f'{ctx.guild.id}/{name}'}
+        )
+        if tag is not None:
+            return True
+        return False
+
+    async def surpassed_limit(self, ctx: commands.Context):
+        tags: int = await self.bot.loop.run_in_executor(
+            None, self.table.count_documents, {'_id': {'$regex': f'^{ctx.guild.id}'}, 'author': ctx.author.id}
+        )
+
+        return tags > self.max_tags
+
     @commands.group(invoke_without_command=True)
     @commands.cooldown(1, 10, commands.BucketType.user)
-    async def todo(self, ctx, number: str = None, user: discord.Member = None):
-        user = user or ctx.author
-        
+    async def tag(self, ctx: commands.Context, *, tag: str):
         try:
-            number = int(number)
-        except (ValueError, TypeError):
+            tags = self.bot.cache.cache['Tags'][ctx.guild.id]
+        except KeyError:
+            tags = None
+
+        if not tags or not tags.get(tag):
+            return await ctx.message.reply(content='This tag doesn\'t exist', mention_author=False)
+        tag = tags[tag]
+        seeds = await self.get_seeds(ctx, tag)
+
+        content = self.engine.process(tag.content, seed_variables=seeds)
+
+        if ctx.message.reference and ctx.message.reference.resolved:
+            return await ctx.message.reference.resolved.reply(content=content.body, mention_author=False)
+        return await ctx.send(content.body)
+
+    @tag.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    @commands.bot_has_guild_permissions(read_message_history=True)
+    async def delete(self, ctx: commands.Context, *, tag: str):
+        global confirmed
+
+        tags: dict = self.bot.cache.cache['Tags'].get(ctx.guild.id)
+        if not tags or not tags.get(tag):
             try:
-                user = await self.member.convert(ctx, number)
+                return await ctx.message.reply(content='This tag doesn\'t exist!')
             except Exception:
-                number = None
-            number = None
+                return await ctx.send(content='This tag doesn\'t exist!')
+        tag = tags[tag]
 
-        uncleansed = self.tasks.find_one({'_id': user.id})
-        if not uncleansed:
-            return await ctx.send('```There are currently no tasks on {}\'s todo list \U0001f973```'.format(user.display_name))
-        iter_data = uncleansed['tasks']
-
-        if number:
-            index = number
-            if len(str(index)) < 3:
-                num = '0' * (3 - len(str(index)))
-                num += str(index)
-            else:
-                num = str(index)
-            
+        if not tag.author == ctx.author.id and not ctx.author.guild_permissions.manage_guild:
             try:
-                return await ctx.send('{}\'s todo List:```'.format(user.display_name) + f'{num} | {iter_data[(index - 1)]}\n```')
-            except IndexError:
-                return await ctx.send('This task number doesn\'t exist.')
-            
-        for iter in iter_data:
-            index = iter_data.index(iter, 0)
-            if len(str(index)) < 3:
-                num = '0' * (3 - len(str(index + 1)))
-                num += str(index + 1)
-            else:
-                num = str(index + 1)
+                return await ctx.message.reply(content='This tag doesn\'t belong to you.')
+            except Exception:
+                return await ctx.send(content='This tag doesn\'t belong to you.')
 
-            iter_data[index] = '%s | ' % num + iter
+        confirmed = False
 
-        new = '\n'.join(iter_data)
-        await ctx.send('{}\'s todo List:```\n'.format(user.display_name) + '\n' + new + '\n```')
+        def check(m):
+            global confirmed
 
-    @todo.command(aliases=['+'])
-    @commands.cooldown(1, 10, commands.BucketType.user)
-    async def add(self, ctx, *, new_todo):
-        if len(new_todo) > 100:
-            await ctx.send('Warning: Your todo task was larger than 100 characters. We have scaled it down automatically.')
-            new_todo = new_todo[:100]
-        
-        current_todos = self.tasks.find_one({'_id': ctx.author.id})
-        if not current_todos:
-            query = {'_id': ctx.author.id, 'tasks': [new_todo]}
-        else:
-            if len(current_todos['tasks']) == 15:
-                return await ctx.send('You have reached the limit of todo\'s on your list. If you would like to have more consider purchasing premium.')
-            query = current_todos
-            for todo in query['tasks']:
-                if todo.lower().strip() == new_todo.lower().strip():
-                    return await ctx.send('This todo is already on your list. Task number #%d' % (query['tasks'].index(todo) + 1))
-            
-            query['tasks'].append(new_todo)
-
-        if not current_todos:
-            self.tasks.insert_one(query)
-        else:
-            self.tasks.update_one({'_id': ctx.author.id}, {'$set': {'tasks': query['tasks']}})
-
-        await ctx.send('Added this to your todo list. Task #%s.' % len(query['tasks']))
-
-    @todo.command(aliases=['modify'])
-    @commands.cooldown(1, 10, commands.BucketType.user)
-    async def edit(self, ctx, task_number: str, *, new_todo):
+            if m.author.id == ctx.author.id and m.channel.id == ctx.channel.id and m.content.lower() in ['y', 'yes']:
+                confirmed = True
+                return True
+            elif m.author.id == ctx.author.id and m.channel.id == ctx.channel.id and m.content.lower() in ['n', 'no']:
+                return True
         try:
-            number = int(task_number)
-        except (ValueError, TypeError):
-            return await ctx.send('Make sure the task number is actually a number.')
+            await ctx.send('Are you sure you would like to delete this tag, response with `(y / n)`')
+            message: discord.Message = await self.bot.wait_for('message', check=check, timeout=30.0)
+        except asyncio.TimeoutError:
+            try:
+                return await ctx.message.reply(content='You didn\'t confirm in time!')
+            except Exception:
+                return await ctx.send(content='You didn\'t confirm in time!')
+        if not confirmed:
+            try:
+                return await message.reply(content='Ok, I will not delete this tag')
+            except Exception:
+                return await ctx.send(content='Ok, I will not delete this tag')
 
-        todos = self.tasks.find_one({'_id': ctx.author.id})
-        if not todos:
-            return await ctx.send('```There are currently no tasks on your todo list \U0001f973```')
-        
-        if len(new_todo) > 100:
-            await ctx.send('Warning: Your todo task was larger than 100 characters. We have scaled it down automatically.')
-            new_todo = new_todo[:100]
-        
-        iter_data = todos['tasks']
-        index = number
-        if len(str(index)) < 3:
-            num = '0' * (3 - len(str(index)))
-            num += str(index)
-        else:
-            num = str(index)
+        await self.bot.loop.run_in_executor(
+            None, self.table.delete_one, {'_id': f'{ctx.guild.id}/{tag.name}'}
+        )
+        self.bot.cache.cache['Tags'][ctx.guild.id].pop(tag.name)
 
         try:
-            selected_todo = iter_data[(index - 1)]
-            for todo in iter_data:
-                if todo.lower().strip() == new_todo.lower().strip():
-                    return await ctx.send('This todo is already on your list. Task number #%d' % (iter_data.index(selected_todo) + 1))
-            
-            iter_data[(index - 1)] = new_todo
-        except IndexError:
-            return await ctx.send('This task number doesn\'t exist.')
-
-        self.tasks.update_one({'_id': ctx.author.id}, {'$set': {'tasks': iter_data}})
-
-        await ctx.send('```Updated todo task #%s\n\nBefore:\n%s\n\n+After:\n%s```' % (num, selected_todo, new_todo))
-
-    @todo.command(aliases=['remove', 'check', '-'])
-    @commands.cooldown(1, 10, commands.BucketType.user)
-    async def done(self, ctx, task_number: str):
-        try:
-            number = int(task_number)
-        except (ValueError, TypeError):
-            return await ctx.send('Make sure the task number is actually a number.')
-
-        uncleansed = self.tasks.find_one({'_id': ctx.author.id})
-        if not uncleansed:
-            return await ctx.send('```There are currently no tasks on your todo list \U0001f973```')
-        iter_data = uncleansed['tasks']
-        
-        index = number
-        if len(str(index)) < 3:
-            num = '0' * (3 - len(str(index)))
-            num += str(index)
-        else:
-            num = str(index)
-
-        try:
-            checked = iter_data.pop((index - 1))
-        except IndexError:
-            return await ctx.send('This task number doesn\'t exist.')
-            
-        self.tasks.update_one({'_id': ctx.author.id}, {'$set': {'tasks': iter_data}})
-        
-        return await ctx.send('This todo has been checked off\n```\n' + f'{num} | {checked}\n```')
-    
-    @todo.command(aliases=['+='])
-    @commands.cooldown(1, 10, commands.BucketType.user)
-    async def append(self, ctx, task_number: str, *, add_on):
-        try:
-            number = int(task_number)
-        except (ValueError, AttributeError):
-            return await ctx.send('The task number must actually be a number.')
-        
-        todos = self.tasks.find_one({'_id': ctx.author.id})
-        
-        if not todos:
-            return await ctx.send('```There are currently no tasks on your todo list \U0001f973```')
-        
-        todos = todos['tasks']
-        
-        index = number
-        if len(str(index)) < 3:
-            num = '0' * (3 - len(str(index)))
-            num += str(index)
-        else:
-            num = str(index)
-
-        try:
-            current_todo = todos[(index - 1)]
-        except IndexError:
-            return await ctx.send('This task number doesn\'t exist.')
-        
-        if (len(add_on) + len(current_todo)) > 100:
-            await ctx.send('Warning: Your todo task was larger than 100 characters. We have scaled it down automatically.')
-            add_on = add_on[:(100 - len(current_todo))]
-        todos[(index - 1)] = (current_todo + add_on)
-        
-        self.tasks.update_one({'_id': ctx.author.id}, {'$set': {'tasks': todos}})
-        
-        await ctx.send('Added text to todo task #%s```Before:\n%s\n\n+After:\n%s```' % (num, current_todo, (current_todo + add_on)))
-
-    @todo.command(aliases=['clear', 'delete'])
-    @commands.cooldown(1, 10, commands.BucketType.user)
-    async def reset(self, ctx):
-        todos = self.tasks.find_one({'_id': ctx.author.id})
-
-        if not todos:
-            return await ctx.send('```There are currently no tasks on your todo list \U0001f973```')
-
-        msg = await ctx.send('Are you sure you would like to clear your todo list. (**%s** tasks)' % len(todos['tasks']))
-
-        try:
-            check = await self.bot.wait_for('message', check=lambda m: m.author.id == ctx.author.id and m.channel.id == ctx.channel.id and m.content.lower() in ['y', 'n', 'yes', 'no'], timeout=30.0)
+            return await message.reply(content='Successfully deleted this tag for you!')
         except Exception:
-            return await msg.edit(content='Failed to recieve a response, Cancelling request.')
+            return await ctx.send(content='Successfully deleted this tag for you!')
 
-        if check.content.lower() in ['n', 'no']:
-            return await msg.edit(content='Cancelling request.\n> **Reason:** User cancelled operation.')
-
-        else:
-            self.tasks.delete_one({'_id': ctx.author.id})
-
-        return await msg.edit(content='Successfully cleared all todos from your list! (**%s** tasks)' % len(todos['tasks']))
-    
-    @todo.command()
+    @tag.command(aliases=['add'])
     @commands.cooldown(1, 10, commands.BucketType.user)
-    async def highlight(self, ctx, task_number: str):
-        todos = self.tasks.find_one({'_id': ctx.author.id})
+    @commands.bot_has_guild_permissions(read_message_history=True, send_messages=True)
+    async def create(self, ctx: commands.Context):
+        await ctx.send('What will be the name for this tag, keep it under **50** characters!')
+        try:
+            tag_name: discord.Message = await self.bot.wait_for('message', check=lambda m: m.author.id == ctx.author.id and ctx.channel.id == m.channel.id, timeout=30.0)
+        except asyncio.TimeoutError:
+            try:
+                return await ctx.message.reply(content='Failed to create tag, You didn\'t provide a name in time!')
+            except Exception:
+                return await ctx.send(content='Failed to create tag, You didn\'t provide a name in time!')
+        if len(tag_name.content) > 50:
+            try:
+                return await tag_name.reply(content='Failed to create tag, Your tags name must be under **50** characters')
+            except Exception:
+                return await ctx.send(content='Failed to create tag, Your tags name must be under **50** characters')
 
-        if not todos:
-            return await ctx.send('```There are currently no tasks on your todo list \U0001f973```')
-        
-        try:
-            task_number = int(task_number)
-        except (ValueError, AttributeError):
-            return await ctx.send('The task number must actually be a number.')
-        
-        todos = todos['tasks']
-        try:
-            todo = todos[(task_number - 1)]
-        except IndexError:
-            return await ctx.send('Task number not found!')
-        
-        if todo.endswith(' [HIGHLIGHTED]'):
-            todo = todo[:-len(' [HIGHLIGHTED]')]
-            message = 'I have removed the highlight tag from your todo.'
-        else:
-            todo += ' [HIGHLIGHTED]'
-            message = 'I have added the highlight tag to your todo.'
-        
-        todos[(task_number - 1)] = todo
-        
-        self.tasks.update_one({'_id': ctx.author.id}, {'$set': {'tasks': todos}})
-        return await ctx.send(message)
-    
-    @todo.command()
-    @commands.cooldown(1, 10, commands.BucketType.user)
-    async def move(self, ctx, move_from, move_to):
-        todos = self.tasks.find_one({'_id': ctx.author.id})
+        if await self.tag_exists(ctx, tag_name.content):
+            try:
+                return await tag_name.reply(content='This tag already exists in your server!')
+            except Exception:
+                return await ctx.send(content='This tag already exists in your server!')
 
-        if not todos:
-            return await ctx.send('```There are currently no tasks on your todo list \U0001f973```')
-        
         try:
-            move_from, move_to = int(move_from), int(move_to)
-        except (ValueError, AttributeError):
-            return await ctx.send('Move to/from must be the task numbers.')
-        
-        if move_to <= 0:
-            return await ctx.send('Cannot move to task to or below 0. Perhaps you ment 1.')
-        
-        if move_to > len(todos['tasks']):
-            return await ctx.send('Cannot move a task to a number which doesn\'t exist.')
-        
-        todos = todos['tasks']
-        
-        try:
-            movefromvalue = todos[(move_from - 1)]
-        except IndexError:
-            return await ctx.send('The task number to move cannot be found.')
-        movetovalue = todos[(move_to - 1)]
-        
-        todos.pop((move_from - 1))
-        todos.insert((move_to - 1), movefromvalue)
-        
-        self.tasks.update_one({'_id': ctx.author.id}, {'$set': {'tasks': todos}})
-        
-        return await ctx.send('```\nMoved task #{} to #{}.```'.format(move_from, move_to))
-    
-    @todo.command()
-    @commands.cooldown(1, 10, commands.BucketType.user)
-    async def deadline(self, ctx, task_number: str, *, duration: str):
-        todos = self.tasks.find_one({'_id': ctx.author.id})
-
-        if not todos:
-            return await ctx.send('```There are currently no tasks on your todo list \U0001f973```')
-        
-        try:
-            task_index = int(task_number)
-        except ValueError:
-            return await ctx.send('The task number must actually be a number.')
-        
-        try:
-            task = todos['tasks'][task_index - 1]
-        except IndexError:
-            return await ctx.send('This task doesn\'t exist!')
-        
-        try:
-            dur = Duration(duration)
+            await tag_name.reply(content='Ok then, your tags name will be called **%s**, now what will be the tags content?' % tag_name.content)
         except Exception:
-            return await ctx.send('Failed to parse the duration for the deadline.')
-        time_to_rest = dur.to_seconds()
-        message = await ctx.send('I will remind you after %s' % await self.convert(time_to_rest))
-        await asyncio.sleep(time_to_rest)
-        await message.edit(content='%s, Looks like your deadline for task **%s** is over!\n```%s```' % (ctx.author.mention, task_index, task))
-    
+            await ctx.send(content='Ok then, your tags name will be called **%s**, now what will be the tags content?' % tag_name.content)
+
+        try:
+            tag_content: discord.Message = await self.bot.wait_for('message', check=lambda m: m.author.id == ctx.author.id and ctx.channel.id == m.channel.id, timeout=(60 * 30))
+        except asyncio.TimeoutError:
+            try:
+                return await tag_name.reply(content='Failed to create tag, You didn\'t respond in time!')
+            except Exception:
+                return await ctx.send(content='Failed to create tag, You didn\'t respond in time!')
+
+        if await self.surpassed_limit(ctx):
+            try:
+                return await tag_content.reply(content='You have already reached the maximum amount of tags, which is **%s**' % self.max_tags)
+            except Exception:
+                return await ctx.send(content='You have already reached the maximum amount of tags, which is **%s**' % self.max_tags)
+
+        ## No point checking for content length because the bot just sends what they said
+
+        await self.save_tag(ctx, tag_name.content, tag_content.content)
+
+        return await ctx.send('Created a new tag for this server using the name **%s**' % tag_name.content)
+
+
 def setup(bot):
-    bot.add_cog(Todo(bot))
+    bot.add_cog(Tags(bot))
