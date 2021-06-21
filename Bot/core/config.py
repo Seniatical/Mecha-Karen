@@ -27,7 +27,7 @@ r"""
 """
 
 try:
-    with open('./config.json', 'r') as f:
+    with open('./storage/storage/config.json', 'r') as f:
         data = json.load(f)
 except FileNotFoundError as error:
     raise FileNotFoundError('Cannot locate config.json file!')
