@@ -8,7 +8,7 @@
 
 <h3 align="center">Usage?</h3>
 <p align="center">
-  All files which are used by karen get saved here
+  All files which are used by Karen get saved here. I will not provide any files for the sake of cloning and the fact they are a few GB in size (total).
 </p>
 
 <h3 align="center">
