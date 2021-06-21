@@ -14,20 +14,19 @@ You are legally required to mention (original author, license, source and any ch
 
 import discord
 from discord.ext import commands
-from discord.ext.commands import BucketType, cooldown
-import json
-import os
-import inspect
+from discord.ext.commands import BucketType
 import datetime
-from ast import literal_eval
+from core.abc import KarenMixin, KarenMetaClass
 
-class Management(commands.Cog):
+
+class Management(commands.Cog, KarenMixin, metaclass=KarenMetaClass):
     def __init__(self, bot):
-        self.bot: commands.AutoShardedBot = bot
+        self.bot = bot
         self.client = self.bot.client
         self.disabled = \
             ['remove', 'allow', 'help', 'prefix', 'change_prefix', 'cp', 'suggest', 'report',
              'refresh', 'sync', 'enable', 'disable', 'blacklist', 'unblacklist', 'blacklists']
+        super().__init__()
 
     @commands.group(invoke_without_command=True, aliases=['prefixes'])
     @commands.cooldown(1, 10, commands.BucketType.channel)
@@ -43,7 +42,7 @@ class Management(commands.Cog):
             description.append('**{}. {}**'.format((i + 1), prefixes[i]))
         embed.description = '\n\n'.join(description)
 
-        await ctx.message.reply(embed=embed)
+        return await ctx.message.reply(embed=embed)
             
     @commands.command()
     @commands.cooldown(1, 10, BucketType.user)
@@ -131,8 +130,10 @@ class Management(commands.Cog):
         cluster = [i for i in self.bot.shards if self.bot.shards[i].id == ctx.guild.shard_id][0]
         latency = round((shard.latency * 1000))
         
-        embed = discord.Embed(title="Uptime:", description=f"**{int(weeks)}** weeks, **{int(days)}** days, **{int(hours)}** hours and **{int(mins)}** minutes", color=discord.Colour.red())
-        embed.add_field(name='Shard Info:', value=f'Cluster **{cluster}** has latency of `{latency} ms` with a shard count of **{shard.shard_count}**')
+        embed = discord.Embed(title="Uptime:", description=f"**{int(weeks)}** weeks, **{int(days)}** days,\
+         **{int(hours)}** hours and **{int(mins)}** minutes", color=discord.Colour.red())
+        embed.add_field(name='Shard Info:', value=f'Cluster **{cluster}** has latency of `{latency} ms` with\
+         a shard count of **{shard.shard_count}**')
         await ctx.send(embed=embed)
 
 
