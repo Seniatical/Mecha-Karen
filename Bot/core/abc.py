@@ -14,6 +14,7 @@ class KarenMixin(ABC):
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs
+        self.attrs = None
 
         super().__init__()
 
@@ -27,7 +28,7 @@ class KarenMixin(ABC):
             if not callable(getattr(super(), value)):
                 ## If it the attr is callable we dont class it as an attribute
                 accepted.append(value)
-        self.attributes = accepted
+        self.attrs = accepted
         return accepted
 
 class KarenMetaClass(type(Cog), type(ABC)):
