@@ -133,3 +133,10 @@
   Any violations to the license will result in moderate action.
 </p>    
     
+<h1 align="center">Modified Libs</h1>
+<p>
+  A list of modified libraries which are made to suit karen running style.
+  <strong>Note: These are not all the libraries!</strong>
+  
+  TagScript: <a href="https://github.com/Seniatical/TagScript">Click Here</a>
+</p>
