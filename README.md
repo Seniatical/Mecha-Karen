@@ -23,7 +23,7 @@
 </p>
 
 <h1 align="center">🔗 Links</h1>
-<p align="center">
+<p align="">
     <a href="https://mechakaren.xyz/login">Dashboard</a><br>
     <a href="https://api.mechakaren.xyz/docs">Bot Documentation - W.I.P</a><br>
     <a href="https://discord.gg/Q5mFhUM">Support Server</a><br>
@@ -31,14 +31,14 @@
 </p>
 
 <h1 align="center">Running Karen</h1>
-<p align="center">
-  Running KAREN is not easy - Mainly due to missing modules and parts.<br>
+<p align="">
+  Running KAREN is not easy - Mainly due to missing modules and parts. Some modules have also been customised to suit karens running style - of which I do not include in this repo.<br>
   I will not make it easy for anybody - If you wish to run it, modify some areas of the bot and your good to go!<br>
   This repo is not ment to be directly copied as it contains pre-releases which are very unstable and are never used in production, The purpose of this repo is for testing and helping to improve the bot!
 </p>
 
 <h2 align="center">Basic Use of Running Karen</h2>
-<p align="center">
+<p align="">
     This area will show you the major steps of running Mecha-Karen on your machine. If you run into any errors which are related to the steps below, contact me on discord so i can issue a fix for the issue.<br><br>
     If it due to the code - A majority of the causes are stated in the repo in them sections, so give them a read before asking for help.<br>
     I am not going to help you self host karen due to many reasons.<br>
@@ -48,7 +48,7 @@
 </p>
 
 <h2 align="center">Env File</h2>
-<p align="center">
+<p align="">
   
     MONGO_DB_URI = "Your mongo DB URI"
     DISCORD_BOT_TOKEN = "Your discord bot token"
@@ -80,7 +80,7 @@
 </p>
 
 <h2 align="center">Linux</h2>
-<p align="center">
+<p align="">
   
     $ git clone https://github.com/Seniatical/Mecha-Karen/
     $ cd Mecha-Karen/Bot<br>
@@ -99,7 +99,7 @@
 </p>
   
 <h2 align="center">Windows</h2>
-<p align="center">
+<p align="">
   
     C:\> git clone https://github.com/Seniatical/Mecha-Karen/
     C:\> cd Mecha-Karen/Bot<br>
@@ -118,7 +118,7 @@
 </p>
 
 <h1 align="center" name="license"></h1>
-<p align="center">
+<p align="">
   Mecha Karen is licensed and distributed under the APACHE 2.0 License - The copyright protects:
   
     BOT
