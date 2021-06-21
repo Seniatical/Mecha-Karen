@@ -22,6 +22,7 @@ from discord.ext import commands, ipc
 from utility import (Enviroment, Cache, handler, get_dm_embed, errors, emojis)
 from utility.prefix import PrefixHandler
 from src.support.join_events import ending
+from . import config
 
 from ._ import extract_
 
@@ -35,6 +36,7 @@ column = table['Guilds']
 start = time()
 
 print('Connected to MongoDB - Account used: `{}`'.format(super_user))
+
 
 class MechaKaren(commands.AutoShardedBot):
     def __init__(self):
@@ -66,9 +68,7 @@ class MechaKaren(commands.AutoShardedBot):
         self.owner = self.owner_id
         self.env = env
 
-        self.ipc = ipc.Server(self, secret_key=env('IPC_SECRET_KEY'), host='IPC_HOST')
-        ## Dont need to bother with the ports but you can if you wish
-        
+        self.ipc = ipc.Server(self, secret_key='Daftlikeslongsausages', host='0.0.0.0')
         self.client = client
         self.blacklisted = client['Blacklisted']
         self.blacklistedusers = self.blacklisted['Users']
@@ -120,6 +120,10 @@ class MechaKaren(commands.AutoShardedBot):
             if await ctx.bot.is_owner(ctx.author):
                 ctx.command.reset_cooldown(ctx)
 
+    class IPCError(Exception):
+        r""" Raised when an error occurs from the IPC """
+        pass
+
     def __call__(self):
         return 'My Name is Mecha Karen!'
 
@@ -137,9 +141,9 @@ class MechaKaren(commands.AutoShardedBot):
     async def on_ipc_ready():
         print("[ + ] IPC Server is now running!")
 
-    @staticmethod
-    async def on_ipc_error(endpoint, error):
-        raise Exception('Error from %s' % endpoint) from error
+    async def on_ipc_error(self, endpoint, error):
+        ## Allows me to see both endpoint + error in 1 tb
+        raise self.IPCError('Uncaught Error from %s' % endpoint) from error
 
     async def on_guild_remove(self, guild: discord.Guild):
 
@@ -192,7 +196,7 @@ class MechaKaren(commands.AutoShardedBot):
                                                                                    emojis.KAREN_ADDITIONS_ANIMATED['tada']),
                 timestamp=datetime.datetime.utcnow()
             ).set_footer(text='Bot created by {}'.format(self.get_user(self.owner_id)),
-                         icon_url=self.get_user(self.owner_id).avatar_url)
+                         icon_url=self.get_user(self.owner_id).avatar)
             url = 'https://discord.com/api/oauth2/authorize?client_id=740514706858442792&permissions=8&scope=bot'
             embed.add_field(name='Useful Links:',
                             value='**[Support Server!](https://discord.gg/Q5mFhUM)** | **[Invite Me!]({})** | **[Source Code!](https://github.com/Seniatical/Mecha-Karen-Source-Code)** | **[Dashboard](https://mechakaren.xyz/)**'.format(
@@ -203,7 +207,7 @@ class MechaKaren(commands.AutoShardedBot):
             embed.add_field(name='Lets Get Started!',
                             value='To view all my commands run **`-Help`**, I Have 2 prefixes. **`-`** and Mentioning me! You change the default prefix of `-` to anything you like by visiting my dashboard!',
                             inline=False)
-            embed.set_thumbnail(url=self.user.avatar_url)
+            embed.set_thumbnail(url=self.user.avatar)
             try:
                 await channel.send(embed=embed)
             except discord.errors.Forbidden:
@@ -284,6 +288,4 @@ class MechaKaren(commands.AutoShardedBot):
 
             super().run(token, reconnect=reconnect)
         except Exception as error:
-            class Error(Exception):
-                pass
-            raise Error('Failed to run Mecha Karen') from error
+            raise discord.errors.LoginFailure('Failed to connect to discord') from error
