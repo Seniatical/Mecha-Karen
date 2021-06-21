@@ -82,7 +82,7 @@
 <p align="">
   
     $ git clone https://github.com/Seniatical/Mecha-Karen/
-    $ cd Mecha-Karen/Bot<br>
+    $ cd Mecha-Karen/Bot
     $ touch .env
     $ nano .env
     ... Env data goes here<br>
@@ -101,7 +101,7 @@
 <p align="">
   
     C:\> git clone https://github.com/Seniatical/Mecha-Karen/
-    C:\> cd Mecha-Karen/Bot<br>
+    C:\> cd Mecha-Karen/Bot
     C:\> type nul > .env
     ... Next part cannot be in terminal for windows
     ... Go to your .env file and fill out the env data
