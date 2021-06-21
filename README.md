@@ -117,6 +117,11 @@
   The <code>type nul > .env</code> is used to create an empty file for you.
 </p>
 
+<h2 align="center">Successful Launch Example</h2>
+<p align="">
+  <img src="https://i.gyazo.com/82089c03e8c74c08f947dbd87cd19d8e.png"></img>
+</p>
+
 <h1 align="center" name="license"></h1>
 <p align="">
   Mecha Karen is licensed and distributed under the APACHE 2.0 License - The copyright protects:
