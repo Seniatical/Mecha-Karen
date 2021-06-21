@@ -19,7 +19,16 @@ class KarenMixin(ABC):
 
     def cog_unload(self):
         super().cog_unload()
-
+        
+    def attributes(self):
+        values = dir(super())
+        accepted = []
+        for value in values:
+            if not callable(getattr(super(), value)):
+                ## If it the attr is callable we dont class it as an attribute
+                accepted.append(value)
+        self.attributes = accepted
+        return accepted
 
 class KarenMetaClass(type(Cog), type(ABC)):
     """
