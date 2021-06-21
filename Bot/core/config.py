@@ -30,7 +30,7 @@ try:
     with open('./config.json', 'r') as f:
         data = json.load(f)
 except FileNotFoundError as error:
-    raise FileNotFoundError('Cannot location config.json file!')
+    raise FileNotFoundError('Cannot locate config.json file!')
 except json.JSONDecodeError as error:
     raise Exception('Failed to read your .json file') from error
 
