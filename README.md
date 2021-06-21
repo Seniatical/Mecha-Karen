@@ -32,8 +32,9 @@
 
 <h1 align="center">Running Karen</h1>
 <p align="center">
-    Running KAREN is not easy - Mainly due to missing modules and parts.<br>
-    I will not make it easy for anybody - If you wish to run it, modify some areas of the bot and your good to go!<br>
+  Running KAREN is not easy - Mainly due to missing modules and parts.<br>
+  I will not make it easy for anybody - If you wish to run it, modify some areas of the bot and your good to go!<br>
+  This repo is not ment to be directly copied as it contains pre-releases which are very unstable and are never used in production, The purpose of this repo is for testing and helping to improve the bot!
 </p>
 
 <h2 align="center">Basic Use of Running Karen</h2>
