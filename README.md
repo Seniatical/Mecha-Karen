@@ -1,8 +1,7 @@
-  ![Discord.py-Version](https://img.shields.io/badge/discord.py-1.7.1-blue?style=flat-square)
-  ![Python-Version](https://img.shields.io/badge/python-3.9.1-green?style=flat-square)
+  ![Discord.py-Version](https://img.shields.io/badge/discord.py-2.0.0a-blue?style=flat-square)
+  ![Python-Version](https://img.shields.io/badge/python-3.8.5-green?style=flat-square)
   ![MongoDB](https://img.shields.io/badge/MongoDB-pink?style=flat-square)
   ![Django-Version](https://img.shields.io/badge/Django-3.1.3-blue?style=flat-square)
-  ![Flask-Version](https://img.shields.io/badge/Flask-1.1.2-blue?style=flat-square)
 
 <h1 align="center">
   <img src="https://cdn.discordapp.com/avatars/740514706858442792/3d4c161d2bfa97ec86cc82102df5cad5.png?size=512" height='100px' width='100px'>
