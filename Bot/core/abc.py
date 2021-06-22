@@ -1,14 +1,30 @@
-from .config import BotModel
 from .bot import MechaKaren
 from discord.ext.commands import Cog
 from abc import ABC
+from pydantic import BaseModel
+
+
+class Bot(BaseModel):
+    default_prefix: str = ""
+    intents: tuple = ('guilds', 'members', 'bans', 'emojis', 'voice_states',
+                      'presences', 'messages', 'guild_messages', 'reactions',
+                      'integrations'
+                      )
+    # FALSE - Disabled
+    logging: bool = True
+    guild_logging: bool = True
+    error_logging: bool = True
+    running: bool = None
+
 
 class KarenMixin(ABC):
     r"""
     Base Class for cogs - Holds some key functions and other stuff which wont need constant re-defining
     In in each cog
     """
-    defaults: BotModel
+    Bot.running = True
+
+    defaults: Bot
     bot: MechaKaren
 
     def __init__(self, *args, **kwargs):
@@ -20,7 +36,7 @@ class KarenMixin(ABC):
 
     def cog_unload(self):
         super().cog_unload()
-        
+
     def attributes(self):
         values = dir(super())
         accepted = []
@@ -31,8 +47,6 @@ class KarenMixin(ABC):
         self.attrs = accepted
         return accepted
 
+
 class KarenMetaClass(type(Cog), type(ABC)):
-    """
-    This allows the metaclass used for proper type detection to
-    coexist with discord.py's metaclass
-    """
+    pass
