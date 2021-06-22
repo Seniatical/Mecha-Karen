@@ -133,14 +133,16 @@
   Any violations to the license will result in moderate action.
   
   <h2 allign="center">Self-Hosting Agreement</h2>
-  . You must not use Mecha Karens name, license, logo in your works<br>
-    . I have tried my best to not hard-code urls and names were I could, In newer regions.<br>
-  . You must follow the license as stated <a href="https://github.com/Seniatical/Mecha-Karen/blob/main/LICENSE">here</a>.<br>
-  . You cannot provide offical support for errors but help for features within the bot is permissible<br>
-  . You cannot publically release your self-hosted bot if it contains more then 50% of karens works<br>
-    . You can have your bot in smaller servers WHICH you own or manage<br>
-  . Provide full credits to both CONTRIBUTORS and the original creator<br>
-    . Include links, which can be found <a href='#links'>here</a>
+  <dl>
+    <dt>You must not use Mecha Karens name, license, logo in your works<dt>
+    <dd>I have tried my best to not hard-code urls and names were I could, In newer regions.</dd>
+    <dt>You must follow the license as stated <a href="https://github.com/Seniatical/Mecha-Karen/blob/main/LICENSE">here</a>.</dt>
+    <dt>You cannot provide offical support for errors but help for features within the bot is permissible</dt>
+    <dt>You cannot publically release your self-hosted bot if it contains more then 50% of karens works</dt>
+    <dt>You can have your bot in smaller servers WHICH you own or manage</dt>
+    <dt>Provide full credits to both CONTRIBUTORS and the original creator</dt>
+    <dd>Include links, which can be found <a href='#links'>here</dd>
+  </dl>
 </p>    
     
 <h1 align="center">Modified Libs</h1>
