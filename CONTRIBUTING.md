@@ -38,7 +38,7 @@ Once you have made your changes and your satisfied with them, head back here and
     
 5. DO not spam PR's. Try keep them to 1 PR if you can so it can be reviewed more easily
     - If your PR consists of changes across files, either:
-        . Send another PR
-        . Use a seperate commit in the PR and clearly label the files
+        - Send another PR
+        - Use a seperate commit in the PR and clearly label the files
         
 6. Provide some information on the change and what it can do for Karen
