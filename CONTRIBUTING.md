@@ -4,19 +4,20 @@ If you decide to contribute to Karen please follow these rules and formats
 ## Getting Started
 Fork this repository, using the latest commit as your fork. Make your changes which you would like in Karen.\
 These can inlude:
-. Extra Features
-    . Commands
-    . Cogs
-    . etc...
-. Removal of Features
-    . Commands
-    . Cogs
-    . etc...
-. Modification of elements
-    . Commands
-    . Bot
-    . Structure
-    . etc..
+- Extra Features
+    - Commands
+    - Cogs
+    - etc...
+- Removal of Features
+    - Commands
+    - Cogs
+    - etc...
+- Modification of elements
+    - Commands
+    - Bot
+    - Structure
+    - etc...
+
 Once you have made your changes and your satisfied with them, head back here and submit a PR (Pull Request) were it can be reviewed by one of our executives.
 
 # Rules
