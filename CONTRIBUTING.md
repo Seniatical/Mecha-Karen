@@ -22,16 +22,16 @@ Once you have made your changes and your satisfied with them, head back here and
 
 # Rules
 1. Do not make a PR which may contain any sensitive info
-    - These can passwords, usernames\
+    - These can include passwords, usernames\
       If these PR's need any usernames, API Keys etc... Add then into the env data and call\
-      the enviroment by `.env('VARIABLE')`
+      the enviroment by `BOT.env('VARIABLE')`
       
 2. Make sure your PR is appropriate
     - Do not purposefully make it longer then it needs to be
     - Does not change too much of the current code\
-      This is because it can make it harder to implement in the actual bot
+      This is because it can be harder to implement in the actual bot
       
-3. Listen to any feedback given by the community which is relevant to your PR
+3. Listen to any feedback given by the community which is relevant to your PR and makes a good change
     - These can include bug-fixes, change of language etc...
     
 4. Make sure the bugs and errors are to a minimal and does not conflict with current code
