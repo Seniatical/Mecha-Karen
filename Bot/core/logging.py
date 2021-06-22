@@ -104,16 +104,14 @@ class CommandLogger(LoggingBase):
     def __init__(self) -> None:
 
         handler = logging.FileHandler(filename='./storage/logs/commands.log', encoding='utf-8', mode='w')
-        handler.setFormatter(logging.Formatter('[%(levelname)s (%(asctime)s)] | %(name)s - %(message)s'))
+        formatting = logging.Formatter('%(asctime)s [%(levelname)s] %(name)s: %(message)s')
 
         # Remove log files on boot-up to prevent huge log files piling up.
-        super().__init__('CommandLogger', logging.DEBUG, handler)
-
+        super().__init__('CommandLogger', logging.DEBUG, handler, formatting=formatting)
 
 class EventLogger(LoggingBase):
     def __init__(self) -> None:
         handler = logging.FileHandler(filename='./storage/logs/events.log', encoding='utf-8', mode='w')
-        handler.setFormatter(logging.Formatter('[%(levelname)s (%(asctime)s)] | %(name)s - %(message)s'))
+        formatting = logging.Formatter('%(asctime)s [%(levelname)s] %(name)s: %(message)s')
 
-        super().__init__('EventLogger', logging.DEBUG, handler)
-
+        super().__init__('EventLogger', logging.DEBUG, handler, formatting=formatting)
