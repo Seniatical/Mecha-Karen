@@ -11,7 +11,7 @@
 
 <h1 align="center">Features</h1>
 <p align="center">
-  <ul align="center">
+  <ul align="">
     <li>Moderation - Simple but powerful!</li>
     <li>Image Manipulation - Mecha Karen has unique commands, some apply effects and flip you over!</li>
     <li>Logging - Mecha Karen can log everything that happens in your server.</li>
