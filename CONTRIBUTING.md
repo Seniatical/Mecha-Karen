@@ -20,13 +20,13 @@ These can inlude:
 Once you have made your changes and your satisfied with them, head back here and submit a PR (Pull Request) were it can be reviewed by one of our executives.
 
 # Rules
-1. Do not make a PR which may contain any sensitive info\
+1. Do not make a PR which may contain any sensitive info
     - These can passwords, usernames\
       If these PR's need any usernames, API Keys etc... Add then into the env data and call\
       the enviroment by `.env('VARIABLE')`
       
 2. Make sure your PR is appropriate
-    - Do not purposefully make it longer then it needs to be\
+    - Do not purposefully make it longer then it needs to be
     - Does not change too much of the current code\
       This is because it can make it harder to implement in the actual bot
       
