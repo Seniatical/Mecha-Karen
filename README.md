@@ -21,7 +21,7 @@
     - Expanding - Mecha Karen doesn't stop growing! Got a feature request? - DM one of our devs and it may be added.<br><br>
 </p>
 
-<h1 align="center">🔗 Links</h1>
+<h1 align="center" name='links'>🔗 Links</h1>
 <p align="">
     <a href="https://mechakaren.xyz/login">Dashboard</a><br>
     <a href="https://api.mechakaren.xyz/docs">Bot Documentation - W.I.P</a><br>
@@ -131,6 +131,16 @@
     DASHBOARD
 
   Any violations to the license will result in moderate action.
+  
+  <h2 allign="center">Self-Hosting Agreement</h2>
+  . You must not use Mecha Karens name, license, logo in your works
+    . I have tried my best to not hard-code urls and names were I could, In newer regions.
+  . You must follow the license as stated <a href="https://github.com/Seniatical/Mecha-Karen/blob/main/LICENSE">here</a>.
+  . You cannot provide offical support for errors but help for features within the bot is permissible
+  . You cannot publically release your self-hosted bot if it contains more then 50% of karens works
+    . You can have your bot in smaller servers WHICH you own or manage
+  . Provide full credits to both CONTRIBUTORS and the original creator
+    . Include links, which can be found <a href='#links'>here</a>
 </p>    
     
 <h1 align="center">Modified Libs</h1>
