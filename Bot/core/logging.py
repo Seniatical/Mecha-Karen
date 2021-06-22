@@ -69,7 +69,7 @@ class LoggingBase(object):
             ):
         if type(level) == str:
             level = getattr(logging, level)
-        name = '' if type(message) == Ellipsis else name
+        name = '' if type(name) == Ellipsis else name
 
         self.logger.log(level=level, message=message, name=name)
 
