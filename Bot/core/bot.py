@@ -23,7 +23,6 @@ from utility import (Enviroment, Cache, handler, get_dm_embed, errors, emojis)
 from utility.prefix import PrefixHandler
 from src.support.join_events import ending
 
-from . import config
 from ._ import extract_
 from .logging import *
 
