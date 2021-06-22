@@ -16,12 +16,14 @@ import logging
 import os
 import typing
 
-logger = logging.getLogger('discord')
-logger.setLevel(logging.DEBUG)
+def setup_discord_logger():
+    # Can call the set logger up with other loggers
+    logger = logging.getLogger('discord')
+    logger.setLevel(logging.DEBUG)
 
-discord_handler = logging.FileHandler(filename='./storage/logs/discord.log', encoding='utf-8', mode='w')
-discord_handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
-logger.addHandler(discord_handler)
+    discord_handler = logging.FileHandler(filename='./storage/logs/discord.log', encoding='utf-8', mode='w')
+    discord_handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
+    logger.addHandler(discord_handler)
 
 try:
     os.remove('./storage/logs/commands.log')
