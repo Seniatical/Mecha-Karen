@@ -22,24 +22,37 @@ from discord.ext import commands, ipc
 from utility import (Enviroment, Cache, handler, get_dm_embed, errors, emojis)
 from utility.prefix import PrefixHandler
 from src.support.join_events import ending
+
 from . import config
-
 from ._ import extract_
+from .logging import *
 
-env = Enviroment('./.env')
+global env, client, user, table, column, start
 
-client = pymongo.MongoClient(env('MONGO_DB_URI'))
-super_user = env('MONGO_DB_URI').split(':')[1][2:]
 
-table = client['Bot']
-column = table['Guilds']
-start = time()
+def get_tail():
+    r""" Returns the features which boot up karen and we dont want used in the CLI instantly """
 
-print('Connected to MongoDB - Account used: `{}`'.format(super_user))
+    env = Enviroment('./.env')
+
+    client = pymongo.MongoClient(env('MONGO_DB_URI'))
+    super_user = env('MONGO_DB_URI').split(':')[1][2:]
+
+    table = client['Bot']
+    column = table['Guilds']
+    start = time()
+
+    print('Connected to MongoDB - Account used: `{}`'.format(super_user))
+
+    return env, client, super_user, table, column, start
 
 
 class MechaKaren(commands.AutoShardedBot):
     def __init__(self):
+        global env, client, user, table, column, start
+
+        env, client, user, table, column, start = get_tail()
+
         allowed_mentions = discord.AllowedMentions(everyone=False, roles=False, users=True)
         intents = discord.Intents(
             guilds=True,
@@ -98,6 +111,11 @@ class MechaKaren(commands.AutoShardedBot):
 
         core.load_cogs(self)
 
+        """ Set up logger """
+        self.command_logger = CommandLogger()
+        self.event_logger = EventLogger()
+        setup_discord_logger()
+
         @self.before_invoke
         async def before_any_command(ctx):
             disabled = self.column.find_one({'_id': ctx.guild.id})
@@ -137,13 +155,14 @@ class MechaKaren(commands.AutoShardedBot):
         self.ipc.start()
         print('Bot Connected to discord - Took {} Seconds after starting'.format(time() - start))
 
-    @staticmethod
-    async def on_ipc_ready():
+    async def on_ipc_ready(self):
+        self.event_logger.debug('Websocket is now running', 'IPC_READY')
         print("[ + ] IPC Server is now running!")
 
     async def on_ipc_error(self, endpoint, error):
-        ## Allows me to see both endpoint + error in 1 tb
-        raise self.IPCError('Uncaught Error from %s' % endpoint) from error
+        # Allows me to see both endpoint + error in 1 tb
+        self.event_logger.critical('Error from endpoints %s' % endpoint, name=endpoint)
+        raise self.IPCError('Uncaught error from %s' % endpoint) from error
 
     async def on_guild_remove(self, guild: discord.Guild):
 
