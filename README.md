@@ -12,9 +12,9 @@
 <h1 align="center">Features</h1>
 <p align="center">
     - Moderation - Simple but powerful!<br><br>
-    - Image Manipulation - Mecha Karen has unique commands, Some apply effects and flip you over!<br><br>
+    - Image Manipulation - Mecha Karen has unique commands, some apply effects and flip you over!<br><br>
     - Logging - Mecha Karen can log everything that happens in your server.<br><br>
-    - Fast and Reliable - Mecha Karen heavily caches data to prevent constantly fetching from the DB, so you enjoy fast responses.<br>
+    - Fast and Reliable - Mecha Karen heavily caches data to prevent constantly fetching from the DB, so you enjoy fast response times.<br>
                           - It can also report any unknown errors automatically for you!<br>
                           - Need some help with the bot? Join the welcoming and friendly support server!<br><br>
     - Customisable - You can customise everything from the prefix, to restricting commands to a certain channel!<br><br>
@@ -32,25 +32,25 @@
 <h1 align="center">Running Karen</h1>
 <p align="">
   Running KAREN is not easy - Mainly due to missing modules and parts. Some modules have also been customised to suit karens running style - of which I do not include in this repo.<br>
-  I will not make it easy for anybody - If you wish to run it, modify some areas of the bot and your good to go!<br>
-  This repo is not ment to be directly copied as it contains pre-releases which are very unstable and are never used in production, The purpose of this repo is for testing and helping to improve the bot!
+  I will not make it easy for anybody - If you wish to run it, modify some areas of the bot and you should be good to go!<br>
+  This repo is not meant to be directly copied as it contains pre-releases which are very unstable and are never used in production, The purpose of this repo is for testing and helping to improve the bot!
 </p>
 
 <h2 align="center">Basic Use of Running Karen</h2>
 <p align="">
-    This area will show you the major steps of running Mecha-Karen on your machine. If you run into any errors which are related to the steps below, contact me on discord so i can issue a fix for the issue.<br><br>
-    If it due to the code - A majority of the causes are stated in the repo in them sections, so give them a read before asking for help.<br>
-    I am not going to help you self host karen due to many reasons.<br>
-    If your self hosting karen - please make sure to follow the license.<br>
-    This project has taken a very long to make and crediting would be nice.<br>
-    If you wish to learn more about the licence <a href='#license'>click here</a>!
+    This area will show you the major steps of running Mecha-Karen on your machine. If you run into any errors which are related to the steps below, contact me on Discord so I can issue a fix for the issue.<br><br>
+    If it due to the code - A majority of the causes are stated in the repo in relevant sections, so give them a read before asking for help.<br>
+    I will not help or provide support for self hosting Karen.<br>
+    If you are self hosting Karen - please make sure to follow the license.<br>
+    This project has had a lot of time and effort invested into it, so I would appreciate it if credit was given.<br>
+    If you wish to learn more about the license <a href='#license'>click here</a>!
 </p>
 
 <h2 align="center">Env File</h2>
 <p align="">
   
-    MONGO_DB_URI = "Your mongo DB URI"
-    DISCORD_BOT_TOKEN = "Your discord bot token"
+    MONGO_DB_URI = "Your Mongo DB URI"
+    DISCORD_BOT_TOKEN = "Your Discord bot token"
     RECONNECT = True
     SERVER_IP = "the IP to run your websocket on"
     SERVER_PORT = 8000
@@ -130,16 +130,16 @@
     DOCUMENTATION
     DASHBOARD
 
-  Any violations to the license will result in moderate action.
+  Any violations to the license will result in action being taken.
   
   <h2 allign="center">Self-Hosting Agreement</h2>
   <dl>
-    <dt><b>You must not use Mecha Karens name, license, logo in your works</b><dt>
-    <dd>I have tried my best to not hard-code urls and names were I could, In newer regions.</dd>
+    <dt><b>You must not use Mecha Karen's name, license, or logo in your works.</b><dt>
+    <dd>I have tried my best to not hard-code urls and names were I could, in newer regions.</dd>
     <dt><b>You must follow the license as stated <a href="https://github.com/Seniatical/Mecha-Karen/blob/main/LICENSE">here</a>.</b></dt>
-    <dt><b>You cannot provide offical support for errors but help for features within the bot is permissible</b></dt>
-    <dt><b>You cannot publically release your self-hosted bot if it contains more then 20% of karens works</b></dt>
-    <dd>You can have your bot in smaller servers WHICH you own or manage</dd>
+    <dt><b>You cannot provide offical support for errors related to the bot, but help for features within the bot is allowed.</b></dt>
+    <dt><b>You cannot publicly release your self-hosted bot if it contains more then 20% of Karens works and code.</b></dt>
+    <dd>You can have your self hosted bot in smaller servers WHICH you own or manage.</dd>
     <dt><b>Provide full credits to both CONTRIBUTORS and the original creator</b></dt>
     <dd>Include links, which can be found <a href='#links'>here</dd>
   </dl>
