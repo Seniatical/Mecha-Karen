@@ -11,15 +11,15 @@
 
 <h1 align="center">Features</h1>
 <p align="center">
-  <ul>
+  <ul align="center">
     <li>Moderation - Simple but powerful!</li>
-    - Image Manipulation - Mecha Karen has unique commands, some apply effects and flip you over!<br><br>
-    - Logging - Mecha Karen can log everything that happens in your server.<br><br>
-    - Fast and Reliable - Mecha Karen heavily caches data to prevent constantly fetching from the DB, so you enjoy fast response times.<br>
+    <li>Image Manipulation - Mecha Karen has unique commands, some apply effects and flip you over!</li>
+    <li>Logging - Mecha Karen can log everything that happens in your server.</li>
+    <li>Fast and Reliable - Mecha Karen heavily caches data to prevent constantly fetching from the DB, so you enjoy fast response times.<br>
                           - It can also report any unknown errors automatically for you!<br>
-                          - Need some help with the bot? Join the welcoming and friendly support server!<br><br>
-    - Customisable - You can customise everything from the prefix, to restricting commands to a certain channel!<br><br>
-    - Expanding - Mecha Karen doesn't stop growing! Got a feature request? - DM one of our devs and it may be added.<br><br>
+                          - Need some help with the bot? Join the welcoming and friendly support server!</li>
+    <li>Customisable - You can customise everything from the prefix, to restricting commands to a certain channel!</li>
+    <li>Expanding - Mecha Karen doesn't stop growing! Got a feature request? - DM one of our devs and it may be added.</li>
   </ul>  
 </p>
 
