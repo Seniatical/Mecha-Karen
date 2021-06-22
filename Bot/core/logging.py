@@ -17,7 +17,6 @@ import os
 import typing
 
 def setup_discord_logger():
-    # Can call the set logger up with other loggers
     logger = logging.getLogger('discord')
     logger.setLevel(logging.DEBUG)
 
@@ -34,9 +33,9 @@ except FileNotFoundError:
 
 
 class LoggingBase(object):
-    def __init__(self, name: str, level: typing.Optional[str, logging.Logger.level],
+    def __init__(self, name: str, level,
                  *handlers: logging.Handler,
-                 new_logger: bool = True, formatting: typing.Union[typing.Dict, logging.Formatter] = None,
+                 new_logger: bool = True, formatting: typing.Union[dict, logging.Formatter] = None,
                  ) -> None:
         self.name = name
         self.level = level
@@ -65,28 +64,35 @@ class LoggingBase(object):
                 self.logger.addHandler(handler)
 
     def log(self, message: str, name: str = ...,
-            level: typing.Optional[str, logging.Logger.level] = logging.DEBUG
+            level: typing.Union[str, int] = logging.DEBUG
             ):
         if type(level) == str:
             level = getattr(logging, level)
-        name = '' if type(name) == Ellipsis else name
+        name = 'N.A' if type(name) == Ellipsis else name
 
-        self.logger.log(level=level, message=message, name=name)
+        message += f" *({name})"
+
+        self.logger.log(level=level, message=message)
 
     def debug(self, message: str, name: str):
-        self.logger.debug(msg=message, name=name)
+        message += f" *({name})"
+        self.logger.debug(msg=message)
 
     def error(self, message: str, name: str):
-        self.logger.error(msg=message, name=name)
+        message += f" *({name})"
+        self.logger.error(msg=message)
 
     def critical(self, message: str, name: str):
-        self.logger.critical(msg=message, name=name)
+        message += f" *({name})"
+        self.logger.critical(msg=message)
 
     def exception(self, message: str, name: str):
-        self.logger.exception(message, name=name)
+        message += f" *({name})"
+        self.logger.exception(message)
 
     def warn(self, message: str, name: str):
-        self.logger.warning(msg=message, name=name)
+        message += f" *({name})"
+        self.logger.warning(msg=message)
 
     @property
     def warning(self):
@@ -110,3 +116,4 @@ class EventLogger(LoggingBase):
         handler.setFormatter(logging.Formatter('[%(levelname)s (%(asctime)s)] | %(name)s - %(message)s'))
 
         super().__init__('EventLogger', logging.DEBUG, handler)
+
