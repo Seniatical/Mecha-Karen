@@ -16,7 +16,7 @@ import io
 import typing
 from PIL import Image, ImageEnhance, ImageOps
 from ._ import save_image, sort_size, discord
-from glitch_this import ImageGlitcher
+from KarenLibs import ImageGlitcher
 from io import BytesIO
 import cv2 as opencv
 import numpy as np
