@@ -42,9 +42,9 @@ if __name__ == '__main__':
 
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     
-    if args.get('meta'):
+    if 'meta' in args:
         karen = meta.MechaKaren()
-    elif not args.get('help') or not args.get('h'):
+    elif 'main' in args:
         ## Well theres only 1 command other then help
         karen = bot.MechaKaren()
     else:
