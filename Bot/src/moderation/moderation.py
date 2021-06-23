@@ -26,7 +26,6 @@ from utility import checks
 import random
 import re
 import aiofiles
-import unicodedata
 
 
 def convert(time: int, unit):
@@ -665,35 +664,6 @@ class Moderation(commands.Cog):
         ))
 
     @commands.command()
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    @commands.has_guild_permissions(manage_nicknames=True)
-    @commands.bot_has_guild_permissions(manage_nicknames=True, embed_links=True)
-    async def asciify(self, ctx, member: discord.Member, *, reason: str = 'Nickname Not Mentionable') -> discord.Embed:
-        current_name = member.display_name
-        normalize = await self.bot.loop.run_in_executor(None, unicodedata.normalize, 'NFKD', current_name)
-        new_name = normalize.encode('ascii', errors='ignore').decode('ascii')
-
-        if new_name == current_name:
-            return await ctx.send(embed=discord.Embed(
-                description='<a:nope:787764352387776523> | **{}**\'s name is already in ASCII format'.format(member),
-                colour=discord.Colour.red()
-            ))
-
-        try:
-            await member.edit(nick=new_name or 'Moderated Nickname', reason=reason)
-        except Exception:
-            return await ctx.send(embed=discord.Embed(
-                description='<a:nope:787764352387776523> | I cannot change {}\'s Nickname due to role hierachy'.format(
-                    member.mention),
-                colour=discord.Colour.red()
-            ), content=f'The nickname would have been changed to **{new_name}**.')
-        return await ctx.send(embed=discord.Embed(
-            description='<a:Passed:757652583392215201> | Changed {}\'s Nickname from **{}** to **{}**.'.format(
-                member.mention, current_name, new_name),
-            colour=discord.Colour.green()
-        ))
-
-    @commands.command()
     @commands.cooldown(1, 60, commands.BucketType.guild)
     @commands.has_guild_permissions(manage_channels=True)
     @commands.bot_has_guild_permissions(attach_files=True, read_message_history=True)
@@ -704,9 +674,9 @@ class Moderation(commands.Cog):
         async for message in channel.history(limit=2147483646):
             if message.content:
                 messages.append(
-                    ('**' + str(message.author) + '**' + ' -> ' + message.content).encode('utf-8', errors='ignore'))
+                    ('**' + str(message.author) + '**' + ' -> ' + message.content).encode('utf-8', errors='ignore').decode('utf-8', errors='ignore'))
         with io.BytesIO() as buffer:
-            buffer.write('\n\n'.join([i.decode('utf-8', errors='ignore') for i in messages]))
+            buffer.write('\n\n'.join(messages))
             buffer.seek(0)
             await ctx.message.reply(content='I have archived your channels messages for you!',
                                     file=discord.File(fp=buffer, filename='archived.md'))
