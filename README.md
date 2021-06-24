@@ -88,7 +88,7 @@
     $ cd Mecha-Karen/Bot
     $ touch .env
     $ nano .env
-    ... Env data goes here<br>
+    ... Env data goes here
   
     $ python3 -m venv ./venv --system-site-packages
     $ source ./venv/bin/activate
