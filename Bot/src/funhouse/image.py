@@ -1049,7 +1049,7 @@ class _Image(commands.Cog):
         if not query:
             return await ctx.send('Need to give an image to search for!')
         url = 'https://api.pexels.com/v1/search?query={}&per_page={}'.format(query, random.randint(1, 100))
-        auth = '563492ad6f9170000100000106efa8d19a3a466bade44acec0b70304'
+        auth = self.bot.env('PEXEL_API_TOKEN')
         r = requests.get(url, headers={'Authorization': auth}).json()
         try:
             await ctx.send(
