@@ -12,7 +12,9 @@ from pydantic import BaseModel
 import utility.metrics
 from utility.min import get_permissions
 from core.abc import KarenMixin, KarenMetaClass
+
 from adapters.tag import TagAdapter
+from adapters.args import ArgumentAdapter
 
 
 class Tags(commands.Cog, KarenMixin, metaclass=KarenMetaClass):
@@ -163,11 +165,13 @@ class Tags(commands.Cog, KarenMixin, metaclass=KarenMetaClass):
         return tag
 
     @staticmethod
-    async def get_seed_from_context(ctx: commands.Context, tag):
+    async def get_seed_from_context(ctx: commands.Context, tag, *args):
         author = tagscript.MemberAdapter(ctx.author)
         target = tagscript.MemberAdapter(ctx.message.mentions[0]) if ctx.message.mentions else author
         channel = tagscript.ChannelAdapter(ctx.channel)
+
         tag = TagAdapter(tag)
+        args = ArgumentAdapter(*args)
 
         seed = {
             "author": author,
@@ -176,6 +180,7 @@ class Tags(commands.Cog, KarenMixin, metaclass=KarenMetaClass):
             "member": target,
             "channel": channel,
             "tag": tag,
+            "args": args
         }
         if ctx.guild:
             guild = tagscript.GuildAdapter(ctx.guild)
@@ -222,9 +227,11 @@ class Tags(commands.Cog, KarenMixin, metaclass=KarenMetaClass):
                 break
 
         if not tag:
-            print('Tag is none')
             return
         # Args may be passed through so we need to refilter to sort the args out
+
+        tag, *args = tag.split(' ')
+
         try:
             tag = tags[tag.lower()]
         except KeyError:
@@ -232,7 +239,7 @@ class Tags(commands.Cog, KarenMixin, metaclass=KarenMetaClass):
 
         # Now we have the tag object
 
-        seeds = await self.get_seed_from_context(await self.bot.get_context(message), tag)
+        seeds = await self.get_seed_from_context(await self.bot.get_context(message), tag, *args)
 
         content = await self.bot.loop.run_in_executor(
             None, self.engine.process, tag.content, seeds
@@ -299,7 +306,7 @@ class Tags(commands.Cog, KarenMixin, metaclass=KarenMetaClass):
         if tag.mod and not ctx.author.guild_permissions.manage_messages:
             raise commands.MissingPermissions(missing_perms=['manage_messages'])
 
-        seeds = await self.get_seed_from_context(ctx, tag)
+        seeds = await self.get_seed_from_context(ctx, tag, *args)
 
         try:
             content = self.engine.process(tag.content, seed_variables=seeds)
