@@ -128,13 +128,15 @@ class Tags(commands.Cog, KarenMixin, metaclass=KarenMetaClass):
     async def update_tag(self, ctx: commands.Context, old_tag: dict, new_tag: str, value: str):
         guild = ctx.guild
         tag_id = old_tag['_id']
-        data = await self.format_tag(tag_id)
+        data = self.format_tag(tag_id)
 
         ## Simply just update the dict
         new_tag = f'{guild.id}/{new_tag}'
         old_tag['_id'] = new_tag
         old_tag['value'] = value
         old_tag['updated_at'] = datetime.datetime.utcnow().timestamp()
+
+        guild, name = self.format_tag(new_tag).values()
 
         await self.bot.loop.run_in_executor(
             None, self.table.delete_one, {'_id': tag_id}
@@ -143,7 +145,7 @@ class Tags(commands.Cog, KarenMixin, metaclass=KarenMetaClass):
             None, self.table.insert_one, old_tag
         )
 
-        tag = self.Tag(content=value, name=new_tag, guild=ctx.guild.id, author=ctx.author.id,
+        tag = self.Tag(content=value, name=name, guild=ctx.guild.id, author=ctx.author.id,
                        created_at=old_tag['created_at'], updated_at=old_tag['updated_at'],
                        uses=old_tag['uses'], nsfw=old_tag['nsfw'], mod=old_tag['mod']
                        )
@@ -201,7 +203,7 @@ class Tags(commands.Cog, KarenMixin, metaclass=KarenMetaClass):
     async def on_message(self, message):
         r""" Allows usage of `-karen` so it becomes like a cmd """
 
-        tags = self.bot.cache.cache['Tags']
+        tags = self.bot.cache.cache['Tags'].get(getattr(getattr(message, 'guild', None), 'id', None))
         if not tags:
             return
 
@@ -220,6 +222,7 @@ class Tags(commands.Cog, KarenMixin, metaclass=KarenMetaClass):
                 break
 
         if not tag:
+            print('Tag is none')
             return
         # Args may be passed through so we need to refilter to sort the args out
         try:
@@ -235,17 +238,11 @@ class Tags(commands.Cog, KarenMixin, metaclass=KarenMetaClass):
             None, self.engine.process, tag.content, seeds
         )
 
-        if not message.guild:
-            return content.body
-
         if not message.channel.nsfw and tag.nsfw:
             raise commands.NSFWChannelRequired() from None
 
         if tag.mod and not message.author.guild_permissions.manage_messages:
-            try:
-                return await message.channel.send('This tag has been restricted to users who have `manage_messages` permissions')
-            except discord.errors.Forbidden:
-                return
+            raise commands.MissingPermissions(missing_perms=['manage_messages'])
         try:
             return await message.channel.send(content.body)
         except discord.errors.Forbidden:
@@ -285,7 +282,7 @@ class Tags(commands.Cog, KarenMixin, metaclass=KarenMetaClass):
     @commands.group(invoke_without_command=True)
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.bot_has_guild_permissions(read_message_history=True, send_messages=True)
-    async def tag(self, ctx: commands.Context, *, tag: str):
+    async def tag(self, ctx: commands.Context, tag: str, *args):
         try:
             tags = self.bot.cache.cache['Tags'][ctx.guild.id]
         except KeyError:
@@ -296,6 +293,12 @@ class Tags(commands.Cog, KarenMixin, metaclass=KarenMetaClass):
         if not tags or not tags.get(tag):
             return await ctx.message.reply(content='This tag doesn\'t exist', mention_author=False)
         tag = tags[tag]
+
+        if tag.nsfw and not ctx.channel.nsfw:
+            raise commands.NSFWChannelRequired(channel=ctx.channel) from None
+        if tag.mod and not ctx.author.guild_permissions.manage_messages:
+            raise commands.MissingPermissions(missing_perms=['manage_messages'])
+
         seeds = await self.get_seed_from_context(ctx, tag)
 
         try:
