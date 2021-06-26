@@ -29,6 +29,7 @@ class TagAdapter(Adapter):
             'nsfw': tag.nsfw,
             'mod': tag.mod
         }
+        self._methods = dict()
         
         super().__init__()
 
