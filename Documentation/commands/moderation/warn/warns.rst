@@ -37,9 +37,7 @@ Aliases
 Warnings
 
 Example Usage:
-::
-	-Warnings _-*™#7519
-	-Warnings _-*™#7519 2
-
-1. Views `_-*™#7519` Warns using the default page of 1
-2. Views `_-*™#7519` Warns using page 2
+--------------
+.. image:: /images/warns.png
+   :width: 400px
+   :align: center

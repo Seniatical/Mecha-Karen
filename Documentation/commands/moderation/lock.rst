@@ -59,12 +59,12 @@ There are no aliases for this command yet!
 
 Example Usage
 -------------
-::
+.. figure:: /images/Lock/lock2.png
+   :width: 400px
+   :align: center
+   :alt: Example Usage of the Lock Command
 
-	-Lock
-	-Lock General
-	-Lock General Supporters
-
-1. Locks the current channel for the default role (`@everyone`)
-2. Locks the channel called `General` for the role default role
-3. Locks the channel called `General` for the `Supporters` role
+.. figure:: /images/Lock/lock1.png
+   :width: 400px
+   :align: center
+   :alt: Example Usage of the Lock Command

@@ -44,14 +44,22 @@ Purge
 
 Example Usage
 -------------
-::
+.. figure:: /images/Purge/classic.png
+   :width: 400px
+   :align: center
+   :alt: Example Usage of clear command
 
-	1. -Purge 10
-	2. -Purge 10 _-*™#7519
-	3. -Purge 10 Supporters
-	4. -Purge 10 ^Hello World!
+.. figure:: /images/Purge/member.png
+   :width: 400px
+   :align: center
+   :alt: Example Usage of clear command
 
-1. Deletes any 10 messages above the authors message
-2. Deletes 10 messages which were ONLY sent by `_-*™#7519`
-3. Deletes 10 messages which were ONLY sent by users with the `Supporters` Role
-4. Deleted 10 messages which matched the regex expression 
+.. figure:: /images/Purge/role.png
+   :width: 400px
+   :align: center
+   :alt: Example Usage of clear command
+
+.. figure:: /images/Purge/regex.png
+   :width: 400px
+   :align: center
+   :alt: Example Usage of clear command

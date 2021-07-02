@@ -33,8 +33,6 @@ This command has no aliases yet!
 
 Example Usage
 -------------
-::
-
-	-Muterole Set Muted
-
-1. Sets your servers mute-role to the role `Muted`.
+.. image:: /images/set.png
+   :width: 400px
+   :align: center

@@ -40,10 +40,16 @@ There are no aliases for this command yet!
 
 Example Usage
 -------------
-::
+.. figure:: /images/unmute1.png
+   :width: 400px
+   :align: center
+   :alt: Example Usage of the Unmute Command
 
-	-Unmute _-*™#7519
-	-Unmute _-*™#7519 False Mute
+DMs
+^^^
+Tries to send a DM to the user if the users DMs are open or if the bot is not blocked by them.
 
-1. Unmutes `_-*™#7519` Using the default reason
-2. Unmutes `_-*™#7519` Using the reason `False Mute`
+.. figure:: /images/unmute2.png
+   :width: 400px
+   :align: center
+   :alt: Example Usage of the Unmute Command

@@ -41,10 +41,7 @@ There are no aliases for this command yet!
 
 Example Usage
 -------------
-::
 
-	-Delwarn _-*™#7519 1
-	-Delwarn _-*™#7519 1 False Warn
-
-1. Deletes warn number `1` for `_-*™#7519` using the reason `Wasn't Provided`
-2. Deleted warn number `1` for `_-*™#7519` using the reason `False Warn`
+.. image:: /images/delwarn.png
+   :width: 400px
+   :align: center

@@ -36,10 +36,12 @@ There are no aliases for this command
 
 Example Usage
 -------------
-::
+.. figure:: /images/archive1.png
+   :width: 400px
+   :align: center
+   :alt: Example Usage of the Archive Command
 
-	-Archive
-	-Archive General
-
-1. Archives the current channel
-2. Archives `General` instead of the current channel
+.. figure:: /images/archive2.png
+   :width: 400px
+   :align: center
+   :alt: Example Usage of the Archive Command

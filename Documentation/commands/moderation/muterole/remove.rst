@@ -31,8 +31,6 @@ Delete
 
 Example Usage
 -------------
-::
-
-	-Muterole Remove
-
-1. Deletes the mute role from the database
+.. image:: /images/remove.png
+   :width: 400px
+   :align: center

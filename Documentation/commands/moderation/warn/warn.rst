@@ -38,10 +38,7 @@ This command has no aliases yet
 
 Example Usage
 -------------
-::
 
-	-Warn _-*™#7519
-	-Warn _-*™#7519 Spamming
-
-1. Warns `_-*™#7519` With the default reason
-2. Warns `_-*™#7519` Using the reason `Spamming`
+.. image:: /images/warn.png
+   :width: 400px
+   :align: center

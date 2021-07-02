@@ -59,12 +59,17 @@ There are no aliases for this command yet!
 
 Example Usage
 -------------
-::
 
-	-Mute _-*™#7519
-	-Mute _-*™#7519 20m
-	-Mute _-*™#7519 10m Spamming
+.. figure:: /images/mute1.png
+   :width: 400px
+   :align: center
+   :alt: Example Usage of the Mute Command
 
-1. Mutes `_-*™#7519` For 10 Seconds using the default reason
-2. Mutes `_-*™#7519` For 20 Minutes using the default reason
-3. Mutes `_-*™#7519` For 10 Minutes using the reason `Spamming`
+DMs
+^^^
+Tries to send a DM to the user if the users DMs are open or if the bot is not blocked by them.
+
+.. figure:: /images/mute2.png
+   :width: 400px
+   :align: center
+   :alt: Example Usage of the Mute Command

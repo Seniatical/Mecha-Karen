@@ -20,6 +20,7 @@ More Coming Soon, Stay tuned.
 	slowmode
 	unban
 	unmute
+	asciify
 
 	muterole/index
 	warn/index

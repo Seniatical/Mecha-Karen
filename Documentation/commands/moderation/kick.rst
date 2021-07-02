@@ -40,12 +40,9 @@ There are no aliases for this command yet!
 
 Example Usage
 -------------
-::
+.. figure:: /images/kick.png
+   :width: 400px
+   :align: center
+   :alt: Example Usage of the Kick Command
 
-	-Kick _-*™#7519
-	-Kick _-*™#7519 Being a Naughty Boy!
-
-1. Kicks the member using default reason
-2. Kicks the member using the reason `Being a Naughty Boy!`
-
-*Both examples will attempt to send a DM to the user*
+*A DM will be sent to the user with the provided reason if applicable.*

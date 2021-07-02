@@ -41,8 +41,8 @@ Nick
 
 Example Usage
 -------------
-::
 
-	-Nickname _-*™#7519 Moderated Nickname
-
-1. Changed `_-*™`'s Nickname to `Moderated Nickname`
+.. figure:: /images/nickname.png
+   :width: 400px
+   :align: center
+   :alt: Example Usage of the Nickname Command

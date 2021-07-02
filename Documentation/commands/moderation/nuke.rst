@@ -38,27 +38,16 @@ There are no aliases for this command
 
 Example Usage
 -------------
-::
+.. figure:: /images/Nuke/nuke1.png
+   :width: 400px
+   :align: center
+   :alt: Example Usage of the Nuke Command
 
-	-Nuke
+A Nice Message
+^^^^^^^^^^^^^^
+Sends a welcoming message right after nuking your channel!
 
-	 ## Wait for message
-
-	 Yes
-
-	 ## Wait for message
-
-	 Yes
-
-	-Nuke General
-
-	 ## Wait for message
-
-	 Yes
-
-	 ## Wait for message
-
-	 Yes
-
-1. Nukes the current channel - after verifying twice
-2. Nukes general - after verifying twice
+.. figure:: /images/Nuke/nuke2.png
+   :width: 400px
+   :align: center
+   :alt: Example Usage of the Nuke Command

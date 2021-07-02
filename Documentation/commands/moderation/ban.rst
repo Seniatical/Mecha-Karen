@@ -40,12 +40,9 @@ There are no aliases for this command yet!
 
 Example Usage
 -------------
-::
+.. figure:: /images/ban.png
+   :width: 400px
+   :align: center
+   :alt: Example Usage of the Ban Command
 
-	-Ban _-*™#7519
-	-Ban _-*™#7519 Being a Naughty Boy!
-
-1. Bans the member using default reason
-2. Bans the member using the reason `Being a Naughty Boy!`
-
-*Both examples will attempt to send a DM to the user*
+*A DM will be sent to the user with the provided reason if applicable.*
