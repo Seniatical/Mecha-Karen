@@ -24,7 +24,7 @@ copyright = '2021, Seniatical'
 author = 'Seniatical'
 
 # The full version, including alpha/beta/rc tags
-release = '2.1.2+a'
+release = '1.9.2a'
 
 
 # -- General configuration ---------------------------------------------------
@@ -40,7 +40,7 @@ templates_path = ['_templates']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['./*.md', './*.template']
+exclude_patterns = []
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -55,22 +55,51 @@ html_theme_options = {
       {
          "rel": "icon",
          "sizes": "16x16",
-         "href": "/karen.png",
+         "href": "content/icon/karen.png",
       },
       {
          "rel": "icon",
          "sizes": "32x32",
-         "href": "/karen.png",
+         "href": "content/icon/karen.png",
       },
       {
          "rel": "apple-touch-icon",
          "sizes": "180x180",
-         "href": "/karen.png"
+         "href": "content/icon/karen.png"
       },
-   ]
+   ],
+
+   "icon_links": [
+      {
+         "name": "GitHub",
+         "url": "https://github.com/Seniatical/Mecha-Karen/",
+         "icon": "fab fa-github",
+      },
+      {
+         "name": "Discord",
+         "url": "https://discord.com/invite/Q5mFhUM",
+         "icon": "fab fa-discord"
+      }
+    ],
+   
+   "use_edit_page_button": True,
+   "collapse_navigation": False,
+   "navigation_depth": 2,
+
+}
+
+html_context = {
+    "github_url": "https://github.com",
+    "github_user": "Seniatical",
+    "github_repo": "Mecha-Karen",
+    "github_version": "main",
+    "doc_path": "Documentation",
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+html_css_files = [
+    'css/custom.css',
+]
