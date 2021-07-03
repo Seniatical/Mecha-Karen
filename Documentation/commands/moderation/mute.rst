@@ -1,3 +1,10 @@
+.. meta::
+    :title: Documentation - Mecha Karen
+    :type: website
+    :url: https://docs.mechakaren.xyz/
+    :description: Mute Command [Moderation].
+    :theme-color: #f54646
+
 Mute
 ====
 
@@ -73,3 +80,10 @@ Tries to send a DM to the user if the users DMs are open or if the bot is not bl
    :width: 400px
    :align: center
    :alt: Example Usage of the Mute Command
+
+Glossary
+--------
+
+. glossary::
+	Mute
+		Moderation command

@@ -1,3 +1,10 @@
+.. meta::
+   :title: Documentation - Mecha Karen
+   :type: website
+   :url: https://docs.mechakaren.xyz/
+   :description: Asciify Command [Moderation].
+   :theme-color: #f54646
+
 Asciify
 =======
 
@@ -42,3 +49,11 @@ Example Usage
 .. image:: /images/asciify.png
    :width: 400px
    :align: center
+
+Glossary
+--------
+
+.. glossary::
+
+   Asciify
+      Moderation command

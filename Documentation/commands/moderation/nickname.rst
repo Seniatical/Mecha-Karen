@@ -1,3 +1,10 @@
+.. meta::
+    :title: Documentation - Mecha Karen
+    :type: website
+    :url: https://docs.mechakaren.xyz/
+    :description: Nickname Command [Moderation].
+    :theme-color: #f54646
+
 Nickname
 ========
 
@@ -46,3 +53,13 @@ Example Usage
    :width: 400px
    :align: center
    :alt: Example Usage of the Nickname Command
+
+Glossary
+--------
+   
+. glossary::
+	Nickname
+		Moderation command
+
+	Nick
+		Moderation command [Aliase of *Nickname*]

@@ -1,0 +1,267 @@
+/*
+Want to use this customised theme?
+
+First create this file, preferably in `_static/css/custom.css` in the source directory
+Then head over to `conf.py` and add
+```
+html_static_path = ['_static']
+
+html_css_files = [
+    'css/custom.css',
+]
+```
+
+Save your files and then run `make html` in terminal and your good to go!
+
+Make sure to check out the amazing people who actually created this theme!
+Documentation - `https://pydata-sphinx-theme.readthedocs.io/en/latest/`
+Org - `https://github.com/pydata`
+Themes Repo - `https://github.com/pydata/pydata_sphinx_theme`
+
+Theme addition / customisation created by Seniatical.
+*/
+
+
+/* Google icon */
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+
+/* Recolours all of the text + some blocks and elements */
+:root {
+    /* Texts for paragraphs etc. */
+    --pst-color-primary: 250, 250, 250;
+    --pst-color-success: 40, 167, 69;
+    --pst-color-info: 0, 123, 255;
+    --pst-color-warning: 255, 193, 7;
+    --pst-color-danger: 220, 53, 69;
+    --pst-color-text-base: 174, 174, 174;
+  
+    /* Headers and paragraphs */
+    --pst-color-h1: var(--pst-color-primary);
+    --pst-color-h2: var(--pst-color-primary);
+    --pst-color-h3: var(--pst-color-text-base);
+    --pst-color-h4: var(--pst-color-text-base);
+    --pst-color-h5: var(--pst-color-text-base);
+    --pst-color-h6: var(--pst-color-text-base);
+    --pst-color-paragraph: var(--pst-color-text-base);
+
+    /* Links and block / block texts */
+    --pst-color-link: 24, 131, 174;
+    --pst-color-link-hover: 0, 91, 129;
+
+    --pst-color-headerlink: 198, 15, 15;
+    --pst-color-headerlink-hover: 255, 255, 255;
+
+    --pst-color-preformatted-text: 250, 250, 250;
+    --pst-color-preformatted-background: 32, 35, 40;
+    --pst-color-inline-code: 232, 62, 140;
+  
+    --pst-color-active-navigation: 24, 131, 174;
+
+    --pst-color-navbar-link: var(--pst-color-link);
+    --pst-color-navbar-link-hover: var(--pst-color-active-navigation);
+    --pst-color-navbar-link-active: var(--pst-color-active-navigation);
+
+    --pst-color-sidebar-link: 77, 77, 77;
+    --pst-color-sidebar-link-hover: var(--pst-color-active-navigation);
+    --pst-color-sidebar-link-active: var(--pst-color-active-navigation);
+    --pst-color-sidebar-expander-background-hover: 250, 250, 250;
+    --pst-color-sidebar-caption: 250, 250, 250;
+
+    --pst-color-toc-link: 250, 250, 250;
+    --pst-color-toc-link-hover: var(--pst-color-active-navigation);
+    --pst-color-toc-link-active: var(--pst-color-active-navigation);
+}
+
+
+/* Styles the footer and the background of the theme */
+body {
+    background-color: rgb(21, 23, 26);
+}
+
+.navbar-light {
+    background-color: rgb(32, 35, 40) !important;
+}
+
+.navbar-brand .title {
+    color: rgb(250, 250, 250) !important;
+}
+
+.navbar-brand .title:hover {
+    color: rgb(175, 175, 175) !important;
+}
+
+.nav-link {
+    color: rgb(24, 131, 174) !important;
+}
+
+.nav-link:hover {
+    color: rgb(0, 91, 129) !important;
+}
+
+.footer {
+    border-top: 2px solid rgba(148, 148, 148, 0.1) !important;
+}
+
+
+/* Minor typographical changes */
+strong {
+    color: rgb(250, 250, 250) !important;
+}
+
+a strong {
+    color: rgb(177, 177, 177) !important;
+}
+
+/* Sidebar */
+label {
+    background-color: transparent !important;
+}
+
+label:hover {
+    background-color: transparent !important;
+}
+
+.bd-sidebar {
+    border-right: 2px solid rgba(148, 148, 148, 0.1);
+}
+
+
+/* Forms and inputs */
+.form-control {
+    background-color: rgb(32, 35, 40);
+    caret-color: white;
+}
+
+input[type=text] {
+    background: #1A1A1A;
+    border-color: rgb(100, 100, 100) !important;
+    padding: 0% !important;
+    caret-color: white;
+}
+
+.form-control:enabled, input:enabled[type=text] {
+    background-color: rgb(32, 35, 40);
+    border-color: rgb(100, 100, 100) !important;
+}
+
+
+/* Turns the navigation buttons for forward/backwards to white */
+.left-prev {
+    color: rgb(250, 250, 250) !important;
+    border-color: rgb(250, 250, 250) !important;
+}
+
+.right-next {
+    color: rgb(250, 250, 250) !important;
+    border-color: rgb(250, 250, 250) !important;
+}
+
+
+/* Changes the sidebar blocks backgrounds to match the theme */
+.sidebar {
+    background-color: rgb(32, 35, 40) !important;
+}
+
+
+/* Changes the permlink style from red and red bg to white and transparent */
+.headerlink {
+    color: rgb(250, 250, 250) !important;
+    background-color: transparent !important;
+}
+
+
+/* Restyle admontion blocks */
+.admonition {
+    background-color: rgb(32, 35, 40) !important;
+}
+
+.admonition-title {
+    color: rgb(250, 250, 250);
+}
+
+div.deprecated p {
+    color: rgb(255, 107, 107) !important;
+}
+
+
+/* Code block changes */
+.n {
+    color: rgb(250, 250, 250) !important;
+}
+
+.p {
+    color: rgb(250, 250, 250) !important;
+}
+
+.s2 {
+    color: rgb(170, 218, 0) !important;
+}
+
+.o {
+    color: #eb7616 !important;
+}
+
+.mi {
+    color: rgb(104, 121, 219) !important;
+}
+
+pre {
+    margin: 1.5em 0;
+    padding: 10px;
+    background-color: rgba(var(--pst-color-preformatted-background), 1);
+    color: rgba(var(--pst-color-preformatted-text),1);
+    border: 1px solid rgb(49, 53, 59);
+    box-shadow: none !important;
+}
+
+/* Icon and other styling for small details */
+i.fa-github:before {
+    color: rgb(250, 250, 250);
+}
+
+i.fa-discord:before {
+    color: rgb(250, 250, 250);
+}
+
+.editthispage a {
+    color: rgb(24, 131, 174);
+}
+
+.editthispage a:hover {
+    color: rgb(0, 91, 129);
+}
+
+i.fa-chevron-down {
+    color: rgb(250, 250, 250);
+}
+
+i.fa-chevron-down:hover {
+    background-color: transparent !important;
+    color: rgb(100, 100, 100); 
+}
+
+i.fa-box {
+    color: rgb(250, 250, 250);
+}
+
+/* Highlighting */
+span.highlighted {
+    background-color: rgba(214, 255, 101, 0.2);
+}
+
+
+/* Scroll bar */
+body::-webkit-scrollbar {
+    width: 6px;               /* width of the entire scrollbar */
+}
+  
+body::-webkit-scrollbar-track {
+    background: transparent;        /* color of the tracking area */
+}
+  
+body::-webkit-scrollbar-thumb {
+    background-color: rgb(168, 168, 168);    /* color of the scroll thumb */
+    border-radius: 20px;       /* roundness of the scroll thumb */
+    border: 3px solid transparent;  /* creates padding around scroll thumb */
+}

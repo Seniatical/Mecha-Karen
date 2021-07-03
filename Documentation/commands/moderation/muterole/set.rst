@@ -1,3 +1,10 @@
+.. meta::
+    :title: Documentation - Mecha Karen
+    :type: website
+    :url: https://docs.mechakaren.xyz/
+    :description: Muterole set command [Moderation] [Configuration].
+    :theme-color: #f54646
+
 Set
 ===
 
@@ -36,3 +43,11 @@ Example Usage
 .. image:: /images/set.png
    :width: 400px
    :align: center
+
+Glossary
+--------
+	
+.. glossary::
+
+	Muterole Set
+		Configuration command

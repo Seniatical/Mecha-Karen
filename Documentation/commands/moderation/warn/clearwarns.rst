@@ -1,3 +1,10 @@
+.. meta::
+    :title: Documentation - Mecha Karen
+    :type: website
+    :url: https://docs.mechakaren.xyz/
+    :description: ClearWarns Command [Moderation].
+    :theme-color: #f54646
+
 ClearWarns
 ==========
 
@@ -41,3 +48,17 @@ Example Usage
 .. image:: /images/clearwarn.png
    :width: 400px
    :align: center
+
+Glossary
+--------
+	
+.. glossary::
+
+	Clearwarns
+		Moderation command
+
+	CW
+		Moderation command [Aliases of *ClearWarns*]
+
+	Clear_Warns
+		Moderation command [Aliases of *ClearWarns*]

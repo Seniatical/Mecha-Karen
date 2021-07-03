@@ -1,3 +1,10 @@
+.. meta::
+    :title: Documentation - Mecha Karen
+    :type: website
+    :url: https://docs.mechakaren.xyz/
+    :description: Unban Command [Moderation].
+    :theme-color: #f54646
+
 Unban
 =====
 
@@ -45,3 +52,11 @@ Example Usage
    :alt: Example Usage of the Unban Command
 
 *The member will only recieve a DM if the bot can still DM them*
+
+Glossary
+--------
+   
+.. glossary::
+
+	Unban
+		Moderation command

@@ -1,3 +1,10 @@
+.. meta::
+   :title: Documentation - Mecha Karen
+   :type: website
+   :url: https://docs.mechakaren.xyz/
+   :description: Nuke Command [Moderation] [OWNER-ONLY].
+   :theme-color: #f54646
+
 Nuke
 ====
 
@@ -51,3 +58,10 @@ Sends a welcoming message right after nuking your channel!
    :width: 400px
    :align: center
    :alt: Example Usage of the Nuke Command
+
+Glossary
+--------
+      
+.. glossary::
+   Nuke
+      OWNER ONLY COMMAND

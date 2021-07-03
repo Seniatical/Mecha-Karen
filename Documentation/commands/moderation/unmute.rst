@@ -1,3 +1,10 @@
+.. meta::
+   :title: Documentation - Mecha Karen
+   :type: website
+   :url: https://docs.mechakaren.xyz/
+   :description: Unmute Command [Moderation].
+   :theme-color: #f54646
+
 Unmute
 ======
 
@@ -53,3 +60,11 @@ Tries to send a DM to the user if the users DMs are open or if the bot is not bl
    :width: 400px
    :align: center
    :alt: Example Usage of the Unmute Command
+
+Glossary
+--------
+   
+.. glossary::
+
+   Unmute
+      Moderation command

@@ -1,3 +1,10 @@
+.. meta::
+    :title: Documentation - Mecha Karen
+    :type: website
+    :url: https://docs.mechakaren.xyz/
+    :description: Muterole command [Overview].
+    :theme-color: #f54646
+
 .. _muterole:
 
 Mute Role

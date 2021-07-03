@@ -1,3 +1,10 @@
+.. meta::
+    :title: Documentation - Mecha Karen
+    :type: website
+    :url: https://docs.mechakaren.xyz/
+    :description: Muterole remove command [Moderation] [Configuration].
+    :theme-color: #f54646
+
 Remove
 ======
 
@@ -34,3 +41,11 @@ Example Usage
 .. image:: /images/remove.png
    :width: 400px
    :align: center
+
+Glossary
+--------
+	
+.. glossary::
+
+	Muterole Remove
+		Configuration command

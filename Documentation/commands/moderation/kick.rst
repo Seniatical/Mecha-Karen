@@ -1,3 +1,10 @@
+.. meta::
+    :title: Documentation - Mecha Karen
+    :type: website
+    :url: https://docs.mechakaren.xyz/
+    :description: Kick Command [Moderation].
+    :theme-color: #f54646
+
 Kick
 =====
 
@@ -46,3 +53,11 @@ Example Usage
    :alt: Example Usage of the Kick Command
 
 *A DM will be sent to the user with the provided reason if applicable.*
+
+Glossary
+--------
+
+.. glossary::
+
+	Kick
+	   Moderation command

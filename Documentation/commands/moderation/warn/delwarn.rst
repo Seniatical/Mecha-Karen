@@ -1,3 +1,10 @@
+.. meta::
+    :title: Documentation - Mecha Karen
+    :type: website
+    :url: https://docs.mechakaren.xyz/
+    :description: Delwarn command [Moderation].
+    :theme-color: #f54646
+
 Delwarn
 =======
 
@@ -45,3 +52,11 @@ Example Usage
 .. image:: /images/delwarn.png
    :width: 400px
    :align: center
+
+Glossary
+--------
+	
+.. glossary::
+
+	Delwarn
+		Moderation command

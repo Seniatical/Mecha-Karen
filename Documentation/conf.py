@@ -40,7 +40,7 @@ templates_path = ['_templates']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = []
+exclude_patterns = ['*.md', '*.template']
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -49,23 +49,24 @@ exclude_patterns = []
 # a list of builtin themes.
 #
 html_theme = 'pydata_sphinx_theme'
+html_logo = "_static/karen.png"
 
 html_theme_options = {
    "favicons": [
       {
          "rel": "icon",
          "sizes": "16x16",
-         "href": "content/icon/karen.png",
+         "href": "karen.png",
       },
       {
          "rel": "icon",
          "sizes": "32x32",
-         "href": "content/icon/karen.png",
+         "href": "karen.png",
       },
       {
          "rel": "apple-touch-icon",
          "sizes": "180x180",
-         "href": "content/icon/karen.png"
+         "href": "karen.png"
       },
    ],
 
@@ -79,12 +80,19 @@ html_theme_options = {
          "name": "Discord",
          "url": "https://discord.com/invite/Q5mFhUM",
          "icon": "fab fa-discord"
+      },
+      {
+         "name": "Dashboard",
+         "url": "https://mechakaren.xyz/dashboard",
+         "icon": "fas fa-box"
       }
     ],
-   
+
    "use_edit_page_button": True,
    "collapse_navigation": False,
-   "navigation_depth": 2,
+   "navigation_depth": 3,
+   "search_bar_text": "Search the docs ...",
+   "footer_items": ["copyright", "sphinx-version", "last-updated"],
 
 }
 
@@ -94,6 +102,10 @@ html_context = {
     "github_repo": "Mecha-Karen",
     "github_version": "main",
     "doc_path": "Documentation",
+}
+
+html_sidebars = {
+    "**": ["search-field", "sidebar-nav-bs"]
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

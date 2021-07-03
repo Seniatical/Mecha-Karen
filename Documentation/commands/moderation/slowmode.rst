@@ -1,3 +1,10 @@
+.. meta::
+    :title: Documentation - Mecha Karen
+    :type: website
+    :url: https://docs.mechakaren.xyz/
+    :description: Slowmode Command [Moderation].
+    :theme-color: #f54646
+
 Slowmode
 ========
 
@@ -38,10 +45,15 @@ There are no aliases for this command!
 
 Example Usage
 -------------
-::
+.. figure:: /images/slowmode.png
+   :width: 400px
+   :align: center
+   :alt: Example Usage of the Slowmode Command
 
-	-Slowmode 10
-	-Slowmode 10 General
-
-1. Sets a slowmode of 10 seconds in the current channel
-2. Sets a slowmode of 10 seconds in the channel named `General`
+Glossary
+--------
+	  
+.. glossary::
+   
+	Slowmode
+		Moderation command

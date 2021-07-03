@@ -1,3 +1,10 @@
+.. meta::
+   :title: Documentation - Mecha Karen
+   :type: website
+   :url: https://docs.mechakaren.xyz/
+   :description: Archive Command [Moderation].
+   :theme-color: #f54646
+
 Archive
 =======
 
@@ -45,3 +52,11 @@ Example Usage
    :width: 400px
    :align: center
    :alt: Example Usage of the Archive Command
+
+Glossary
+--------
+
+.. glossary::
+
+   Archive
+      Moderation command

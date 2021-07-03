@@ -1,3 +1,10 @@
+.. meta::
+    :title: Documentation - Mecha Karen
+    :type: website
+    :url: https://docs.mechakaren.xyz/
+    :description: Moderation Commands [Overview].
+    :theme-color: #f54646
+
 Moderation
 ==========
 
@@ -6,8 +13,8 @@ Mecha Karen Currently has **16** Moderation commands!
 More Coming Soon, Stay tuned.
 
 .. toctree::
-	:maxdepth: 1
-	:caption: Commands
+	:titlesonly:
+	:caption: Moderation Commands
 
 	archive
 	ban

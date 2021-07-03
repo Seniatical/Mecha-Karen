@@ -3,6 +3,13 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. meta::
+   :title: Documentation - Mecha Karen
+   :type: website
+   :url: https://docs.mechakaren.xyz/
+   :description: Welcome to Mecha Karen's Documentation
+   :theme-color: #f54646
+
 Welcome to Mecha Karen's Documentation!
 =======================================
 
@@ -18,12 +25,13 @@ Contents
 ========
 
 .. toctree::
-    :maxdepth: 4
+    :maxdepth: 2
 
     commands/index
+    dashboard/index
 
 Indices and tables
 ==================
 
-* :ref:`genindex`
 * :ref:`search`
+* :ref:`genindex`

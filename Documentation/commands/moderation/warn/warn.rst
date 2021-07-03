@@ -1,3 +1,10 @@
+.. meta::
+    :title: Documentation - Mecha Karen
+    :type: website
+    :url: https://docs.mechakaren.xyz/
+    :description: Warn command [Moderation].
+    :theme-color: #f54646
+
 Warn
 ====
 
@@ -42,3 +49,11 @@ Example Usage
 .. image:: /images/warn.png
    :width: 400px
    :align: center
+
+Glossary
+--------
+	
+.. glossary::
+
+	Warn
+		Moderation command

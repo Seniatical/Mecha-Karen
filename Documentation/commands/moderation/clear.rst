@@ -1,3 +1,10 @@
+.. meta::
+   :title: Documentation - Mecha Karen
+   :type: website
+   :url: https://docs.mechakaren.xyz/
+   :description: Clear Command [Moderation].
+   :theme-color: #f54646
+
 Clear
 =====
 
@@ -63,3 +70,14 @@ Example Usage
    :width: 400px
    :align: center
    :alt: Example Usage of clear command
+
+Glossary
+--------
+
+.. glossary::
+
+	Clear
+	   Moderation command
+
+   Purge
+      Moderation command [Aliase of *clear*]

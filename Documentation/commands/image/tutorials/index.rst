@@ -1,3 +1,10 @@
+.. meta::
+    :title: Documentation - Mecha Karen
+    :type: website
+    :url: https://docs.mechakaren.xyz/
+    :description: Image Manipulation [Tutorials] [Overview].
+    :theme-color: #f54646
+
 Image Manipulation Tutorials
 ============================
 
@@ -8,3 +15,5 @@ Mecha Karens Image Manipulation is far beyond average. There are many different 
 	:caption: Sub-Sections
 
 	temp
+	reply
+	accepted

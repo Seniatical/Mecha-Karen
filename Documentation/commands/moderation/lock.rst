@@ -1,3 +1,10 @@
+.. meta::
+    :title: Documentation - Mecha Karen
+    :type: website
+    :url: https://docs.mechakaren.xyz/
+    :description: Lock Command [Moderation].
+    :theme-color: #f54646
+
 Lock
 ====
 
@@ -68,3 +75,11 @@ Example Usage
    :width: 400px
    :align: center
    :alt: Example Usage of the Lock Command
+
+Glossary
+--------
+   
+.. glossary::
+
+	Lock
+		Moderation command

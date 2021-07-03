@@ -1,3 +1,10 @@
+.. meta::
+   :title: Documentation - Mecha Karen
+   :type: website
+   :url: https://docs.mechakaren.xyz/
+   :description: Meme Command [Fun] [Images].
+   :theme-color: #f54646
+
 Meme
 ====
 
@@ -31,7 +38,8 @@ Memes
 
 Example Usage
 -------------
-::
 
-	-Meme
-1. Sends a random meme to the current channel
+.. figure:: /images/meme.png
+   :width: 400px
+   :align: center
+   :alt: Example Usage of the Meme Command
