@@ -9,7 +9,7 @@ chardet
 click
 colorama
 cycler
-discord.py
+git+https://github.com/rapptz/discord.py
 disputils
 dnspython
 duration
