@@ -1,4 +1,5 @@
 import pydata_sphinx_theme
+import datetime
 
 project = 'Mecha Karen'
 copyright = '2021, Seniatical'
@@ -62,7 +63,7 @@ html_context = {
     "github_repo": "Mecha-Karen",
     "github_version": "main",
     "doc_path": "Documentation",
-    "last_updated": "03/07/2021",
+    "last_updated": datetime.datetime.utcnow().strftime('%d/%m/%Y'),
 }
 
 html_sidebars = {
