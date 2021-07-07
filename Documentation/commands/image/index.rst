@@ -3,8 +3,6 @@ Image
 
 One of the specialities of Mecha Karen - This is due to unique commands which have not yet been seen anywhere else.
 
-As of now Mecha Karen has **40+** Image commands!
-
 The developers of **Mecha Karen** didn't want to just limit this feature to our-selves. This is why we own a public API which anybody can use!
 
 Click here to visit our `API Documentation`_
