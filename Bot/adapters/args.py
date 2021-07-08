@@ -1,4 +1,5 @@
 from TagScriptEngine import Adapter, Verb, escape_content
+from ast import literal_eval
 
 
 class ArgumentAdapter(Adapter):
@@ -18,8 +19,25 @@ class ArgumentAdapter(Adapter):
         should_escape = False
 
         if not ctx.parameter:
-            return str(self.object)
-
+            return self.object
+        
+        parameter = ctx.parameter
+        
+        if ':' in parameter:
+            parameter.split(':')[:3]
+            _ = []
+            for _slice in slices:
+                if not _slice.isdigit() or _slice:
+                    ## Means that the slice given was something useless
+                    return str()
+                if _slice:
+                    _.append(int(_slice)) 
+                else:
+                    _.append(None)
+            _slice = slice(*_)
+            
+            return args[_slice]
+        
         try:
             value = self.args[int(ctx.parameter)]
         except (IndexError, ValueError):
