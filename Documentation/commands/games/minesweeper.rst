@@ -5,7 +5,7 @@
     :description: Minesweeper Command [Fun] [Games].
     :theme-color: #f54646
  
-Decipher
+Minesweeper
 =======
 Play Minesweeper with **Mecha Karen**!
  

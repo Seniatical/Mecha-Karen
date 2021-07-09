@@ -22,6 +22,7 @@ Permissions
  **Bot**
  ::
      Embed Links
+     Manage Messages
  
  **Author**
  ::

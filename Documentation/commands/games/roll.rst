@@ -5,7 +5,7 @@
     :description: Roll Command [Fun] [Games].
     :theme-color: #f54646
  
-Decipher
+Roll
 =======
 Karen scrambles up a random word depending on the chosen difficulty and you have to try guess it within 30s
  

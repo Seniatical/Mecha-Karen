@@ -5,7 +5,7 @@
     :description: Coin Command [Fun] [Games].
     :theme-color: #f54646
  
-Decipher
+Coin
 =======
 A coin will be tossed randomly by **Mecha Karen** for you as well as for her self making it competetive!
  

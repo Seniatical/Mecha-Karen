@@ -5,7 +5,7 @@
     :description: Fight Command [Fun] [Games].
     :theme-color: #f54646
  
-Decipher
+Fight
 =======
 Fight any member in the server using **Mecha Karen**!
  
