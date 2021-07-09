@@ -21,6 +21,7 @@ Permissions
 -----------
  **Bot**
  ::
+     Manage Messages
      Add Reactions
      Embed Links
  
