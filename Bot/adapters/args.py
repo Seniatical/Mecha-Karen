@@ -36,7 +36,7 @@ class ArgumentAdapter(Adapter):
                     _.append(None)
             _slice = slice(*_)
             
-            return args[_slice]
+            return self.args[_slice]
         
         try:
             value = self.args[int(ctx.parameter)]
