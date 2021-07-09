@@ -44,3 +44,8 @@ Example Usage
    :width: 400px
    :align: center
    :alt: Example Usage of the RPS Command
+
+.. glossary::
+
+	RPS
+	   Game / Fun command
