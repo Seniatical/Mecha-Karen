@@ -5,7 +5,7 @@
     :description: Hangman Command [Fun] [Games].
     :theme-color: #f54646
  
-Decipher
+Hangman
 =======
 Play Hangman with **Mecha Karen**!
  
