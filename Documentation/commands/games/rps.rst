@@ -2,12 +2,12 @@
    :title: Documentation - Mecha Karen
    :type: website
    :url: https://docs.mechakaren.xyz/
-   :description: rps [Fun] [Games].
+   :description: RPS Command [Fun] [Games].
    :theme-color: #f54646
 
 Rock Paper Scissors
 =======
-Simple RPS game that you can play with Mecha Karen!
+Play Rock Paper Scissors with **Mecha Karen**! Can you beat her?
 
 Parameters
 ----------
@@ -15,17 +15,19 @@ Parameters
 
 **Layout:**
 ::
-    rps
+    -RPS
 
 Permissions
 -----------
 **Bot**
 ::
-    No permissions are required.
+    Embed Links
+    Add Reactions
+    Manage Messages
 
 **Author**
 ::
-    No permissions are required.
+    Send Messages
 
 Cooldown
 --------
@@ -38,7 +40,7 @@ No aliases.
 Example Usage
 -------------
 
-.. figure:: /images/commandname.png
+.. figure:: /images/rps.png
    :width: 400px
    :align: center
    :alt: Example Usage of the RPS Command
