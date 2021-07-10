@@ -6,28 +6,39 @@
     :theme-color: #f54646
  
 Fight
-=======
+=====
 Fight any member in the server using **Mecha Karen**!
+
+What do the emojis represent?
+-----------------------------
+
+* 👊 - Attack the user who you are fighting
+* 🛡️ - Gain back lost health, a random amount not all
+* 🚪 - Leave the match / quite
+
+In this page, attack will represent 👊, defend will represent 🛡️ and leave will be 🚪.
  
 Parameters
 ----------
-Member [Required]
+**Member [Required]**
+
+The user who would like to fight with, just dont try it with bots.
  
 **Layout:**
- ::
-     -Fight [member]
+::
+    -Fight [member]
  
 Permissions
 -----------
- **Bot**
- ::
-     Embed Links
-     Add Reactions
+**Bot**
+::
+    Embed Links
+    Add Reactions
  
- **Author**
- ::
-     Send Messages
-     Add Reactions
+**Author**
+::
+    Send Messages
+    Add Reactions
  
 Cooldown
 --------
@@ -35,18 +46,53 @@ Cooldown
  
 Aliases
 -------
-No aliases.
+There are no aliases for this command yet!
  
 Example Usage
 -------------
- 
- .. figure:: /images/fight.png
+
+.. centered::
+    Once you use the command Karen will setup the match and necessary details
+
+.. figure:: /images/fight-1.png
     :width: 400px
     :align: center
     :alt: Example Usage of the Fight Command
  
- .. glossary::
- 
-     Fight
+.. centered::
+    Once the match has been setup a user will be selected to attach first!
+    To preform an action click on one of the emojis provided
+
+.. figure:: /images/fight-2.png
+    :width: 400px
+    :align: center
+    :alt: Example Usage of the Fight Command
+
+.. centered::
+    Choose a valid emoji and then click it to react to the message
+    Karen will then preform your chosen action like so
+
+.. figure:: /images/fight-3.png
+    :width: 400px
+    :align: center
+    :alt: Example Usage of the Fight Command
+
+.. centered::
+    After you preform your action the next player will be given the option to attack/defend/leave
+
+.. figure:: /images/fight-4.png
+    :width: 400px
+    :align: center
+    :alt: Example Usage of the Fight Command
+
+.. centered::
+    This will continue to occur till a clear winner has been chosen!
+
+Glossary
+--------
+
+.. glossary::
+
+    Fight
         Game / Fun command
  

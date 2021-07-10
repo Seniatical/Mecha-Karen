@@ -6,26 +6,28 @@
     :theme-color: #f54646
  
 Coin
-=======
+====
 A coin will be tossed randomly by **Mecha Karen** for you as well as for her self making it competetive!
  
 Parameters
 ----------
-Choices [Required]
+**Choice [Required]**
+
+Choose between *Heads* or *Tails* and see if you win against her.
  
 **Layout:**
- ::
-     -Coin [choices]
+::
+    -Coin [choice]
  
 Permissions
 -----------
- **Bot**
- ::
-     Embed Links
+**Bot**
+::
+    Embed Links
  
- **Author**
- ::
-     Send Messages
+**Author**
+::
+    Send Messages
  
 Cooldown
 --------
@@ -33,18 +35,20 @@ Cooldown
  
 Aliases
 -------
-No aliases.
+There are no aliases for this command yet!
  
 Example Usage
 -------------
  
- .. figure:: /images/coin.png
+.. figure:: /images/coin.png
     :width: 400px
     :align: center
     :alt: Example Usage of the Coin Command
  
- .. glossary::
+Glossary
+--------
+
+.. glossary::
  
-     Coin
+    Coin
         Game / Fun command
- 
