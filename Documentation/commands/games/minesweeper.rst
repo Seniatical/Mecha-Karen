@@ -10,7 +10,7 @@ Minesweeper
 Play Minesweeper with **Mecha Karen**!
 
 .. note::
-    This command is going to be reworking in the future.
+    This command is going to be redesigned in the future.
  
 Parameters
 ----------

@@ -26,9 +26,10 @@ Choose from either:
  
 Permissions
 -----------
- **Bot**
+**Bot**
 ::
     Send Messages
+
  
 **Author**
 ::

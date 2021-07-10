@@ -7,7 +7,7 @@
  
 Roll
 ====
-Karen scrambles up a random word depending on the chosen difficulty and you have to try guess it within 30s
+Karen rolls a dice between herself or with another member selected with you. Whoever gets the highest wins!
  
 Parameters
 ----------
