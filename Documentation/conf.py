@@ -68,10 +68,16 @@ html_context = {
 
 html_sidebars = {
     "**": ["search-field", "sidebar-nav-bs"],
-    "index.rst": ["home-navbar.html"]
+    "index": ["search-field", "home-navbar"]
 }
 
 html_static_path = ['_static']
 html_css_files = [
     'css/custom.css',
+]
+
+html_title = "Mecha Karen"
+
+suppress_warnings = [
+   "image.not_readable"
 ]
