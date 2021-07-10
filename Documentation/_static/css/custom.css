@@ -62,7 +62,7 @@ Theme addition / customisation created by Seniatical.
     --pst-color-navbar-link-hover: var(--pst-color-active-navigation);
     --pst-color-navbar-link-active: var(--pst-color-active-navigation);
 
-    --pst-color-sidebar-link: 77, 77, 77;
+    --pst-color-sidebar-link: 174, 174, 174;
     --pst-color-sidebar-link-hover: var(--pst-color-active-navigation);
     --pst-color-sidebar-link-active: var(--pst-color-active-navigation);
     --pst-color-sidebar-expander-background-hover: 250, 250, 250;
@@ -103,6 +103,13 @@ body {
     border-top: 2px solid rgba(148, 148, 148, 0.1) !important;
 }
 
+.navbar-light .navbar-toggler {  
+    border-color: rgba(255, 255, 255, 0.3);
+}
+.navbar-light .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 0.3)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
 
 /* Minor typographical changes */
 strong {
@@ -111,6 +118,10 @@ strong {
 
 a strong {
     color: rgb(177, 177, 177) !important;
+}
+
+.centered {
+    text-align: center !important;
 }
 
 /* Sidebar */
