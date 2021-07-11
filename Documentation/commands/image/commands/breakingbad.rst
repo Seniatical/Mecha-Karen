@@ -43,3 +43,14 @@ Example Usage
    :width: 400px
    :align: center
    :alt: Example Usage of the BreakingBad Command
+
+Glossary
+--------
+
+.. glossary::
+
+   BreakingBad
+      Fun / Image Command
+
+   BB
+      Fun / Image Command [Aliases of *BreakingBad*]

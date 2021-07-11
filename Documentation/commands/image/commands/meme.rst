@@ -43,3 +43,11 @@ Example Usage
    :width: 400px
    :align: center
    :alt: Example Usage of the Meme Command
+
+Glossary
+--------
+
+.. glossary::
+
+   Meme
+      Fun / Image Command
