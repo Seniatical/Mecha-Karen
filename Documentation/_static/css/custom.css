@@ -79,6 +79,10 @@ body {
     background-color: rgb(21, 23, 26);
 }
 
+iframe {
+    left: auto !important;
+}
+
 .navbar-light {
     background-color: rgb(32, 35, 40) !important;
 }
@@ -272,6 +276,20 @@ body::-webkit-scrollbar-track {
 }
   
 body::-webkit-scrollbar-thumb {
+    background-color: rgb(168, 168, 168);    /* color of the scroll thumb */
+    border-radius: 20px;       /* roundness of the scroll thumb */
+    border: 3px solid transparent;  /* creates padding around scroll thumb */
+}
+
+#bd-docs-nav::-webkit-scrollbar {
+    width: 6px;
+}
+
+#bd-docs-nav::-webkit-scrollbar-track {
+    background: transparent;        /* color of the tracking area */
+}
+
+#bd-docs-nav::-webkit-scrollbar-thumb {
     background-color: rgb(168, 168, 168);    /* color of the scroll thumb */
     border-radius: 20px;       /* roundness of the scroll thumb */
     border: 3px solid transparent;  /* creates padding around scroll thumb */
