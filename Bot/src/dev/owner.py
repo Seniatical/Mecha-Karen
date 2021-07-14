@@ -282,7 +282,7 @@ Commands: -Config Command <UPDATE|REMOVE|DISABLE|ENABLE>
             data = json.load(f)
         try:
             code = data.pop(error_code)
-            with open('JSON/errors.json', 'w') as f:
+            with open('./storage/storage/errors.json', 'w') as f:
                 json.dump(data, f, indent=4)
 
             embed = discord.Embed(title='Command: ' + code['Command'], colour=discord.Colour.red())
