@@ -24,7 +24,7 @@ class ArgumentAdapter(Adapter):
         parameter = ctx.parameter
         
         if ':' in parameter:
-            parameter.split(':')[:3]
+            slices = parameter.split(':')[:3]
             _ = []
             for _slice in slices:
                 if not _slice.isdigit() or _slice:
