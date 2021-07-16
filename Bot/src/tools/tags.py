@@ -8,6 +8,7 @@ import discord
 from discord.ext import commands
 import TagScriptEngine as tagscript
 from pydantic import BaseModel
+from difflib import get_close_matches
 
 import utility.metrics
 from utility.min import get_permissions
@@ -298,7 +299,15 @@ class Tags(commands.Cog, KarenMixin, metaclass=KarenMetaClass):
         tag = tag.lower()
 
         if not tags or not tags.get(tag):
-            return await ctx.message.reply(content='This tag doesn\'t exist', mention_author=False)
+            similar = await self.bot.loop.run_in_executor(
+                None, get_close_matches, tag, tags.keys()
+            )
+            if not similar:
+                return await ctx.message.reply(content='This tag doesn\'t exist', mention_author=False)
+            else:
+                return await ctx.message.reply(content="This tag doesn't exist, perhaps you ment\n{}".format(
+                    ', '.join(map(lambda _: '`' + _ + '`', similar[:10]))
+                ))
         tag = tags[tag]
 
         if tag.nsfw and not ctx.channel.nsfw:
