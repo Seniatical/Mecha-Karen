@@ -3,7 +3,6 @@ import datetime
 import io
 import textwrap
 
-import TagScriptEngine
 import discord
 from discord.ext import commands
 import TagScriptEngine as tagscript
@@ -90,7 +89,7 @@ class Tags(commands.Cog, KarenMixin, metaclass=KarenMetaClass):
             tagscript.OverrideBlock(),
         ]
 
-        self.engine = TagScriptEngine.Interpreter(tagscript_blocks)
+        self.engine = tagscript.Interpreter(tagscript_blocks)
 
     class Tag(BaseModel):
         r""" An object which represents a TAG """
