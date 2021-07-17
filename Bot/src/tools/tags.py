@@ -293,11 +293,11 @@ class Tags(commands.Cog, KarenMixin, metaclass=KarenMetaClass):
         try:
             tags = self.bot.cache.cache['Tags'][ctx.guild.id]
         except KeyError:
-            tags = None
+            return await ctx.message.reply(content='This tag doesn\'t exist', mention_author=False)
 
         tag = tag.lower()
 
-        if not tags or not tags.get(tag):
+        if not tags.get(tag):
             similar = await self.bot.loop.run_in_executor(
                 None, get_close_matches, tag, tags.keys()
             )
@@ -341,12 +341,20 @@ class Tags(commands.Cog, KarenMixin, metaclass=KarenMetaClass):
         try:
             tags = self.bot.cache.cache['Tags'][ctx.guild.id]
         except KeyError:
-            tags = None
+            return await ctx.message.reply(content='This tag doesn\'t exist', mention_author=False)
 
         tag = tag.lower()
 
-        if not tags or not tags.get(tag):
-            return await ctx.message.reply(content='This tag doesn\'t exist', mention_author=False)
+        if not tags.get(tag):
+            similar = await self.bot.loop.run_in_executor(
+                None, get_close_matches, tag, tags.keys()
+            )
+            if not similar:
+                return await ctx.message.reply(content='This tag doesn\'t exist', mention_author=False)
+            else:
+                return await ctx.message.reply(content="This tag doesn't exist, perhaps you ment\n{}".format(
+                    ', '.join(map(lambda _: '`' + _ + '`', similar[:10]))
+                ))
         tag = tags[tag]
 
         embed = discord.Embed(title=tag.name.capitalize(), colour=discord.Colour.blue())
@@ -374,12 +382,20 @@ class Tags(commands.Cog, KarenMixin, metaclass=KarenMetaClass):
         try:
             tags = self.bot.cache.cache['Tags'][ctx.guild.id]
         except KeyError:
-            tags = None
+            return await ctx.message.reply(content='This tag doesn\'t exist', mention_author=False)
 
         tag = tag.lower()
 
-        if not tags or not tags.get(tag):
-            return await ctx.message.reply(content='This tag doesn\'t exist', mention_author=False)
+        if not tags.get(tag):
+            similar = await self.bot.loop.run_in_executor(
+                None, get_close_matches, tag, tags.keys()
+            )
+            if not similar:
+                return await ctx.message.reply(content='This tag doesn\'t exist', mention_author=False)
+            else:
+                return await ctx.message.reply(content="This tag doesn't exist, perhaps you ment\n{}".format(
+                    ', '.join(map(lambda _: '`' + _ + '`', similar[:10]))
+                ))
         tag = tags[tag]
 
         author = ctx.guild.get_member(tag.author)
