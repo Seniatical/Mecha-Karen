@@ -40,8 +40,8 @@ Glossary
 
 .. glossary::
 
-	Slot
-	   Fun command
+    Slot
+    	Fun command
 
     Slots
        Fun command [Aliase of *slot*]
