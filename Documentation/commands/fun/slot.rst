@@ -8,7 +8,7 @@
 Slot
 =====
 
-Play slot with Karen!
+Play slots with Karen!
 
 **Layout:**
 ::
@@ -19,10 +19,6 @@ Permissions
 **Bot**
 ::
 	Embed Links
-
-**Author**
-::
-	Manage Messages
 
 Cooldown
 --------
@@ -47,8 +43,8 @@ Glossary
 	Slot
 	   Fun command
 
-   Slots
-      Fun command [Aliase of *slot*]
+    Slots
+       Fun command [Aliase of *slot*]
 
-   Bet
-      Fun command [Aliase of *slot*]
+    Bet
+       Fun command [Aliase of *slot*]
