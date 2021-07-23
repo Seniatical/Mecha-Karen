@@ -66,7 +66,7 @@ class MechaKaren(commands.AutoShardedBot):
         self.owner = self.owner_id
         self.env = env
 
-        self.ipc = ipc.Server(self, secret_key='Daftlikeslongsausages', host='0.0.0.0')
+        self.ipc = ipc.Server(self, secret_key=env('SECRET-KEY'), host=env('HOST'))
         self.client = client
         self.blacklisted = client['Blacklisted']
         self.blacklistedusers = self.blacklisted['Users']
@@ -188,7 +188,6 @@ class MechaKaren(commands.AutoShardedBot):
         print("[ + ] IPC Server is now running!")
 
     async def on_ipc_error(self, endpoint, error):
-        # Allows me to see both endpoint + error in 1 tb
         self.event_logger.critical('Error from endpoint "%s"' % endpoint, name=endpoint)
         raise self.IPCError('Uncaught error from "%s"' % endpoint) from error
 
