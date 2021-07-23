@@ -11,8 +11,10 @@
   Stores all sound effects for the soundboard - Yes this can be used with <strong>ffmpeg</strong>, <strong>YTDL</strong> and <strong>Lavalink</strong><br>
   Karen specifically uses lavalink to maintain consistency with the music cog<br><br>
   <h4 align="center">How do I use them?</h4>
-  For ffmpeg just use what you normally would for playing any old <strong>.mp3</strong> file.<br>
-  For YTDL and Lavalink simply use the URL which the IPC is running on and use the route <strong>/lavalink?file=filename.mp3</strong>.
+  <p align="center">
+    For ffmpeg just use what you normally would for playing any old <strong>.mp3</strong> file.<br>
+    For YTDL and Lavalink simply use the URL which the IPC is running on and use the route <strong>/lavalink?file=filename.mp3</strong>.
+  </p>
 </p>
 
 <h3 align="center">
