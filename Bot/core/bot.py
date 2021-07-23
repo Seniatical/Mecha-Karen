@@ -1,24 +1,12 @@
-# !/usr/bin/python
-
-"""
-Copyright ©️: 2020 Seniatical / _-*™#7519
-License: Apache 2.0
-A permissive license whose main conditions require preservation of copyright and license notices.
-Contributors provide an express grant of patent rights.
-Licensed works, modifications, and larger works may be distributed under different terms and without source code.
-FULL LICENSE CAN BE FOUND AT:
-    https://www.apache.org/licenses/LICENSE-2.0.html
-Any violation to the license, will result in moderate action
-You are legally required to mention (original author, license, source and any changes made)
-"""
-
 import datetime
 from time import time
 
 import aiofiles
 import discord
 import pymongo
+import pymongo.errors
 from discord.ext import commands, ipc
+import aiohttp.web
 from utility import (Enviroment, Cache, handler, get_dm_embed, errors, emojis)
 from utility.prefix import PrefixHandler
 from src.support.join_events import ending
@@ -30,7 +18,7 @@ global env, client, user, table, column, start
 
 
 def get_tail():
-    r""" Returns the features which boot up karen and we dont want used in the CLI instantly """
+    r""" Get db and env which we don't want loading in the CLI Instantly """
 
     env = Enviroment('./.env')
 
@@ -59,11 +47,9 @@ class MechaKaren(commands.AutoShardedBot):
             bans=True,
             emojis=True,
             voice_states=True,
-            presences=True,
             messages=True,
             guild_messages=True,
             reactions=True,
-            integrations=True
         ),
         self.prefix = PrefixHandler(column)
 
@@ -74,7 +60,7 @@ class MechaKaren(commands.AutoShardedBot):
             description='I am Mecha Karen. An open sourced bot inspiring others!',
             intents=intents[0],
             help_command=None,
-            owner_id=475357293949485076,
+            owner_ids=[475357293949485076, 491630879085559808],
         )
         self.launch_time = datetime.datetime.utcnow()
         self.owner = self.owner_id
@@ -104,11 +90,17 @@ class MechaKaren(commands.AutoShardedBot):
             'users': {},
         }
         self.guild_logs = None
+        self.premium = dict()
 
         """ LOAD COGS """
         from src import core
 
         core.load_cogs(self)
+
+        """ LOAD GAMES """
+        from core.games import core
+
+        core.load_games(self)
 
         """ Set up logger """
         self.command_logger = CommandLogger()
@@ -132,11 +124,6 @@ class MechaKaren(commands.AutoShardedBot):
             except discord.errors.Forbidden:
                 pass
 
-        @self.after_invoke
-        async def after_any_command(ctx):
-            if await ctx.bot.is_owner(ctx.author):
-                ctx.command.reset_cooldown(ctx)
-
     class IPCError(Exception):
         r""" Raised when an error occurs from the IPC """
         pass
@@ -148,20 +135,62 @@ class MechaKaren(commands.AutoShardedBot):
     async def version(self):
         async with aiofiles.open('./core/version.py', 'r') as f:
             data = await f.read()
-        return data.split('=')[-1]
+        return data.split('=')[-1].strip()
 
     async def on_connect(self):
-        self.ipc.start()
         print('Bot Connected to discord - Took {} Seconds after starting'.format(time() - start))
 
+        # Manual startup for IPC
+
+        self.ipc._server = aiohttp.web.Application()
+        self.ipc._server.router.add_route("GET", "/", self.ipc.handle_accept)
+
+        if self.ipc.do_multicast:
+            self._multicast_server = aiohttp.web.Application()
+            self._multicast_server.router.add_route("GET", "/", self.ipc.handle_multicast)
+
+        async def handle_soundboard_response(request: aiohttp.web.Request):
+            url_data = request.query
+            file = url_data.get('file')
+
+            if not file:
+                return aiohttp.web.Response(
+                    body="{'error': 400, 'message': 'Invalid URL Parameters'}",
+                    status=400, content_type='application/json'
+                )
+
+            try:
+                response = aiohttp.web.FileResponse(path='./storage/soundboard/{}'.format(file))
+            except FileNotFoundError:
+                return aiohttp.web.Response(
+                    body="{'error': 400, 'message': 'Cannot Locate Specified File'}",
+                    status=400, content_type='application/json'
+                )
+
+            return response
+
+        self.ipc._server.router.add_route(
+            'GET', '/lavalink', handle_soundboard_response
+        )
+        print('[ + ] Added lavalink route to IPC')
+
+        # Run the server
+        runner = aiohttp.web.AppRunner(self.ipc._server)
+        await runner.setup()
+
+        site = aiohttp.web.TCPSite(runner, self.ipc.host, self.ipc.port)
+        await site.start()
+
+        self.dispatch('ipc_ready')
+
     async def on_ipc_ready(self):
-        self.event_logger.debug('Websocket is now running', 'IPC_READY')
+        self.event_logger.debug('IPC is now running', 'IPC_READY')
         print("[ + ] IPC Server is now running!")
 
     async def on_ipc_error(self, endpoint, error):
         # Allows me to see both endpoint + error in 1 tb
-        self.event_logger.critical('Error from endpoints %s' % endpoint, name=endpoint)
-        raise self.IPCError('Uncaught error from %s' % endpoint) from error
+        self.event_logger.critical('Error from endpoint "%s"' % endpoint, name=endpoint)
+        raise self.IPCError('Uncaught error from "%s"' % endpoint) from error
 
     async def on_guild_remove(self, guild: discord.Guild):
 
@@ -172,6 +201,9 @@ class MechaKaren(commands.AutoShardedBot):
         tags.delete_many({'_id': {'$regex': '^{}'.format(guild.id)}})
         giveaways = client['Giveaways']['codes']
         giveaways.delete_many({'_id': {'$regex': '^{}'.format(guild.id)}})
+        suggestions = table['Suggestions']
+        suggestions.delete_one({'_id': guild.id})
+        # Free up DB space
 
         if not self.guild_logs:
             self.guild_logs = self.get_channel(787372543240568932)
@@ -183,8 +215,6 @@ class MechaKaren(commands.AutoShardedBot):
         embed.set_thumbnail(url=guild.icon)
         embed.set_footer(icon_url=self.user.avatar, text='Left At ')
 
-        if not self.guild_logs:
-            self.guild_logs = self.get_channel(787372543240568932)
         await self.guild_logs.send(embed=embed)
 
     async def on_guild_join(self, guild: discord.Guild):
@@ -200,7 +230,7 @@ class MechaKaren(commands.AutoShardedBot):
 
         try:
             column.insert_one({'_id': guild.id, 'prefix': '-', 'Disabled': [], 'StarChannel': int(), 'StarCount': 0})
-        except Exception:
+        except pymongo.errors.DuplicateKeyError:
             return
 
         channel = guild.system_channel
@@ -210,7 +240,7 @@ class MechaKaren(commands.AutoShardedBot):
             embed = discord.Embed(
                 title='Thanks for Inviting me!',
                 colour=discord.Colour.green(),
-                description='You are the **{} {}** server to invite me! {}'.format(len(self.guilds), ending(len(self.guilds)),
+                description='You are the **{} {}** server to invite me! {}'.format(len(self.guilds), (await ending(len(self.guilds))),
                                                                                    emojis.KAREN_ADDITIONS_ANIMATED['tada']),
                 timestamp=datetime.datetime.utcnow()
             ).set_footer(text='Bot created by {}'.format(self.get_user(self.owner_id)),
@@ -249,7 +279,7 @@ class MechaKaren(commands.AutoShardedBot):
             return await message.author.send(embed=await get_dm_embed(self, message))
 
         try:
-            if '👀' in message.content or 'eyes' in message.content:
+            if '👀' in message.content or 'eyes' in message.content and message.guild.id == 740523643980873789:
                 channel = discord.utils.get(message.guild.channels, name='👀tracking')
                 amount = 0
                 if message.channel.name == '👀tracking':
@@ -274,10 +304,16 @@ class MechaKaren(commands.AutoShardedBot):
             return
 
         try:
-            if message.content.lower() == 'mecha karen' or message.content == '<@!740514706858442792>':
+            prefix = self.prefix.cache.get(message.guild.id)
+
+            if not prefix:
+                prefix = '-'
+            else:
+                prefix = list(prefix)[-1]
+
+            if self.user.mentioned_in(message) and message.mentions[0] == message.content.strip():
                 await message.reply(embed=discord.Embed(
-                    description='<a:wave:787761464697421835> My Prefix for this Server is `{}`'.format(
-                        (self.prefix.cache.get(message.guild.id) or ['-'])[-1]),
+                    description='<a:wave:787761464697421835> My Prefix for this Server is `{}`'.format(prefix),
                     colour=discord.Color.red()))
         except discord.errors.Forbidden:
             return
@@ -297,13 +333,10 @@ class MechaKaren(commands.AutoShardedBot):
             pass
 
     def run(self):
-        try:
-            reconnect = env('RECONNECT') or False
-            if env('IS_MAIN'):
-                token = env('DISCORD_BOT_TOKEN')
-            else:
-                token = env('ALT_TOKEN')
+        reconnect = env('RECONNECT') or False
+        if env('IS_MAIN'):
+            token = env('DISCORD_BOT_TOKEN')
+        else:
+            token = env('ALT_TOKEN')
 
-            super().run(token, reconnect=reconnect)
-        except Exception as error:
-            raise discord.errors.LoginFailure('Failed to connect to discord') from error
+        super().run(token, reconnect=reconnect)
