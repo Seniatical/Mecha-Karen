@@ -8,7 +8,7 @@
 
 <h3 align="center">Usage?</h3>
 <p align="center">
-  Stores all sound effects for the soundboard - Yes this can be used with `ffmpeg` `YTDL` and `Lavalink`<br>
+  Stores all sound effects for the soundboard - Yes this can be used with <strong>ffmpeg</strong>, <strong>YTDL</strong> and <strong>Lavalink</strong><br>
   Karen specifically uses lavalink to maintain consistency with the music cog
 </p>
 
