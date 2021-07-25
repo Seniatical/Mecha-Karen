@@ -219,7 +219,7 @@ class fun(commands.Cog):
         embed.add_field(name="Bot Latency", value=f"{round(self.bot.latency * 1000)}ms")
         embed.add_field(name="Normal Speed",
                         value=f"{round((round(sum(times)) + round(self.bot.latency * 1000)) / 4)}ms")
-        embed.add_field(name='Buffer', value=f'{random.randint(10, 100)}ms')
+        embed.add_field(name='Buffer', value=f'{self.bot.buffer._round_time(__import__('time').perfcounter, 'ms')}ms')
 
         ##		  website = await self.bot.loop.run_in_executor(None, lambda: os.popen('ping mechakaren.xyz ; echo $?').read())
         ##        ping = website.result()
