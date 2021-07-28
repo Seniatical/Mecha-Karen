@@ -32,12 +32,15 @@ class TagAdapter(Adapter):
         self._methods = dict()
         
         super().__init__()
+        
+    def repr(self):
+        return f'[Tag Object !name={self._attributes["name"]}]'
 
     def get_value(self, ctx: Verb) -> str:
         should_escape = False
 
         if not ctx.parameter:
-            return str(self.object)
+            return repr(self)
 
         try:
             value = self._attributes[ctx.parameter]
