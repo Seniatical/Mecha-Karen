@@ -3,11 +3,8 @@
 *.spec
 *.log
 *.env
-*.venv
-*.dll
-*.c
+*venv
 *.build
 *.template
-*.cache
 
 # I like fish. 🐟
