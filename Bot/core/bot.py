@@ -66,7 +66,7 @@ class MechaKaren(commands.AutoShardedBot):
         self.owner = self.owner_id
         self.env = env
 
-        self.ipc = ipc.Server(self, secret_key=env('IPC_SECRET_KEY'), host=env('IPC_HOST'))
+        self.ipc = ipc.Server(self, secret_key='Daftlikeslongsausages', host='0.0.0.0')
         self.client = client
         self.blacklisted = client['Blacklisted']
         self.blacklistedusers = self.blacklisted['Users']
@@ -97,7 +97,12 @@ class MechaKaren(commands.AutoShardedBot):
 
         core.load_cogs(self)
 
-        """ LOAD GAMES """
+        """ LOAD GAMES & ADD VARS """
+        self.bombparty_games = dict()
+
+        dictionary = __import__('KarenCustom').Dictionary(return_none=False, method='GET').fetch_object()
+        self.dictionary = dictionary()
+
         from core.games import core
 
         core.load_games(self)
@@ -109,10 +114,9 @@ class MechaKaren(commands.AutoShardedBot):
 
         @self.before_invoke
         async def before_any_command(ctx):
-            disabled = self.column.find_one({'_id': ctx.guild.id})
-
-            if self.blacklist_cache['users'].get(ctx.author.id):
-                raise errors.Blacklisted
+            disabled = await self.loop.run_in_executor(
+                None, self.column.find_one, {'_id': ctx.guild.id}
+            )
 
             disabled = disabled['Disabled']
             if ctx.command.name.lower() in disabled:
@@ -188,6 +192,7 @@ class MechaKaren(commands.AutoShardedBot):
         print("[ + ] IPC Server is now running!")
 
     async def on_ipc_error(self, endpoint, error):
+        # Allows me to see both endpoint + error in 1 tb
         self.event_logger.critical('Error from endpoint "%s"' % endpoint, name=endpoint)
         raise self.IPCError('Uncaught error from "%s"' % endpoint) from error
 
@@ -331,7 +336,24 @@ class MechaKaren(commands.AutoShardedBot):
         except AttributeError:
             pass
 
-    def run(self):
+    async def process_commands(self, message: discord.Message) -> None:
+        ctx: commands.Context = await self.get_context(message=message)
+
+        if not ctx.command or not ctx.valid:
+            return
+        
+        if self.blacklist_cache['users'].get(ctx.author.id):
+            # Dont allow messages - for now
+            return
+
+        try:
+            await self.invoke(ctx)
+        finally:
+            await self.loop.run_in_executor(
+                None, self.command_logger.debug, f'{ctx.author.id} has used {ctx.command.name}', 'command_used'
+            )
+
+    def run(self) -> None:
         reconnect = env('RECONNECT') or False
         if env('IS_MAIN'):
             token = env('DISCORD_BOT_TOKEN')
