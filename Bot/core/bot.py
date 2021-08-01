@@ -66,7 +66,7 @@ class MechaKaren(commands.AutoShardedBot):
         self.owner = self.owner_id
         self.env = env
 
-        self.ipc = ipc.Server(self, secret_key='Daftlikeslongsausages', host='0.0.0.0')
+        self.ipc = ipc.Server(self, secret_key=env('IPC_SECRET_KEY'), host=env('IPC_HOST'))
         self.client = client
         self.blacklisted = client['Blacklisted']
         self.blacklistedusers = self.blacklisted['Users']
