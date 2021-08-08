@@ -24,11 +24,10 @@ class Cache:
         self.cache.update({user_id: {
             "images": [],
             "messages": [],
-            "users": [],
-            "quotes": []
         }})
+        
+        # REMOVE: user looping - cache grows very large
         return True
-        ## NOTE: Everything here will get erased cus actuall no i can temp it in a .json :smart:
         
     def to_json(self, path, container):   ## Usually i will have 2 but fish
         ## My Method is to use try and finally to do this :>
@@ -64,25 +63,17 @@ class Cache:
         temp = {v: k for k, v in self.cache.items()}
         return temp.get(value)
     
-    async def add_new_container(self, name, cache = None):
-        global temp
+    async def add_new_container(self, name, cache = None, *, as_var: bool = False) -> dict:
         cache = cache or {}
-        exec('''self.{} = {}'''.format(name, cache))
-        exec('''global temp
-temp = self.{}
-        '''.format(name))
-        return temp
+        
+        if as_var:
+            setattr(self, name, cache)
+        else:
+            self.cache['name'] = cache
+        
+        return cache
     
-    async def whole_cache(self, name):
-        global temp
-        exec('''global temp
-temp = self.{}
-        '''.format(name))
-        return temp
-    
-    def get_cache(self, name):
-        global temp
-        exec('''global temp
-temp = self.{}
-        '''.format(name))
-        return temp
+    def get_cache(self, name, *, as_var: bool = False):
+        if as_var:
+            return getattr(self, name, None)
+        return self.cache.get(name)
