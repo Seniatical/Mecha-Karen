@@ -77,3 +77,9 @@ class Cache:
         if as_var:
             return getattr(self, name, None)
         return self.cache.get(name)
+    
+    ## Some methods
+    
+    def __len__(self):
+        return len(self.cache)
+    
