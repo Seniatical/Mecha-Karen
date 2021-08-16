@@ -44,22 +44,30 @@ class KarenMixin(ABC):
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs
-        self.attrs = None
+        
+        self.attrs = []
+        self.methods = []
 
         super().__init__()
+        self._sort()
 
     def cog_unload(self):
         super().cog_unload()
 
-    def attributes(self):
+    def _sort(self):
         values = dir(super())
-        accepted = []
+        attrs, methods = ([], [])
         for value in values:
             if not callable(getattr(super(), value)):
                 ## If it the attr is callable we dont class it as an attribute
-                accepted.append(value)
-        self.attrs = accepted
-        return accepted
+                attrs.append(value)
+            else:
+                methods.append(value)
+                
+        self.attrs = attrs
+        self.methods = methods
+        
+        return True
 
 
 class KarenMetaClass(type(Cog), type(ABC)):
